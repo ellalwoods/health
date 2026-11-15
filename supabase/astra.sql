@@ -1,5 +1,5 @@
 -- Astra sync: one row per sign-in (name + hot-water bottle + tea), holding that person's symptom log.
--- Safe to run in a shared Supabase project (it shares DuoVino's): everything is prefixed astra_
+-- Safe to run in a shared Supabase project (it shares Good Word Charlie's and DuoDisco's): everything is prefixed astra_
 -- and touches no other tables. Run it once in Supabase → SQL Editor. Running it again is harmless.
 --
 -- How it stays private:

@@ -19,7 +19,7 @@ The app is at **https://ellalwoods.github.io/health/** once publishing is switch
 ## One-time setup
 
 1. **Publishing:** in the `health` repository's settings: **General → Default branch:** `main` (the first push creates it). **Pages → Build and deployment → Source:** GitHub Actions. After that, every push to a `claude/` branch is merged into `main` and published automatically. Then open the link in Safari and **Share → Add to Home Screen**.
-2. **Sync:** in the DuoVino Supabase project, open **SQL Editor → New query**, paste the whole of [`supabase/astra.sql`](supabase/astra.sql) and click **Run**. It only adds its own `astra_` table and two functions. If you've just run it and signing in still says it isn't switched on, wait a minute and try again. Until then, **Use without syncing** works in the meantime and you can sign in later from Settings.
+2. **Sync:** in the Good Word Charlie Supabase project (also used by DuoDisco), open **SQL Editor → New query**, paste the whole of [`supabase/astra.sql`](supabase/astra.sql) and click **Run**. It only adds its own `astra_` table and two functions. If you've just run it and signing in still says it isn't switched on, wait a minute and try again. Until then, **Use without syncing** works in the meantime and you can sign in later from Settings.
 3. **Your Notion log:** Settings → **Bring in your Notion log**, and pick the Notion export (the zip, or the CSV inside it). It fills in days you haven't already logged in Astra, and works out period starts from the Cycle Day column.
 
 ## Signing in
@@ -47,7 +47,7 @@ python3 -m http.server 8000
 | `body.js` | The front and back body map and its tappable places |
 | `xlsx.js` | The Excel and CSV writer (no library, works offline) |
 | `app.js` | Screens, logging, cycle, summary, doctor export, report, settings, Notion import, sync |
-| `cloud-config.js`, `supabase/astra.sql` | Sync: the Supabase project (DuoVino's) and the one-time database setup |
+| `cloud-config.js`, `supabase/astra.sql` | Sync: the Supabase project (Good Word Charlie's) and the one-time database setup |
 | `sw.js`, `manifest.webmanifest`, `icon*` | Offline support and home-screen install (the sparkle icon) |
 | `.github/workflows/publish.yml` | Automatic publishing to GitHub Pages |
 | `design/` | The design mockups that led here. Not part of the app; all data in them is made up |
