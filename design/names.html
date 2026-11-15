@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Symptom tracker: names, logos and palettes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Names and logos for the Twinge look, plus the colour palette setting. Tap a palette to recolour the phones. */
+:root{--ink:#1a1a1a;--soft:#6a6862;--hair:#e8e7e3;--page:#f4f3ef;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+.wrap{max-width:1300px;margin:0 auto;padding:34px 24px 0}
+h1{font-weight:700;font-size:40px;letter-spacing:-.045em;margin:0 0 8px;line-height:1}
+h2{font-weight:700;font-size:28px;letter-spacing:-.04em;margin:46px 0 4px}
+.lede{color:var(--soft);max-width:80ch;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-top:18px}
+.nm{background:#fff;border-radius:22px;padding:20px;box-shadow:0 0 0 1px #1a1a1a0d;display:flex;flex-direction:column;gap:12px;position:relative}
+.nm .row{display:flex;align-items:center;gap:14px}
+.icon{width:72px;height:72px;border-radius:18px;display:flex;align-items:center;justify-content:center;flex:0 0 72px;box-shadow:0 6px 16px #1a1a1a1a}
+.wm{display:flex;align-items:center;gap:7px;font-weight:700;font-size:30px;letter-spacing:-.045em;line-height:1}
+.nm p{margin:0;font-size:13.5px;color:var(--soft);line-height:1.45}
+.nm p b{color:var(--ink);font-weight:600}
+.tag{position:absolute;top:16px;right:16px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#fff;background:#f15060;padding:2px 9px;border-radius:99px}
+.small{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--soft);padding-top:10px;border-top:1px solid var(--hair)}
+.small .mini{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+
+/* palettes */
+.pal{display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start;margin-top:20px}
+.ph{width:300px;flex:0 0 300px}
+.ph .cap{font-weight:700;font-size:15px;margin:0 0 8px 8px}
+.ph .cap span{font-weight:500;color:var(--soft);font-size:13px}
+.scr{width:300px;height:640px;border-radius:40px;overflow:hidden;position:relative;border:8px solid #fff;box-shadow:0 22px 46px #1a1a1a1c,0 0 0 1px #1a1a1a14;background:#fff;font-size:13px}
+.in{position:absolute;inset:0;padding:44px 17px 16px;display:flex;flex-direction:column}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:86px;height:23px;background:#111;border-radius:20px;z-index:9}
+.hd{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--soft)}
+.hd .w{display:flex;align-items:center;gap:6px;font-weight:700;font-size:17px;letter-spacing:-.03em;color:var(--ink)}
+.ttl{font-weight:700;font-size:27px;letter-spacing:-.04em;margin:12px 0 4px;line-height:1}
+.lbl{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:14px 0 6px}
+.pals{display:flex;flex-direction:column;gap:6px}
+.pl{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:14px;box-shadow:inset 0 0 0 1.4px var(--hair);font-weight:600;font-size:13px}
+.pl.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.pl .sw{display:flex;margin-left:auto}
+.pl .sw i{width:15px;height:15px;border-radius:50%;margin-left:-4px;box-shadow:0 0 0 2px #fff}
+.pl .ck{width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--hair);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff}
+.pl.on .ck{background:var(--ink);box-shadow:none}
+.set{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.set span{color:var(--soft)}
+.ring{width:136px;height:136px;margin:6px auto 0;position:relative}
+.ring .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring small{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.ring b{font-family:'Space Mono';font-size:44px;line-height:1;color:var(--acc)}
+.logbtn{margin-top:10px;padding:14px;border-radius:99px;background:#1a1a1a;color:#fff;text-align:center;font-weight:700;font-size:15px}
+.classes{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.cls{border-radius:12px;padding:6px 7px;font-size:11px;font-weight:600;box-shadow:inset 0 0 0 1.4px var(--hair);display:flex;align-items:center;gap:6px;min-height:33px}
+.cls i{width:15px;height:15px;border-radius:5px;background:var(--c);flex:0 0 15px;display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:9px}
+.cls.added{background:color-mix(in srgb,var(--c) 13%,#fff);box-shadow:inset 0 0 0 1.6px var(--c)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.cal .d{aspect-ratio:.85;border-radius:7px;background:#f6f6f3;font:9.5px 'Space Mono';padding:3px;display:flex;flex-direction:column;justify-content:space-between}
+.cal .d.b{background:var(--bleed)}
+.cal .d .dots{display:flex;gap:2px}
+.cal .d .dots i{width:4.5px;height:4.5px;border-radius:1.5px;background:var(--c)}
+.cal .d .bars{display:flex;gap:1.5px;align-items:flex-end;height:8px}
+.cal .d .bars u{width:3.5px;border-radius:1px;background:var(--s);text-decoration:none}
+.pnote{max-width:340px;color:var(--soft);font-size:14px}
+.pnote b{color:var(--ink)}
+.foot{height:80px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Names and logos</h1>
+  <p class="lede">For the Twinge look, but with a name about being in charge of your symptoms, not just suffering them. Each has an app icon (what you'd see on your home screen) and a wordmark in Space Grotesk. The top three are marked. The icon colours follow whichever palette is chosen below.</p>
+  <div class="grid" id="names"></div>
+
+  <h2>Colour palettes</h2>
+  <p class="lede">Settings → Colours. Choosing a palette recolours the accent, the symptom inks, the pain severity colours and the calendar together, so it always stays consistent. It's saved with your log, so every device matches. Tap a palette to try it.</p>
+  <div class="pal">
+    <div class="ph"><div class="cap">Settings <span>Colours</span></div><div class="scr"><div class="notch"></div><div class="in" id="settings"></div></div></div>
+    <div class="ph"><div class="cap">Today <span>live preview</span></div><div class="scr"><div class="notch"></div><div class="in" id="preview"></div></div></div>
+    <p class="pnote" style="align-self:center"><b>Riso</b> is the current Twinge colouring. The others are tuned so the 14 symptom colours stay easy to tell apart on the calendar, and Mild / Moderate / Severe always read light to dark. <b>Mono</b> keeps it almost colourless, with one red for pain.</p>
+  </div>
+</div>
+<div class="foot"></div>
+
+<script>
+/* ---------- palettes: accent, severity (mild→severe), bleeding tint, 14 symptom inks ---------- */
+const KEYS=['bleed','bowel','urine','head','nausea','heart','sleep','energy','stress','food','act','treat','impact','note'];
+const LABEL={bleed:'Bleeding',bowel:'Bowel',urine:'Urinary',head:'Headache',nausea:'Nausea',heart:'Heart',sleep:'Sleep',energy:'Energy',stress:'Stress',food:'Food',act:'Activity',treat:'Treatment',impact:'Day impact',note:'Notes'};
+const PAL=[
+ {n:'Riso',acc:'#f15060',sev:['#f9b8ae','#f2705f','#c9182f'],bleed:'#fde3e6',c:['#c83f78','#e48a3a','#2f9fd6','#765ba7','#5f9474','#e8608c','#3255a4','#159fae','#a35d8f','#00a95c','#0078bf','#1a1a1a','#f15060','#9a978f']},
+ {n:'Berry',acc:'#c2185b',sev:['#f6bfd3','#e0638f','#9c1048'],bleed:'#fbe3ec',c:['#ad1457','#e65f5c','#6a7fdb','#8e44ad','#5d9b84','#f06292','#3f3d8f','#26a69a','#b5527f','#7cb342','#5c6bc0','#3b1f2b','#c2185b','#a38f99']},
+ {n:'Ocean',acc:'#1f6fb2',sev:['#f6c9b4','#ee8a64','#c4442a'],bleed:'#fde6df',c:['#d9534f','#f0a04b','#2196c4','#5c5fc4','#2a9d8f','#e57399','#1d3f72','#4fc3d9','#7d6bb0','#43a36b','#0d5c99','#16263d','#c4442a','#8d99a6']},
+ {n:'Garden',acc:'#4f7d5c',sev:['#ecd2c4','#d38f74','#a14b3a'],bleed:'#f6e5df',c:['#b5525c','#c98a4b','#6d95b8','#8c79b3','#6f9a6b','#d48a98','#4e5f86','#5fa3a0','#a07a98','#93a35a','#5a83a8','#3c3c37','#a14b3a','#a8a49b']},
+ {n:'Sunset',acc:'#ef6c3c',sev:['#ffd2a8','#ff9459','#d9412b'],bleed:'#ffe7dc',c:['#d63a5c','#f4a03a','#3a8fd6','#9a5cc6','#4e9f80','#ff7a9c','#3d4a9e','#2bb3b8','#c06a9f','#7fb03a','#2e74c4','#2b1d18','#ef6c3c','#a6968b']},
+ {n:'Mono',acc:'#d62f2f',sev:['#d9d9d6','#8f8f8a','#d62f2f'],bleed:'#ececea',c:['#d62f2f','#55554f','#7a7a74','#3d3d39','#94948d','#b0302a','#24241f','#6b6b65','#a3a39c','#4a4a44','#86867f','#111','#d62f2f','#b8b8b2']},
+];
+let cur=0;
+const P=()=>PAL[cur];const col=k=>P().c[KEYS.indexOf(k)];
+
+/* ---------- logos: each draws in the current palette ---------- */
+const L={
+ Steady:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M4 22 L10 22 L13 12 L17 30 L20 18 L23 22 L36 22" fill="none" stroke="${p.acc}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 22 L36 22" stroke="#1a1a1a" stroke-width="3.6" stroke-linecap="round"/></svg>`,
+ Helm:(s,p)=>{let o='';for(let i=0;i<8;i++){const a=i*Math.PI/4,x=20+15*Math.cos(a),y=20+15*Math.sin(a);o+=`<line x1="20" y1="20" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.4" fill="${p.c[i]}"/>`;}return `<svg width="${s}" height="${s}" viewBox="0 0 40 40"><circle cx="20" cy="20" r="10" fill="none" stroke="#1a1a1a" stroke-width="2.6"/>${o}<circle cx="20" cy="20" r="3.6" fill="${p.acc}"/></svg>`;},
+ Vouch:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M6 8 h28 a3 3 0 0 1 3 3 v15 a3 3 0 0 1 -3 3 H17 l-7 6 v-6 H6 a3 3 0 0 1 -3 -3 V11 a3 3 0 0 1 3 -3z" fill="${p.acc}"/><path d="M12 18.5 l5 5 l11 -10" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ Keel:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M4 14 q4 -7 8 0 t8 0" fill="none" stroke="${p.sev[1]}" stroke-width="3.2" stroke-linecap="round"/><path d="M20 14 q3 -3 6 0 t5 0" fill="none" stroke="${p.sev[0]}" stroke-width="3.2" stroke-linecap="round"/><path d="M4 26 H36" stroke="#1a1a1a" stroke-width="3.4" stroke-linecap="round"/><path d="M14 26 L20 34 L26 26" fill="${p.acc}"/></svg>`,
+ Attune:(s,p)=>{let o='';for(let i=0;i<14;i++){const a=i/14*2*Math.PI-Math.PI/2,x=20+15*Math.cos(a),y=20+15*Math.sin(a),now=i===3,per=i<3;o+=`<rect x="${(x-(now?3.5:2.2)).toFixed(1)}" y="${(y-(now?3.5:2.2)).toFixed(1)}" width="${now?7:4.4}" height="${now?7:4.4}" rx="1.4" fill="${now?'#1a1a1a':per?p.acc:'#d9d7d0'}" transform="rotate(${(i/14*360).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}return `<svg width="${s}" height="${s}" viewBox="0 0 40 40">${o}<circle cx="20" cy="20" r="5" fill="${p.acc}"/></svg>`;},
+ Tally:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40">${[0,1,2,3].map(i=>`<line x1="${9+i*6.5}" y1="9" x2="${9+i*6.5}" y2="31" stroke="${p.c[i]}" stroke-width="3.6" stroke-linecap="round"/>`).join('')}<line x1="5" y1="27" x2="35" y2="13" stroke="#1a1a1a" stroke-width="3.6" stroke-linecap="round"/></svg>`,
+ Compass:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="none" stroke="#1a1a1a" stroke-width="2.6"/><path d="M20 6 L25 20 L20 20Z" fill="${p.acc}"/><path d="M20 6 L15 20 L20 20Z" fill="${p.sev[2]}"/><path d="M20 34 L25 20 L15 20Z" fill="#1a1a1a"/><circle cx="20" cy="20" r="2.2" fill="#fff"/></svg>`,
+ Fettle:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M20 35 V17" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M20 24 C12 24 8 18 8 11 C15 11 20 15 20 24Z" fill="${col('nausea')}"/><path d="M20 19 C27 19 32 14 32 6 C24 6 20 11 20 19Z" fill="${p.acc}"/></svg>`,
+ Cadence:(s,p)=>{let o='';for(let i=0;i<10;i++){const a=(-.8+i*.17)*Math.PI-Math.PI/2+Math.PI,x=20+14*Math.cos(a),y=20+14*Math.sin(a);o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${2+i*.25}" fill="${p.c[i]}"/>`;}return `<svg width="${s}" height="${s}" viewBox="0 0 40 40">${o}</svg>`;},
+ Own:(s,p)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><circle cx="17" cy="20" r="11" fill="none" stroke="#1a1a1a" stroke-width="4.4"/><circle cx="32" cy="29" r="4" fill="${p.acc}"/></svg>`,
+};
+const NAMES=[
+ ['Steady','Twinge’s pulse line, settling flat. <b>Calm and in control</b>: you’ve noticed it, logged it, and you’re handling it. Keeps a link to the Twinge design.',1],
+ ['Helm','<b>Take the helm.</b> A ship’s wheel whose handles are the symptom inks: you steer, the symptoms don’t. Short and strong.',1],
+ ['Vouch','<b>Speak up for yourself</b> with proof. A speech bubble with a tick: your record backs you up at the doctor.',1],
+ ['Keel','<b>On an even keel.</b> Choppy waves above a steady line. Calm, a bit nautical, pairs with Helm.',0],
+ ['Attune','<b>In tune with your body.</b> The logo is the cycle ring from the Today screen. Gentle but knowing.',0],
+ ['Tally','<b>Keep count, keep the score.</b> A tally mark in symptom inks. Matter-of-fact and a bit cheeky.',0],
+ ['Compass','<b>Find your way</b> through your cycle. A needle with the pain colours. Clear and confident.',0],
+ ['Fettle','<b>In fine fettle.</b> Two leaves: growing, looking after yourself. Warm and British-English.',0],
+ ['Cadence','<b>Know your rhythm.</b> Dots in a curve, getting bigger: patterns you can see coming.',0],
+ ['Own','<b>Own it.</b> One small, bold word: your body, your data, your call. A circle with a full stop.',0],
+];
+function drawNames(){const p=P();
+ document.getElementById('names').innerHTML=NAMES.map(([n,why,top])=>`<div class="nm">${top?'<span class="tag">Top 3</span>':''}
+  <div class="row"><span class="icon" style="background:#fff;box-shadow:0 6px 16px #1a1a1a1a,0 0 0 1px #1a1a1a12">${L[n](52,p)}</span>
+   <span class="icon" style="background:${n==='Own'||n==='Vouch'?'#1a1a1a':p.acc}">${n==='Own'?L.Own(52,{...p,acc:p.acc}).replace(/stroke="#1a1a1a"/g,'stroke="#fff"'):n==='Vouch'?L.Vouch(52,{...p}):L[n](52,{...p,acc:'#fff',c:p.c.map(()=>'#fff'),sev:['#ffffffaa','#ffffffcc','#fff']}).replace(/#1a1a1a/g,'#1a1a1a')}</span></div>
+  <div class="wm">${L[n](26,p)}${n}</div>
+  <p>${why}</p></div>`).join('');}
+
+/* ---------- settings + preview ---------- */
+const DAYS={3:{s:0,c:['head']},10:{s:2,b:1,c:['bleed','bowel','nausea']},11:{s:2,b:1,c:['bleed','nausea','treat']},12:{s:1,b:1,c:['bleed','heart']},13:{s:0,b:1,c:['bleed']},14:{s:1,b:1,c:['bleed','urine']},15:{s:2,b:1,c:['bleed','bowel']}};
+function ringSVG(p){let o='';const c=68,r=56;for(let i=1;i<=29;i++){const a=(i-1)/29*2*Math.PI-Math.PI/2,x=c+r*Math.cos(a),y=c+r*Math.sin(a),now=i===6,per=i<=5,s=now?12:per?7.5:5;o+=`<rect x="${(x-s/2).toFixed(1)}" y="${(y-s/2).toFixed(1)}" width="${s}" height="${s}" rx="${now?3:2}" fill="${now?'#1a1a1a':per?p.acc:'#e6e5e1'}" transform="rotate(${((a*180/Math.PI)+90).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}return `<svg width="136" height="136" style="position:absolute;inset:0">${o}</svg>`;}
+function drawPhones(){const p=P();
+ const wm=`<span class="w">${L.Steady(18,p)}Steady</span>`;
+ document.getElementById('settings').innerHTML=`<div class="hd">${wm}<span>Done</span></div>
+  <div class="ttl">Settings</div>
+  <div class="lbl">Colours</div>
+  <div class="pals">${PAL.map((x,i)=>`<button class="pl ${i===cur?'on':''}" data-i="${i}"><span class="ck">✓</span>${x.n}<span class="sw">${[x.acc,...x.c.slice(0,5)].map(c=>`<i style="background:${c}"></i>`).join('')}</span></button>`).join('')}</div>
+  <div class="lbl">Account</div>
+  <div class="set">Signed in as<span>Ella</span></div>
+  <div class="set">Cycle length<span>about 29 days</span></div>
+  <div class="set">Symptom classes<span>Edit ›</span></div>`;
+ let cal='';for(let i=0;i<6;i++)cal+='<div></div>';for(let d=1;d<=14;d++){const x=DAYS[d];cal+=`<div class="d ${x&&x.b?'b':''}"><span>${d}</span>${x?`<span class="bars">${[0,1,2].filter(j=>j<=x.s).map(j=>`<u style="height:${3+j*2.5}px;--s:${p.sev[x.s]}"></u>`).join('')}</span><span class="dots">${x.c.map(k=>`<i style="--c:${col(k)}"></i>`).join('')}</span>`:''}</div>`;}
+ document.getElementById('preview').style.setProperty('--acc',p.acc);document.getElementById('preview').style.setProperty('--bleed',p.bleed);
+ document.getElementById('preview').innerHTML=`<div class="hd">${wm}<span>Sun 15 Nov</span></div>
+  <div class="ring">${ringSVG(p)}<div class="mid"><small>Cycle day</small><b>6</b></div></div>
+  <div class="logbtn">+ Log how you feel</div>
+  <div class="lbl">What else happened</div>
+  <div class="classes">${['bleed','bowel','urine','head','nausea','heart'].map((k,i)=>`<span class="cls ${i<2?'added':''}" style="--c:${col(k)}"><i>${i<2?'✓':'+'}</i>${LABEL[k]}</span>`).join('')}</div>
+  <div class="lbl">November</div>
+  <div class="cal">${cal}</div>`;
+ document.querySelectorAll('.pl').forEach(b=>b.onclick=()=>{cur=+b.dataset.i;drawPhones();drawNames();});}
+drawNames();drawPhones();
+</script>
+</body>
+</html>
