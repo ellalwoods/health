@@ -53,3 +53,6 @@ revoke all on function public.astra_load(text) from public;
 revoke all on function public.astra_save(text, jsonb, boolean) from public;
 grant execute on function public.astra_load(text) to anon;
 grant execute on function public.astra_save(text, jsonb, boolean) to anon;
+
+-- Make the new functions available straight away.
+notify pgrst, 'reload schema';

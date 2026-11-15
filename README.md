@@ -13,13 +13,13 @@ The app is at **https://ellalwoods.github.io/health/** once publishing is switch
 - **Summary:** for you. Days with pain, severe days, your worst cycle days, a body map of where it hurts most, what tends to come with the pain, your sleep score on pain days and recent cycle lengths.
 - **For your doctor:** pick a range, tick what to include, then **PDF / print** (a printable record with body maps and how the pain moved) or **Excel (.xlsx)**: a Summary sheet, a Days sheet (one row per day, only the columns you used) and a Pain logs sheet. There's also a CSV.
 - **Cycle:** a new cycle starts on the first day of bleeding (light or heavier) after a gap. You can also mark or unmark a day as the start of your period (on the day, or in Settings).
-- **On a laptop:** wider than 900px, the tabs become a left sidebar and each screen spreads into two columns (for example the ring and Log button beside today's logs, or the body map beside the pain options). Pop-ups open as centred dialogs.
+- **On a laptop:** wider than 720px, the tabs become a left sidebar and each screen lays out side by side: Today shows the ring, today's logs and this week in three columns; the pain screen shows the front and back of the body together beside the options; a day shows pain, the symptom tiles and the open cards across the screen. Pop-ups open as centred dialogs.
 - **Settings:** colours (Bright, Muted, Spring, Summer, Pastel, Night), sign-in, period starts, symptom classes, the Notion import, your name on reports, and backups.
 
 ## One-time setup
 
 1. **Publishing:** in the `health` repository's settings: **General → Default branch:** `main` (the first push creates it). **Pages → Build and deployment → Source:** GitHub Actions. After that, every push to a `claude/` branch is merged into `main` and published automatically. Then open the link in Safari and **Share → Add to Home Screen**.
-2. **Sync:** in the DuoVino Supabase project, open **SQL Editor → New query**, paste the whole of [`supabase/astra.sql`](supabase/astra.sql) and click **Run**. It only adds its own `astra_` table and two functions. Until then, signing in says it isn't switched on yet; **Use without syncing** works in the meantime and you can sign in later from Settings.
+2. **Sync:** in the DuoVino Supabase project, open **SQL Editor → New query**, paste the whole of [`supabase/astra.sql`](supabase/astra.sql) and click **Run**. It only adds its own `astra_` table and two functions. If you've just run it and signing in still says it isn't switched on, wait a minute and try again. Until then, **Use without syncing** works in the meantime and you can sign in later from Settings.
 3. **Your Notion log:** Settings → **Bring in your Notion log**, and pick the Notion export (the zip, or the CSV inside it). It fills in days you haven't already logged in Astra, and works out period starts from the Cycle Day column.
 
 ## Signing in

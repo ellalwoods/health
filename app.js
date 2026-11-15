@@ -447,7 +447,21 @@
         <div class="tl">${logs.map(l => painRow(k, l)).join('')}</div>${movedLine(logs)}` : ''}
       ${sym.length ? `<div class="lbl">Also today</div><div class="minicards">${visibleOrder(sym).map(id => miniCard(id, d.sym[id])).join('')}</div>` : ''}
       ${d && hasData(d) ? `<a class="btn ghost" href="#day/${k}" style="margin-top:14px">See or change today</a>` : `<p class="empty">Nothing logged today yet. Tap the button whenever something happens, as many times a day as you like.</p>`}
+      </div><div class="dk-c">
+      <div class="lbl">This week</div>
+      ${weekStrip(k)}
+      ${info ? `<div class="lbl">Your cycle</div><div class="stats cyc"><div><b>${info.day}</b>cycle day</div><div><b>${info.known ? info.avg : '–'}</b>average length</div><div><b>${info.known ? Math.max(0, dn(info.next) - dn(k)) : '–'}</b>days to next period</div></div>` : ''}
       </div></div></div>`;
+  }
+  function weekStrip(k) {
+    let o = '';
+    for (let i = 6; i >= 0; i--) {
+      const kk = addK(k, -i), d = day(kk), s = maxSev(d), dt = kd(kk);
+      const syms = d ? visibleOrder(Object.keys(d.sym || {})).filter(x => x !== 'bleed') : [];
+      o += `<a class="wd ${bleeds(d) ? 'bleed' : ''} ${i === 0 ? 'today' : ''}" href="#day/${kk}" aria-label="${fmtLong(kk)}"><span class="w">${WD[dt.getDay()].slice(0, 1)}</span><span class="n">${dt.getDate()}</span>
+        <span class="bars">${s != null ? [0, 1, 2].filter(j => j <= s).map(j => `<u style="height:${4 + j * 3}px;background:var(--sev${s})"></u>`).join('') : ''}</span><span class="dots">${syms.slice(0, 6).map(x => `<i style="background:${ccol(x)}"></i>`).join('')}</span></a>`;
+    }
+    return `<div class="week">${o}</div>`;
   }
   const visibleOrder = ids => { const order = classes().map(c => c.id); return ids.slice().sort((a, b) => order.indexOf(a) - order.indexOf(b)); };
   const miniCard = (id, e) => { const c = cls(id); if (!c) return ''; const t = symText(id, e); return `<span class="mc" style="--c:${ccol(id)}"><i></i><b>${esc(c.label)}</b>${t ? ' · ' + esc(t) : ''}</span>`; };
@@ -469,8 +483,8 @@
       <h1 class="ttl">Pain <label class="timechip"><input type="time" data-time value="${PE.time}" aria-label="Time"></label></h1>
       <p class="sub">${k === todayK() ? 'Today' : fmtLong(k)} · tap everywhere it hurts</p>
       <div class="dk"><div class="dk-a">
-      <div class="seg" style="margin-top:10px" role="tablist">${[['F', 'Front'], ['B', 'Back']].map(([s, l]) => `<button class="${PE.side === s ? 'on' : ''}" data-side="${s}" role="tab">${l}</button>`).join('')}</div>
-      <div class="bodywrap"><span class="side l">${PE.side === 'F' ? 'R' : 'L'}</span><span class="side r">${PE.side === 'F' ? 'L' : 'R'}</span><div data-body>${painBody()}</div></div>
+      <div class="seg sidetoggle" style="margin-top:10px" role="tablist">${[['F', 'Front'], ['B', 'Back']].map(([s, l]) => `<button class="${PE.side === s ? 'on' : ''}" data-side="${s}" role="tab">${l}</button>`).join('')}</div>
+      <div class="bodywrap" data-body>${painBody()}</div>
       <div class="where" data-where>${painWhere()}</div>
       </div><div class="dk-b">
       <div class="lbl">How bad</div>
@@ -483,7 +497,7 @@
     </div></div></div>`;
   }
   const painSpots = () => { const o = {}; PE.regions.forEach(r => o[r] = PE.sev); return o; };
-  const painBody = () => BODY.svg(PE.side, painSpots(), 150, pal(), { live: 1 });
+  const painBody = () => ['F', 'B'].map(sd => `<figure class="bside ${PE.side === sd ? 'on' : ''}"><span class="side l">${sd === 'F' ? 'R' : 'L'}</span><span class="side r">${sd === 'F' ? 'L' : 'R'}</span>${BODY.svg(sd, painSpots(), 150, pal(), { live: 1 })}<figcaption>${sd === 'F' ? 'Front' : 'Back'}</figcaption></figure>`).join('');
   const painWhere = () => PE.regions.length ? `<b>${esc(whereText(PE))}</b>` : 'Nothing chosen yet';
   function painBind(k, id) {
     const redrawBody = () => { app.querySelector('[data-body]').innerHTML = painBody(); app.querySelector('[data-where]').innerHTML = painWhere(); };
@@ -525,9 +539,10 @@
       <div class="lbl">Pain <em>${logs.length ? logs.length + ' log' + (logs.length > 1 ? 's' : '') : 'none'}</em></div>
       ${logs.length ? `<div class="tl">${logs.map(l => painRow(k, l)).join('')}</div>${movedLine(logs)}` : ''}
       <a class="btn ghost small-btn" href="#pain/${k}/new">+ Add a pain log</a>
+      </div><div class="dk-b">
       <div class="lbl" style="margin-top:20px">What else happened <em>tap to add · tap again to remove</em></div>
       <div class="classes">${visibleClasses().map(c => `<button class="cls ${added.includes(c.id) ? 'added' : ''}" data-cls="${c.id}" style="--c:${ccol(c.id)}"><i>${added.includes(c.id) ? '✓' : '+'}</i><span>${esc(c.label)}</span></button>`).join('')}<button class="cls new" data-newcls><i>+</i><span>New…</span></button></div>
-      </div><div class="dk-b">
+      </div><div class="dk-c">
       <div class="cards">${visibleOrder(added).map(id => symCard(k, id, d.sym[id])).join('')}</div>
       <button class="btn ghost period ${isStart ? 'on' : ''}" data-period>${isStart ? '✓ Period started this day' : 'Mark as the day my period started'}</button>
       <a class="btn" href="${back}" style="margin-top:10px">Done</a>
@@ -607,6 +622,7 @@
       <div class="mh"><h1 class="ttl">${MO[m - 1]}</h1><span class="mnav"><a href="#cal/${prev}" aria-label="Previous month">‹</a><span class="num">${y}</span><a href="#cal/${next}" aria-label="Next month">›</a></span></div>
       <div class="dk cal-dk"><div class="dk-a"><div class="cal">${cells}</div></div><div class="dk-b">
       <div class="legend"><span><i style="background:var(--bleed);box-shadow:0 0 0 1px #0000001a"></i>Bleeding</span>${predicted.size ? '<span><i style="box-shadow:inset 0 0 0 1.4px var(--acc);background:none"></i>Expected period</span>' : ''}<span><i style="background:var(--sev2);width:4px;height:9px"></i>Pain</span>${[...used].map(id => cls(id) ? `<span><i style="background:${ccol(id)}"></i>${esc(cls(id).label)}</span>` : '').join('')}</div>
+      ${(() => { const ks = Object.keys(S.days).filter(x => x.startsWith(ym) && hasData(S.days[x])); const pd = ks.filter(x => maxSev(S.days[x]) != null); return ks.length ? `<div class="lbl">${MO[m - 1]}</div><div class="stats"><div><b>${ks.length}</b>days logged</div><div><b>${pd.length}</b>days with pain</div><div><b>${pd.filter(x => maxSev(S.days[x]) === 2).length}</b>severe</div></div>` : ''; })()}
       ${info ? `<p class="hint" style="margin-top:12px">Cycle day ${info.day} today. ${info.known ? `Average cycle ${info.avg} days.` : ''}</p>` : ''}
       </div></div></div>`;
   }
@@ -662,6 +678,7 @@
         </div><div class="dk-b">
         ${comes.length ? `<div class="lbl">On pain days, it often comes with</div>
         <div class="bars2">${comes.map(([id, c]) => cls(id) ? `<div><span>${esc(cls(id).label)}</span><u style="width:${Math.round(c / n * 100)}%;background:${ccol(id)}"></u><em>${c}/${st.painDays.length}</em></div>` : '').join('')}</div>` : ''}
+        </div><div class="dk-c">
         ${st.sleepPain != null || st.sleepOther != null ? `<div class="lbl">Sleep score</div><p class="sub">${st.sleepPain != null ? `<b>${st.sleepPain}</b> on pain days` : ''}${st.sleepPain != null && st.sleepOther != null ? ' · ' : ''}${st.sleepOther != null ? `<b>${st.sleepOther}</b> on other days` : ''}</p>` : ''}
         ${st.cycles.length ? `<div class="lbl">Recent cycle lengths</div><p class="sub">${st.cycles.map(x => `<b>${x}</b>`).join(' · ')} days</p>` : ''}
         </div></div>
@@ -793,17 +810,11 @@
         <div class="two"><button class="btn ghost" data-switch>Switch account</button><button class="btn ghost" data-signout>Sign out</button></div>`
       : `<p class="hint" id="syncstat">${syncLine()}</p><a class="btn ghost" href="#hello">Sign in to sync</a>`}
 
+      </div><div class="dk-b">
       <div class="lbl">Cycle</div>
       <p class="sub">${known ? `Average cycle: <b>${avg} days</b>.` : 'Not enough periods logged to work out your average yet.'} A new cycle starts on the first day of bleeding (light or heavier) after a gap, or on any day you mark.</p>
       <div class="starts">${starts.slice(0, 8).map(k => `<div class="set"><span>${fmtDMY(k)}</span><button class="link danger-t" data-unstart="${k}">Remove</button></div>`).join('') || '<p class="hint">No period starts yet.</p>'}</div>
       <div class="addopt"><input class="inp" type="date" data-startdate max="${todayK()}" aria-label="Period start date"><button class="btn small" data-addstart>Add a start</button></div>
-
-      </div><div class="dk-b">
-      <div class="lbl">Symptom classes</div>
-      <div class="clist">${visibleClasses().map(c => `<button class="set as-btn" data-editcls="${c.id}"><span><i class="sq" style="background:${ccol(c.id)}"></i>${esc(c.label)}</span><span class="soft">Edit ›</span></button>`).join('')}
-        <button class="set as-btn" data-editcls="pain"><span><i class="sq" style="background:var(--acc)"></i>Pain types</span><span class="soft">Edit ›</span></button></div>
-      ${hidden.length ? `<p class="hint">Hidden: ${hidden.map(c => `<button class="link" data-unhide="${c.id}">${esc(c.label)} (show)</button>`).join(' ')}</p>` : ''}
-      <button class="btn ghost" data-newcls style="margin-top:8px">+ New symptom class</button>
 
       <div class="lbl">Bring in your Notion log</div>
       <p class="sub">In Notion, open the Symptom Log, choose ••• → Export → Markdown & CSV, unzip it and pick the CSV file here (or the zip itself). Days you’ve already logged in Astra are kept: Notion only fills in what’s missing.</p>
@@ -816,6 +827,13 @@
       <div class="two"><button class="btn ghost" data-backup>Save a backup</button><label class="btn ghost file">Restore a backup<input type="file" accept=".json,application/json" data-restore hidden></label></div>
       <button class="link center danger-t" data-reset style="margin-top:20px">Clear everything on this device</button>
       <p class="hint center">Astra · your data stays on your devices and in your own sync space.</p>
+      </div><div class="dk-c">
+      <div class="lbl">Symptom classes</div>
+      <div class="clist">${visibleClasses().map(c => `<button class="set as-btn" data-editcls="${c.id}"><span><i class="sq" style="background:${ccol(c.id)}"></i>${esc(c.label)}</span><span class="soft">Edit ›</span></button>`).join('')}
+        <button class="set as-btn" data-editcls="pain"><span><i class="sq" style="background:var(--acc)"></i>Pain types</span><span class="soft">Edit ›</span></button></div>
+      ${hidden.length ? `<p class="hint">Hidden: ${hidden.map(c => `<button class="link" data-unhide="${c.id}">${esc(c.label)} (show)</button>`).join(' ')}</p>` : ''}
+      <button class="btn ghost" data-newcls style="margin-top:8px">+ New symptom class</button>
+
       </div></div>
     </div>`;
   }
