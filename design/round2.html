@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Symptom tracker: round 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Round 2: the favourite pieces from round 1, combined, in six looks.
+   Every look renders the same seven screens from the same builders below, styled by its theme tokens.
+   All data is made up. */
+:root{--pageInk:#1a1a1a;--pageSoft:#5c5a55;--page:#f4f3ef;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--pageInk);font-family:'Hanken Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+.top{max-width:1400px;margin:0 auto;padding:34px 24px 0}
+.top h1{font-family:'Bricolage Grotesque';font-weight:800;font-size:38px;letter-spacing:-.02em;margin:0 0 8px;line-height:1.02}
+.top p{margin:0 0 10px;color:var(--pageSoft);max-width:84ch}
+.picks{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px;margin:16px 0 0}
+.picks div{background:#fff;border-radius:16px;padding:13px 16px;font-size:13.5px;color:var(--pageSoft);box-shadow:0 0 0 1px #1a1a1a0d}
+.picks b{display:block;color:var(--pageInk);font-family:'Bricolage Grotesque';font-weight:800;font-size:15.5px;margin-bottom:2px}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
+.jump a{padding:7px 14px;border-radius:99px;background:#fff;color:var(--pageInk);text-decoration:none;font-weight:600;font-size:14px;box-shadow:0 0 0 1px #1a1a1a14}
+.dir{max-width:1400px;margin:0 auto;padding:56px 24px 0}
+.dir header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.dir header .n{font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;color:var(--pageSoft)}
+.dir .blurb{color:var(--pageSoft);max-width:88ch;margin:8px 0 0}
+.flow{display:flex;flex-wrap:wrap;gap:26px 22px;margin-top:20px}
+.ph{width:300px;flex:0 0 300px}
+.ph .cap{font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;margin:0 0 8px 8px}
+.ph .cap span{font-family:'Hanken Grotesk';font-weight:500;color:var(--pageSoft);font-size:13px}
+.foot{max-width:1400px;margin:0 auto;padding:50px 24px 80px;color:var(--pageSoft);font-size:14px}
+
+/* ---------------- the phone, driven by theme tokens ---------------- */
+.scr{width:300px;height:650px;border-radius:40px;overflow:hidden;position:relative;border:8px solid #fff;box-shadow:0 22px 46px #1a1a1a1c,0 0 0 1px #1a1a1a14;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:13px;line-height:1.4}
+.in{position:absolute;inset:0;padding:44px 17px 16px;display:flex;flex-direction:column;overflow:hidden}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:86px;height:23px;background:#111;border-radius:20px;z-index:20}
+.hd{display:flex;justify-content:space-between;align-items:center;min-height:26px}
+.hd .r{font-size:12px;color:var(--soft);font-weight:500}
+.hd .r b{color:var(--acc);font-weight:600}
+.wm{display:flex;align-items:center;gap:6px;line-height:1}
+.ttl{font-family:var(--disp);font-weight:var(--dispW);font-style:var(--dispS);letter-spacing:var(--ls);font-size:27px;line-height:1;margin:12px 0 2px}
+.sub{font-size:12px;color:var(--soft)}
+.lbl{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:13px 0 6px;display:flex;justify-content:space-between;align-items:center}
+.lbl em{font-style:normal;text-transform:none;letter-spacing:0;font-weight:500}
+.num{font-family:var(--num)}
+.btn{display:block;text-align:center;padding:13px;border-radius:var(--pr);background:var(--btn);color:var(--btnFg);font-weight:700;font-size:14px}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--hair)}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;padding:8px 6px 14px;border-top:1px solid var(--hair);background:var(--bg);font-size:9.5px;font-weight:600;color:#a09d95;z-index:4}
+.tabs span{display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs span.on{color:var(--acc)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--card);border-radius:calc(var(--r) - 2px);padding:3px;font-size:11.5px;font-weight:600;text-align:center}
+.seg>*{padding:6px 0;border-radius:calc(var(--r) - 4px);color:var(--soft)}
+.seg>.on{background:var(--bg);color:var(--ink);box-shadow:0 1px 3px #0000001a}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:5px 10px;border-radius:var(--pr);font-size:11.5px;font-weight:500;box-shadow:inset 0 0 0 1.3px var(--hair);background:var(--bg)}
+.chip.on{background:var(--c,var(--ink));color:#fff;box-shadow:none}
+
+/* cycle ring (from Ebb) */
+.ring{position:relative;width:146px;height:146px;margin:4px auto 0}
+.ring svg{position:absolute;inset:0}
+.ring .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.ring .mid small{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.ring .mid b{font-family:var(--num);font-weight:var(--numW);font-size:48px;line-height:.95;color:var(--acc);letter-spacing:-.03em}
+.ring .mid span{font-size:11.5px;color:var(--soft);font-style:var(--dispS)}
+.logbtn{margin-top:10px;padding:14px;border-radius:var(--pr);background:var(--btn);color:var(--btnFg);text-align:center;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
+.logbtn i{font-style:normal;font-size:20px;line-height:1;font-weight:400}
+
+/* pain timeline: shows how the pain moved through the day */
+.tl{display:flex;flex-direction:column;gap:0}
+.te{display:grid;grid-template-columns:40px 46px 1fr;gap:6px;align-items:center;padding:4px 0;border-bottom:1px solid var(--hair);font-size:11px}
+.te .t{font-family:var(--num);font-size:11px;color:var(--soft)}
+.bd{display:inline-flex;gap:1px;flex-wrap:nowrap}
+.te .w{line-height:1.3}
+.te .w b{font-weight:700}
+.sev{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:10.5px}
+.sev i{width:8px;height:8px;border-radius:50%;background:var(--s)}
+.moved{font-size:10.5px;color:var(--soft);margin-top:5px;display:flex;align-items:center;gap:4px}
+.moved b{color:var(--ink);font-weight:600}
+.minicards{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.mc{font-size:10.5px;padding:3px 8px 3px 6px;border-radius:var(--pr);background:var(--card);display:flex;align-items:center;gap:5px}
+.mc i{width:7px;height:7px;border-radius:2px;background:var(--c)}
+
+/* pain log: body map (from Flare) */
+.bodywrap{display:flex;justify-content:center;margin-top:4px;position:relative}
+.bodywrap .side{position:absolute;top:2px;font-size:9.5px;font-weight:700;color:var(--soft);letter-spacing:.05em}
+.region{cursor:pointer}
+.where{text-align:center;font-size:11.5px;color:var(--soft);min-height:17px}
+.where b{color:var(--ink);font-weight:600}
+.sevs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sv{padding:9px 4px 8px;border-radius:var(--r);box-shadow:inset 0 0 0 1.4px var(--hair);text-align:center;font-weight:600;font-size:12.5px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sv i{display:flex;gap:2px}
+.sv i u{width:5px;height:12px;border-radius:2px;background:var(--hair);text-decoration:none}
+.sv.on{box-shadow:inset 0 0 0 2px var(--s);background:color-mix(in srgb,var(--s) 12%,var(--bg))}
+.sv.on i u.f{background:var(--s)}
+.timechip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:var(--pr);background:var(--card);margin-left:6px;vertical-align:middle;font-family:var(--body);font-style:normal;letter-spacing:0}
+
+/* add what else happened (from Twinge) */
+.classes{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.cls{border-radius:var(--r);padding:6px 7px;font-size:11px;font-weight:600;box-shadow:inset 0 0 0 1.4px var(--hair);display:flex;align-items:center;gap:6px;min-height:34px;line-height:1.1;transition:background .12s;background:var(--bg)}
+.cls i{width:15px;height:15px;flex:0 0 15px;border-radius:5px;background:var(--c);display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:12px;line-height:1}
+.cls.added{background:color-mix(in srgb,var(--c) 13%,var(--bg));box-shadow:inset 0 0 0 1.6px var(--c)}
+.cls.added i{font-size:9px}
+.cls.new{color:var(--soft);box-shadow:inset 0 0 0 1.4px var(--hair);border:0;background:repeating-linear-gradient(135deg,transparent 0 6px,color-mix(in srgb,var(--hair) 50%,transparent) 6px 7px)}
+.cls.new i{background:none;color:var(--soft);box-shadow:inset 0 0 0 1.3px var(--soft)}
+.hint{font-size:10.5px;color:var(--soft);margin-top:5px}
+.open{border-radius:calc(var(--r) + 2px);box-shadow:inset 0 0 0 1.6px var(--c);padding:9px 10px 10px;margin-top:8px;background:var(--bg)}
+.open h5{margin:0 0 7px;font-size:12px;color:var(--c);display:flex;justify-content:space-between;align-items:center;font-family:var(--body)}
+.open h5 .ed{font-size:11px;color:var(--ink);font-weight:600;display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:var(--pr);box-shadow:inset 0 0 0 1.3px var(--hair)}
+.dim{position:absolute;inset:0;background:#1a1a1a40;z-index:5}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--bg);border-radius:24px 24px 0 0;padding:10px 16px 20px;z-index:6;box-shadow:0 -8px 30px #0000002a}
+.sheet .grab{width:36px;height:4px;border-radius:9px;background:var(--hair);margin:0 auto 10px}
+.sheet h5{font-family:var(--disp);font-weight:var(--dispW);font-style:var(--dispS);letter-spacing:var(--ls);font-size:19px;margin:0;color:var(--ink)}
+.opt{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.opt .h{color:#c4c1b9;font-size:12px;letter-spacing:-1px}
+.opt .nm{flex:1}
+.opt .ac{color:var(--soft);font-size:12px;display:flex;gap:12px}
+.opt .ac .x{color:#c0392b}
+.addopt{display:flex;gap:6px;margin-top:10px}
+.addopt span{flex:1;padding:9px 11px;border-radius:var(--r);box-shadow:inset 0 0 0 1.5px var(--c);font-size:13px}
+.addopt span::after{content:"|";color:var(--c);margin-left:1px;font-weight:300}
+.addopt b{padding:9px 13px;border-radius:var(--r);background:var(--c);color:#fff;font-size:12.5px}
+
+/* calendar (from Twinge) */
+.mh{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px}
+.mh b{font-family:var(--disp);font-weight:var(--dispW);font-style:var(--dispS);letter-spacing:var(--ls);font-size:27px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:8px}
+.cal .h{font-size:9.5px;text-align:center;color:var(--soft);font-weight:600}
+.cal .d{aspect-ratio:.8;min-width:0;overflow:hidden;border-radius:calc(var(--r) - 5px);font-size:9.5px;padding:3px 3px;display:flex;flex-direction:column;justify-content:space-between;background:var(--card);font-family:var(--num)}
+.cal .d.blank{background:none}
+.cal .d.today{box-shadow:inset 0 0 0 1.8px var(--ink)}
+.cal .d.bleed{background:var(--bleedBg)}
+.cal .d .bars{display:flex;gap:1.5px;align-items:flex-end;height:9px}
+.cal .d .bars u{width:3.5px;border-radius:1px;text-decoration:none;background:var(--s)}
+.cal .d .dots{display:flex;gap:2px;flex-wrap:wrap}
+.cal .d .dots i{width:4.5px;height:4.5px;border-radius:1.5px;background:var(--c)}
+.legend{display:flex;flex-wrap:wrap;gap:3px 9px;font-size:9.5px;color:var(--soft);margin-top:8px}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend i{width:7px;height:7px;border-radius:2px;background:var(--c)}
+
+/* summary for you (from Ebb's card) */
+.sumcard{border-radius:calc(var(--r) - 2px);box-shadow:0 8px 24px #0000001a,0 0 0 1px #0000000d;padding:12px;margin-top:10px;background:var(--bg)}
+.sumcard h6{font-family:var(--disp);font-weight:var(--dispW);font-style:var(--dispS);letter-spacing:var(--ls);font-size:16px;margin:0;color:var(--acc)}
+.sumcard .m{font-size:10px;color:var(--soft);margin:1px 0 8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.stats div{background:var(--card);border-radius:calc(var(--r) - 6px);padding:6px 6px 5px;font-size:9.5px;color:var(--soft);line-height:1.2}
+.stats b{display:block;font-family:var(--num);font-weight:var(--numW);font-size:19px;color:var(--acc);line-height:1.05;margin-bottom:1px}
+.heatrow{display:flex;justify-content:center;gap:10px;margin-top:6px}
+.heatrow figure{margin:0;text-align:center;font-size:9px;color:var(--soft)}
+.bars2{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+.bars2 div{display:grid;grid-template-columns:62px 1fr 30px;gap:6px;align-items:center;font-size:10.5px}
+.bars2 u{display:block;height:7px;border-radius:9px;background:var(--c);text-decoration:none}
+.bars2 em{font-style:normal;color:var(--soft);text-align:right;font-family:var(--num)}
+.sevkey{display:flex;gap:9px;justify-content:center;font-size:9.5px;color:var(--soft);margin-top:2px}
+.sevkey span{display:flex;align-items:center;gap:3px}
+.sevkey i{width:7px;height:7px;border-radius:50%;background:var(--s)}
+
+/* for your doctor (Twinge's ticks, plus the body map) */
+.ticks{display:grid;grid-template-columns:1fr 1fr;column-gap:12px}
+.tk{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--hair);font-size:11.5px}
+.tk i{width:15px;height:15px;border-radius:4px;background:var(--c);display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:9.5px}
+.tk.off i{background:none;box-shadow:inset 0 0 0 1.4px var(--hair)}
+.tk.off{color:var(--soft)}
+.prev{margin-top:9px;border-radius:calc(var(--r) - 4px);box-shadow:0 6px 20px #0000001a,0 0 0 1px #0000000d;padding:9px 10px;font-size:8.5px;line-height:1.3;background:#fff}
+.prev h6{margin:0;font-family:var(--disp);font-weight:var(--dispW);font-style:var(--dispS);font-size:12.5px;color:var(--acc);letter-spacing:var(--ls)}
+.prev .m{color:var(--soft);margin-bottom:4px}
+.prev .cols{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start}
+.prev .seq{display:flex;gap:2px;align-items:center;flex-wrap:nowrap}
+.prev .seq figure{margin:0;text-align:center;color:var(--soft);font-size:7.5px}
+.prev table{border-collapse:collapse;width:100%;margin-top:5px}
+.prev td,.prev th{border-bottom:1px solid #eee;padding:2px 2px;text-align:left;vertical-align:top}
+.prev th{color:var(--soft);font-weight:600}
+.dl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:auto}
+
+/* ---------- theme-specific touches ---------- */
+.t-notes .in{background:linear-gradient(90deg,transparent 30px,#f2b8b8 30px 31px,transparent 31px),repeating-linear-gradient(var(--bg) 0 21px,#e3eaf3 21px 22px);background-position:0 8px}
+.t-notes .chip,.t-notes .cls,.t-notes .sv{border-radius:3px}
+.t-notes .logbtn{border-radius:3px;box-shadow:4px 4px 0 var(--acc)}
+.t-notes .btn{box-shadow:3px 3px 0 var(--acc)}
+.t-notes .ttl,.t-notes .mh b{text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:3px;text-underline-offset:4px}
+.t-hush .lbl{font-weight:600;letter-spacing:.14em}
+.t-hush .cls{box-shadow:none;background:var(--card)}
+.t-hush .cls.added{background:color-mix(in srgb,var(--c) 18%,var(--bg));box-shadow:none}
+.t-hush .chip{box-shadow:none;background:var(--card)}
+.t-hush .chip.on{background:var(--c,var(--ink));color:#fff}
+.t-hush .cls i{border-radius:50%}
+.t-moon .scr,.t-moon{}
+.t-moon .logbtn{background:linear-gradient(135deg,#1f2a4d,#3255a4)}
+.t-moon .cls i,.t-moon .mc i,.t-moon .legend i,.t-moon .cal .d .dots i{border-radius:50%}
+.t-ink .logbtn{font-family:var(--disp);font-weight:800;font-size:17px;letter-spacing:-.01em}
+.t-ink .cls{border-radius:12px}
+.t-ebb .chip.on{background:var(--accT);color:var(--acc);box-shadow:inset 0 0 0 1.3px var(--acc)}
+.t-ebb .chip.on[style]{background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c);box-shadow:inset 0 0 0 1.3px var(--c)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>Round 2: your favourite pieces, in six looks</h1>
+  <p>Every look below has the same seven screens, built from the parts you picked in round 1. The only differences are type, colour and shape, so you can compare like for like. Tap the body, the severity buttons, Front/Back and the symptom tiles to try them. All data is made up.</p>
+  <div class="picks">
+    <div><b>Today: Ebb's cycle ring</b>Cycle day in the middle and one big Log button. Below it, today's pain logs in time order, so you can see where the pain moved.</div>
+    <div><b>Pain: front and back body map</b>Tap every place it hurts, choose Mild, Moderate or Severe, and pick the type. Log again later in the day and the timeline shows how it moved.</div>
+    <div><b>Twinge's “Add what else happened”</b>Tap a tile to add it, and tap it again to remove it. The open card has <b style="display:inline;font-size:inherit">Edit</b> instead of Remove: add your own options, rename them or delete them. There's also a tile for making a new symptom class.</div>
+    <div><b>Twinge's calendar</b>Severity bars, a dot for each symptom class you logged, and a tint on bleeding days.</div>
+    <div><b>Summary (just for you)</b>Ebb's summary card, now for you: headline numbers, where it hurts most (body heat map) and what tends to come with it.</div>
+    <div><b>For your doctor</b>Twinge's tick-what-to-include export. The preview shows the body map, and how the pain moved on a bad day.</div>
+  </div>
+  <div class="jump" id="jump"></div>
+</div>
+
+<div id="dirs"></div>
+
+<div class="foot">Almanac and Flare are gone, as you asked. Every look uses the same logic, so whichever you choose, the app works the same. You can also swap a colour or font from one look into another.</div>
+
+<script>
+/* ===================== themes ===================== */
+const THEMES=[
+ {id:'twinge',cls:'t-twinge',name:'Twinge',blurb:'Index cards in riso inks. Space Grotesk and Space Mono: a little clinical, a little zine, closest to DuoDisco. Black buttons, one red accent for pain.',
+  head:`<h3 style="margin:0;font:700 40px/1 'Space Grotesk';letter-spacing:-.045em">Twinge</h3>`,
+  v:{acc:'#f15060',accT:'#fde3e6',ink:'#1a1a1a',soft:'#6a6862',hair:'#e8e7e3',bg:'#fff',card:'#f6f6f3',disp:"'Space Grotesk'",dispW:700,dispS:'normal',ls:'-.04em',body:"'Space Grotesk'",num:"'Space Mono'",numW:700,r:'12px',pr:'99px',btn:'#1a1a1a',btnFg:'#fff',bleedBg:'#fde3e6'},
+  sev:['#f9b8ae','#f2705f','#c9182f'],ring:'squares',
+  wm:`<svg width="18" height="18" viewBox="0 0 20 20"><path d="M2 12 L6 12 L8 6 L11 16 L13 9 L14.5 12 L18 12" fill="none" stroke="#f15060" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="font:700 17px 'Space Grotesk';letter-spacing:-.03em">Twinge</span>`,
+  C:{bleed:'#c83f78',bowel:'#e48a3a',urine:'#2f9fd6',head:'#765ba7',nausea:'#5f9474',heart:'#e8608c',sleep:'#3255a4',energy:'#159fae',stress:'#a35d8f',food:'#00a95c',act:'#0078bf',treat:'#1a1a1a',impact:'#f15060',note:'#9a978f'}},
+ {id:'ebb',cls:'t-ebb',name:'Ebb',blurb:'Quiet and calm. One deep claret ink, Fraunces for numbers and dates, Inter Tight for everything else. The symptom inks are muted to match.',
+  head:`<h3 style="margin:0;font:italic 400 44px/1 'Fraunces';color:#9b1d3f">Ebb</h3>`,
+  v:{acc:'#9b1d3f',accT:'#f6e7eb',ink:'#1f1a1b',soft:'#6d6567',hair:'#ece6e7',bg:'#fff',card:'#faf5f6',disp:"'Fraunces'",dispW:400,dispS:'normal',ls:'-.02em',body:"'Inter Tight'",num:"'Fraunces'",numW:300,r:'12px',pr:'99px',btn:'#9b1d3f',btnFg:'#fff',bleedBg:'#f6e7eb'},
+  sev:['#e7bfca','#c26b83','#8a1636'],ring:'dots',
+  wm:`<span style="font:italic 400 23px 'Fraunces';color:#9b1d3f">Ebb</span>`,
+  C:{bleed:'#9b1d3f',bowel:'#b8763e',urine:'#5b7fa6',head:'#6e4a7e',nausea:'#6f8f72',heart:'#c9637c',sleep:'#3f4f7a',energy:'#4f8c8c',stress:'#8a5a7a',food:'#7c8f3e',act:'#47739b',treat:'#3a3536',impact:'#7f1633',note:'#9a8f8f'}},
+ {id:'inkling',cls:'t-ink',name:'Inkling',blurb:'DuoDisco’s sister: Bricolage Grotesque and Hanken Grotesk, big confident numbers, a violet ink and the DuoDisco colour set. The cycle ring is made of ink drops.',
+  head:`<h3 style="margin:0;font:800 42px/1 'Bricolage Grotesque';letter-spacing:-.025em;color:#765ba7">Inkling</h3>`,
+  v:{acc:'#765ba7',accT:'#efe9f7',ink:'#1a1a1a',soft:'#5c5a55',hair:'#ebebeb',bg:'#fff',card:'#f6f5f8',disp:"'Bricolage Grotesque'",dispW:800,dispS:'normal',ls:'-.02em',body:"'Hanken Grotesk'",num:"'Bricolage Grotesque'",numW:800,r:'14px',pr:'99px',btn:'#765ba7',btnFg:'#fff',bleedBg:'#fbe4ef'},
+  sev:['#f7c6d9','#e8608c','#9e3a72'],ring:'blots',
+  wm:`<svg width="16" height="20" viewBox="0 0 16 20"><path d="M8 1 C8 1 2 9 2 13 a6 6 0 0 0 12 0 C14 9 8 1 8 1Z" fill="#765ba7"/><circle cx="6" cy="13" r="1.6" fill="#fff" opacity=".6"/></svg><span style="font:800 19px 'Bricolage Grotesque';letter-spacing:-.02em">Inkling</span>`,
+  C:{bleed:'#c83f78',bowel:'#e97f5e',urine:'#2f9fd6',head:'#8f6fd1',nausea:'#5f9474',heart:'#ff48b0',sleep:'#3255a4',energy:'#159fae',stress:'#b04fb8',food:'#00a95c',act:'#0078bf',treat:'#765ba7',impact:'#9e3a72',note:'#9a978f'}},
+ {id:'moonlog',cls:'t-moon',name:'Moonlog',blurb:'Soft and rounded: DM Sans, generous corners, a night-blue ink with warm peach-to-rose for pain. Round symptom dots, and a ring of little moons.',
+  head:`<h3 style="margin:0;font:700 40px/1 'DM Sans';letter-spacing:-.04em">moon<span style="color:#3255a4">log</span></h3>`,
+  v:{acc:'#3255a4',accT:'#e8edf8',ink:'#1b2140',soft:'#636a80',hair:'#e6e8f0',bg:'#fff',card:'#f4f5fa',disp:"'DM Sans'",dispW:700,dispS:'normal',ls:'-.035em',body:"'DM Sans'",num:"'DM Sans'",numW:700,r:'18px',pr:'16px',btn:'#1f2a4d',btnFg:'#fff',bleedBg:'#fbe6ea'},
+  sev:['#f9d3c0','#f08a73','#c0396b'],ring:'moons',
+  wm:`<svg width="18" height="18" viewBox="0 0 20 20"><path d="M13 2 A8 8 0 1 0 18 14 A6.5 6.5 0 1 1 13 2Z" fill="#3255a4"/></svg><span style="font:700 18px 'DM Sans';letter-spacing:-.04em">moon<span style="color:#3255a4">log</span></span>`,
+  C:{bleed:'#d0576f',bowel:'#e39b5b',urine:'#5aa9e6',head:'#9d8df1',nausea:'#6fbf9f',heart:'#f28fad',sleep:'#2c3e7a',energy:'#4fb3bf',stress:'#b48ad1',food:'#8cc084',act:'#4a78d0',treat:'#1f2a4d',impact:'#c0396b',note:'#8a90a6'}},
+ {id:'notes',cls:'t-notes',name:'Cramp Notes',blurb:'A notebook in your bag: ruled lines, a red margin, IBM Plex Mono headings, square corners and pen-and-highlighter colours. Buttons have a little offset shadow, like a sticker. Bleeding days get a highlighter yellow.',
+  head:`<h3 style="margin:0;font:700 36px/1 'IBM Plex Mono';letter-spacing:-.03em">cramp<span style="color:#d62828">/</span>notes</h3>`,
+  v:{acc:'#d62828',accT:'#fff1a8',ink:'#111',soft:'#5f5f5f',hair:'#dcdcdc',bg:'#fff',card:'#f4f4f1',disp:"'IBM Plex Mono'",dispW:700,dispS:'normal',ls:'-.03em',body:"'IBM Plex Sans'",num:"'IBM Plex Mono'",numW:700,r:'4px',pr:'3px',btn:'#111',btnFg:'#fff',bleedBg:'#fff3a3'},
+  sev:['#ffc9c9','#f26b6b','#c1121f'],ring:'ticks',
+  wm:`<span style="font:700 16px 'IBM Plex Mono';letter-spacing:-.03em">cramp<span style="color:#d62828">/</span>notes</span>`,
+  C:{bleed:'#d62828',bowel:'#f77f00',urine:'#1d70d6',head:'#7b2cbf',nausea:'#2a9d8f',heart:'#e5383b',sleep:'#1d3557',energy:'#0096c7',stress:'#9d4edd',food:'#38b000',act:'#0077b6',treat:'#111',impact:'#c1121f',note:'#777'}},
+ {id:'hush',cls:'t-hush',name:'Hush',blurb:'The softest: Instrument Serif headings, airy spacing, a sage ink and muted earth tones. Tiles are soft fills with no outlines, and the ring is fine and quiet.',
+  head:`<h3 style="margin:0;font:400 46px/1 'Instrument Serif';letter-spacing:.005em;color:#4d6b58">hush</h3>`,
+  v:{acc:'#5f7f6a',accT:'#eef2ec',ink:'#2a2a27',soft:'#75736c',hair:'#e9e7e1',bg:'#fff',card:'#f5f4f0',disp:"'Instrument Serif'",dispW:400,dispS:'normal',ls:'0',body:"'Inter Tight'",num:"'Instrument Serif'",numW:400,r:'14px',pr:'99px',btn:'#5f7f6a',btnFg:'#fff',bleedBg:'#f6e6e3'},
+  sev:['#ecd2cb','#cf968c','#9c4c55'],ring:'fine',
+  wm:`<span style="font:400 24px 'Instrument Serif';color:#4d6b58">hush</span>`,
+  C:{bleed:'#b5636b',bowel:'#c08a5b',urine:'#7b9bb5',head:'#9184ad',nausea:'#7f9d84',heart:'#c98b95',sleep:'#5e6f8c',energy:'#7aa3a1',stress:'#a38aa0',food:'#9aa36b',act:'#6f8fb0',treat:'#4a4a45',impact:'#a0525b',note:'#a8a49b'}},
+];
+const LABEL={bleed:'Bleeding',bowel:'Bowel',urine:'Urinary',head:'Headache',nausea:'Nausea',heart:'Heart',sleep:'Sleep',energy:'Energy',stress:'Stress',food:'Food',act:'Activity',treat:'Treatment',impact:'Day impact',note:'Notes'};
+const TILES=['bleed','bowel','urine','head','nausea','heart','sleep','energy','stress','food','act','treat','impact','note'];
+const SEVN=['Mild','Moderate','Severe'];
+
+/* ===================== body map ===================== */
+// One outline for front and back, drawn from half the points and mirrored. viewBox 0 0 120 222.
+const HALF=[[54,31],[53,38],[44,41],[34,45],[29,52],[27,64],[25,80],[23,96],[21,112],[19,124],[18,132],[22,134],[25,126],[28,110],[31,94],[33,80],[35,70],[36,84],[36,100],[33,116],[32,130],[34,150],[36,170],[38,190],[39,207],[46,212],[47,204],[48,186],[50,166],[54,148],[60,142]];
+function smooth(pts){let d=`M${pts[0][0]} ${pts[0][1]}`;for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
+  const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];d+=` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0]} ${p2[1]}`;}return d;}
+const OUTLINE=smooth([...HALF,...HALF.slice(0,-1).reverse().map(([x,y])=>[120-x,y])])+'Z';
+// Regions. On the front the person's right is on the viewer's left; on the back it's the other way round.
+const REG={
+ F:{head:[60,19,9,10,'Head'],chest:[60,60,15,9,'Chest'],upAbd:[60,83,13,8,'Upper abdomen'],rSide:[40,96,5,12,'Right side'],lSide:[80,96,5,12,'Left side'],lowAbd:[60,104,13,8,'Lower abdomen'],pelvis:[60,124,13,7,'Pelvis'],rThigh:[46,154,7,14,'Right thigh'],lThigh:[74,154,7,14,'Left thigh']},
+ B:{headB:[60,19,9,10,'Back of head'],upBack:[60,60,16,9,'Upper back'],midBack:[60,83,13,8,'Mid back'],lowL:[45,106,7,8,'Lower back, left'],lowC:[60,106,6,8,'Lower back'],lowR:[75,106,7,8,'Lower back, right'],sacrum:[60,125,13,7,'Tailbone'],lThighB:[46,154,7,14,'Back of left thigh'],rThighB:[74,154,7,14,'Back of right thigh']}};
+let gid=0;
+function bodySVG(t,side,spots,w,opts={}){ // spots: {regionId: severity 0-2}
+  const h=Math.round(w*222/120),id='g'+(gid++);const sev=t.sev;
+  const defs=sev.map((c,i)=>`<radialGradient id="${id}s${i}"><stop offset="0" stop-color="${c}" stop-opacity="${.95}"/><stop offset=".55" stop-color="${c}" stop-opacity=".6"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('');
+  const sw=opts.thin?2.4:1.5;
+  let g='';
+  for(const [k,[x,y,rx,ry]] of Object.entries(REG[side])){
+    const s=spots[k];
+    if(s!=null) g+=`<ellipse cx="${x}" cy="${y}" rx="${rx*1.7}" ry="${ry*1.6}" fill="url(#${id}s${s})"/>`;
+    if(opts.live) g+=`<ellipse class="region" data-k="${k}" cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="transparent" stroke="${s!=null?'transparent':t.v.soft}" stroke-opacity=".38" stroke-dasharray="2.5 2.5" stroke-width="1"/>`;
+  }
+  const marks=side==='F'?`<circle cx="60" cy="98" r="1.1" fill="${t.v.ink}" opacity=".45"/>`:`<path d="M60 44 V120" stroke="${t.v.ink}" stroke-opacity=".18" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M47 56 q5 10 0 18 M73 56 q-5 10 0 18" stroke="${t.v.ink}" stroke-opacity=".14" fill="none"/>`;
+  return `<svg width="${w}" height="${h}" viewBox="0 0 120 222" style="display:block;overflow:visible"><defs>${defs}</defs>
+   <circle cx="60" cy="18" r="13" fill="${t.v.bg}" stroke="${t.v.ink}" stroke-width="${sw}"/>
+   <path d="${OUTLINE}" fill="${t.v.bg}" stroke="${t.v.ink}" stroke-width="${sw}" stroke-linejoin="round"/>${marks}${g}</svg>`;}
+const mini=(t,F,B,w=20)=>`<span class="bd">${bodySVG(t,'F',F,w,{thin:1})}${bodySVG(t,'B',B,w,{thin:1})}</span>`;
+
+/* ===================== cycle ring ===================== */
+function ring(t,day=6,len=29,size=146){const c=size/2,r=size/2-12;let o='';const A=t.v.acc,L=t.v.hair,P=t.sev[1];
+  for(let i=1;i<=len;i++){const a=(i-1)/len*2*Math.PI-Math.PI/2,x=c+r*Math.cos(a),y=c+r*Math.sin(a),per=i<=5,now=i===day,deg=a*180/Math.PI+90;
+    if(t.ring==='dots')o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${now?7.5:per?4.2:2.6}" fill="${now?A:per?P:'#e3dadc'}"${now?' stroke="#fff" stroke-width="2.5"':''}/>`;
+    if(t.ring==='fine')o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${now?6:per?3.4:1.8}" fill="${now?'none':per?P:'#d6d3cb'}"${now?` stroke="${A}" stroke-width="2"`:''}/>${now?`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.4" fill="${A}"/>`:''}`;
+    if(t.ring==='squares'){const s=now?13:per?8:5.5;o+=`<rect x="${(x-s/2).toFixed(1)}" y="${(y-s/2).toFixed(1)}" width="${s}" height="${s}" rx="${now?3.5:2}" fill="${now?'#1a1a1a':per?A:'#e6e5e1'}" transform="rotate(${deg.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}
+    if(t.ring==='blots'){const rr=(now?8:per?4.6:2.7)*(1+.18*Math.sin(i*2.7));o+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="${rr.toFixed(1)}" ry="${(rr*(1+.15*Math.cos(i*1.9))).toFixed(1)}" fill="${now?A:per?'#e8608c':'#e4e0ea'}" transform="rotate(${(i*37)%180} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}
+    if(t.ring==='ticks'){const r1=r-(now?11:per?8:5),r2=r+(now?5:0);o+=`<line x1="${(c+r1*Math.cos(a)).toFixed(1)}" y1="${(c+r1*Math.sin(a)).toFixed(1)}" x2="${(c+r2*Math.cos(a)).toFixed(1)}" y2="${(c+r2*Math.sin(a)).toFixed(1)}" stroke="${now?'#111':per?A:'#c9c9c9'}" stroke-width="${now?3.2:per?2.6:1.4}" stroke-linecap="round"/>`;}
+    if(t.ring==='moons'){const rr=now?8.5:per?5:3.4;if(now)o+=`<circle cx="${x}" cy="${y}" r="${rr+3}" fill="#fff" stroke="${A}" stroke-width="1.5"/>`;
+      o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr}" fill="${per||now?(now?A:P):'#dfe3ef'}"/>`;
+      if(!per&&!now)o+=`<circle cx="${(x+rr*.45).toFixed(1)}" cy="${(y-rr*.3).toFixed(1)}" r="${rr*.85}" fill="#fff"/>`;}
+  }
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">${o}</svg>`;}
+
+/* ===================== sample data (made up) ===================== */
+const TODAY=[ // three pain logs on one day, showing the pain move from front to back and to the right
+ {t:'11:30am',s:1,type:'Cramping',F:{lowAbd:1},B:{}},
+ {t:'2:40pm',s:2,type:'Cramping, sharp',F:{lowAbd:2,pelvis:1},B:{lowC:2}},
+ {t:'5:10pm',s:1,type:'Sharp',F:{rSide:1},B:{lowR:1}},
+];
+const DAYS={3:{s:0,c:['head']},5:{c:['head','sleep']},10:{s:2,b:1,c:['bleed','bowel','nausea','treat']},11:{s:2,b:1,c:['bleed','nausea','treat']},12:{s:1,b:1,c:['bleed','heart']},13:{s:0,b:1,c:['bleed']},14:{s:1,b:1,c:['bleed','urine']},15:{s:2,b:1,c:['bleed','bowel']},20:{s:0,c:['sleep']},24:{s:0,c:['urine']}};
+const MON=['M','T','W','T','F','S','S'];
+const where=log=>[...Object.keys(log.F).map(k=>REG.F[k][4]),...Object.keys(log.B).map(k=>REG.B[k][4])].join(', ');
+
+/* ===================== screens ===================== */
+const ICO={today:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/>',cal:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>',sum:'<path d="M5 19V11M10 19V5M15 19v-6M20 19V9"/>',doc:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 13h5M10 17h5"/>'};
+const tabs=on=>`<div class="tabs">${[['today','Today'],['cal','Calendar'],['sum','Summary'],['doc','Doctor']].map(([k,l])=>`<span class="${k===on?'on':''}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">${ICO[k]}</svg>${l}</span>`).join('')}</div>`;
+const hd=(t,r)=>`<div class="hd"><span class="wm">${t.wm}</span><span class="r">${r}</span></div>`;
+const sevTag=(t,s)=>`<span class="sev" style="--s:${t.sev[s]}"><i></i>${SEVN[s]}</span>`;
+
+function sToday(t){
+  return `${hd(t,'Sun 15 Nov')}
+  <div class="ring">${ring(t)}<div class="mid"><small>Cycle day</small><b>6</b><span>period, ending</span></div></div>
+  <div class="logbtn"><i>+</i>Log how you feel</div>
+  <div class="lbl">Today's pain <em>3 logs</em></div>
+  <div class="tl">${TODAY.map(l=>`<div class="te"><span class="t">${l.t}</span>${mini(t,l.F,l.B)}<span class="w">${sevTag(t,l.s)} · ${l.type}<br><span style="color:${t.v.soft}">${where(l)}</span></span></div>`).join('')}</div>
+  <div class="moved">↻ <span>Moved from the <b>front</b> to the <b>lower back</b>, then to the <b>right</b></span></div>
+  <div class="minicards">${['bleed','bowel'].map(k=>`<span class="mc" style="--c:${t.C[k]}"><i></i>${LABEL[k]}${k==='bleed'?' · spotting':' · loose, urgent'}</span>`).join('')}</div>
+  ${tabs('today')}`;}
+
+function sPain(t,ix){
+  return `${hd(t,'<b>Next</b>')}
+  <div class="ttl">Pain <span class="timechip">🕓 5:10pm ▾</span></div>
+  <div class="sub">Tap everywhere it hurts</div>
+  <div class="seg" style="margin-top:9px" data-side><span class="on" data-s="F">Front</span><span data-s="B">Back</span></div>
+  <div class="bodywrap" data-body></div>
+  <div class="where" data-where></div>
+  <div class="lbl" style="margin-top:8px">How bad</div>
+  <div class="sevs">${SEVN.map((n,i)=>`<button class="sv ${i===1?'on':''}" data-sev="${i}" style="--s:${t.sev[i]}"><i>${[0,1,2].map(j=>`<u class="${j<=i?'f':''}" style="height:${6+j*3}px"></u>`).join('')}</i>${n}</button>`).join('')}</div>
+  <div class="lbl">What kind</div>
+  <div class="chips" style="--c:${t.v.acc}">${['Cramping','Sharp','Stabbing','Dull ache','Throbbing','Burning','Pulling'].map((x,i)=>`<span class="chip ${i===1?'on':''}">${x}</span>`).join('')}</div>`;}
+
+function sAdd(t,sheet){
+  const added=['bleed','bowel'];
+  const tiles=TILES.map(k=>`<button class="cls ${added.includes(k)?'added':''}" data-k="${k}" style="--c:${t.C[k]}"><i>${added.includes(k)?'✓':'+'}</i>${LABEL[k]}</button>`).join('')+`<button class="cls new"><i>+</i>New…</button>`;
+  const body=`${hd(t,sheet?'':'<b>Save</b>')}
+  <div class="ttl" style="font-size:23px">What else happened?</div>
+  <div class="sub">Pain logged · ${sevTag(t,1)} · right side, lower back</div>
+  <div class="lbl">Tap to add · tap again to remove</div>
+  <div class="classes" data-tiles>${tiles}</div>
+  <div class="open" style="--c:${t.C.bowel}"><h5>Bowel <span class="ed">✎ Edit</span></h5><div class="chips" style="--c:${t.C.bowel}">${['Loose','Urgent','Constipated','Painful','Bloating'].map((x,i)=>`<span class="chip ${i<2?'on':''}">${x}</span>`).join('')}</div></div>
+  <div class="btn" style="margin-top:auto">Save</div>`;
+  if(!sheet)return body;
+  return body+`<div class="dim"></div><div class="sheet"><div class="grab"></div>
+   <div style="display:flex;justify-content:space-between;align-items:baseline"><h5>Edit Bowel</h5><span style="font-weight:700;color:${t.C.bowel};font-size:13px">Done</span></div>
+   <div class="sub" style="margin:2px 0 6px">Add, rename, reorder or delete options.</div>
+   ${['Loose','Urgent','Constipated','Painful','Bloating'].map((x,i)=>`<div class="opt"><span class="h">⋮⋮</span><span class="nm">${i===3?'Painful to go':x}</span><span class="ac"><span>✎</span><span class="x">✕</span></span></div>`).join('')}
+   <div class="addopt" style="--c:${t.C.bowel}"><span>Mucus</span><b>Add</b></div>
+   <div class="hint" style="margin-top:8px">Deleting an option doesn't change days you've already logged.</div></div>`;}
+
+function sCal(t){
+  let o=MON.map(m=>`<div class="h">${m}</div>`).join('');for(let i=0;i<6;i++)o+='<div class="d blank"></div>';
+  for(let d=1;d<=30;d++){const x=DAYS[d];o+=`<div class="d ${x&&x.b?'bleed':''} ${d===15?'today':''}"><span>${d}</span>${x?`<span class="bars">${x.s!=null?[0,1,2].map(j=>j<=x.s?`<u style="height:${4+j*2.5}px;--s:${t.sev[x.s]}"></u>`:'').join(''):''}</span><span class="dots">${x.c.map(k=>`<i style="--c:${t.C[k]}"></i>`).join('')}</span>`:''}</div>`;}
+  return `${hd(t,'List')}
+  <div class="mh"><b>November</b><span class="num" style="font-size:11px;color:${t.v.soft}">‹ 2026 ›</span></div>
+  <div class="cal">${o}</div>
+  <div class="legend"><span><i style="--c:${t.v.bleedBg};box-shadow:0 0 0 1px #0000001a"></i>Period</span><span>${[0,1,2].map(i=>`<i style="--c:${t.sev[i]};width:4px;height:${5+i*2}px;border-radius:1px"></i>`).join('')}&nbsp;Pain</span>${['bleed','bowel','urine','head','nausea','heart','sleep','treat'].map(k=>`<span><i style="--c:${t.C[k]}"></i>${LABEL[k]}</span>`).join('')}</div>
+  ${tabs('cal')}`;}
+
+function sSum(t){
+  const F={lowAbd:2,pelvis:1,rSide:0},B={lowC:2,lowR:1};
+  return `${hd(t,'')}
+  <div class="ttl">Your summary</div>
+  <div class="seg" style="margin-top:9px"><span class="on">This cycle</span><span>3 cycles</span><span>Year</span></div>
+  <div class="sumcard"><h6>Cycle of 10 Nov</h6><div class="m">Day 1 to day 6 so far</div>
+   <div class="stats"><div><b>6</b>days with pain</div><div><b>3</b>severe days</div><div><b>1–2</b>worst cycle days</div></div>
+   <div class="lbl" style="margin:9px 0 2px">Where it hurts most</div>
+   <div class="heatrow"><figure>${bodySVG(t,'F',F,50)}Front</figure><figure>${bodySVG(t,'B',B,50)}Back</figure></div>
+   <div class="sevkey">${SEVN.map((n,i)=>`<span style="--s:${t.sev[i]}"><i></i>${n}</span>`).join('')}</div>
+   <div class="lbl" style="margin:9px 0 2px">Often comes with</div>
+   <div class="bars2">${[['bleed',100],['nausea',50],['bowel',33],['heart',17]].map(([k,p])=>`<div style="--c:${t.C[k]}"><span>${LABEL[k]}</span><u style="width:${p}%"></u><em>${Math.round(p*6/100)}/6</em></div>`).join('')}</div>
+  </div>
+  ${tabs('sum')}`;}
+
+function sDoc(t){
+  const inc=['pain','bleed','bowel','urine','nausea','heart','sleep','treat'];const off=['sleep'];
+  return `${hd(t,'')}
+  <div class="ttl">For your doctor</div>
+  <div class="seg" style="margin-top:9px"><span>This cycle</span><span class="on">3 months</span><span>Custom</span></div>
+  <div class="lbl" style="margin-top:9px">Include</div>
+  <div class="ticks">${inc.map(k=>`<div class="tk ${off.includes(k)?'off':''}" style="--c:${k==='pain'?t.v.acc:t.C[k]}"><span>${k==='pain'?'Pain & body map':LABEL[k]}</span><i>${off.includes(k)?'':'✓'}</i></div>`).join('')}</div>
+  <div class="prev"><h6>Symptom record</h6><div class="m">16 Aug to 15 Nov 2026 · 3 cycles</div>
+   <div class="cols"><span style="display:flex;gap:2px">${bodySVG(t,'F',{lowAbd:2,pelvis:1,rSide:0},30,{thin:1})}${bodySVG(t,'B',{lowC:2,lowR:1},30,{thin:1})}</span>
+    <div><b>How pain moved on 15 Nov</b><div class="seq" style="margin-top:3px">${TODAY.map(l=>`<figure>${mini(t,l.F,l.B,15)}${l.t.replace(':00','')}</figure>`).join('<span style="color:#aaa">›</span>')}</div></div></div>
+   <table><tr><th>Date</th><th>Pain</th><th>Where</th><th>Also</th></tr>
+   <tr><td>10 Nov</td><td>Severe</td><td>Lower abd., lower back</td><td>Heavy bleeding, bowel</td></tr>
+   <tr><td>15 Nov</td><td>Severe</td><td>Lower abd. → back → right</td><td>Spotting, bowel</td></tr></table></div>
+  <div class="dl" style="margin-top:10px"><span class="btn ghost">PDF</span><span class="btn">Excel (.xlsx)</span></div>`;}
+
+/* ===================== render ===================== */
+const phone=(t,cap,sub,body)=>`<div class="ph"><div class="cap">${cap} <span>${sub}</span></div><div class="scr ${t.cls}" style="${Object.entries(t.v).map(([k,v])=>`--${k}:${v}`).join(';')}"><div class="notch"></div><div class="in">${body}</div></div></div>`;
+document.getElementById('jump').innerHTML=THEMES.map(t=>`<a href="#${t.id}">${t.name}</a>`).join('');
+document.getElementById('dirs').innerHTML=THEMES.map((t,i)=>`<section class="dir ${t.cls}" id="${t.id}"><header><span class="n">${i+1}</span>${t.head}</header><p class="blurb">${t.blurb}</p><div class="flow">
+ ${phone(t,'Today','the ring, then today’s pain',sToday(t))}
+ ${phone(t,'Log pain','tap the body',sPain(t))}
+ ${phone(t,'What else','tap to add or remove',sAdd(t))}
+ ${phone(t,'Edit','your own options',sAdd(t,true))}
+ ${phone(t,'Calendar','Twinge’s grid',sCal(t))}
+ ${phone(t,'Summary','just for you',sSum(t))}
+ ${phone(t,'For your doctor','tick, preview, export',sDoc(t))}
+</div></section>`).join('');
+
+/* interactions: body map, severity, front/back, tiles */
+document.querySelectorAll('section.dir').forEach((sec,i)=>{const t=THEMES[i];
+  const scr=sec.querySelectorAll('.scr')[1];const st={side:'F',sev:1,F:{lowAbd:1},B:{lowR:1}};
+  const draw=()=>{scr.querySelector('[data-body]').innerHTML=`<span class="side" style="left:62px">${st.side==='F'?'R':'L'}</span><span class="side" style="right:62px">${st.side==='F'?'L':'R'}</span>`+bodySVG(t,st.side,st[st.side],132,{live:1});
+    const names=[...Object.keys(st.F).map(k=>REG.F[k][4]),...Object.keys(st.B).map(k=>REG.B[k][4])];
+    scr.querySelector('[data-where]').innerHTML=names.length?`<b>${names.join(' · ')}</b>`:'Nothing selected';
+    scr.querySelectorAll('[data-side] span').forEach(s=>s.classList.toggle('on',s.dataset.s===st.side));
+    scr.querySelectorAll('[data-sev]').forEach(b=>b.classList.toggle('on',+b.dataset.sev===st.sev));};
+  scr.addEventListener('click',e=>{const r=e.target.closest('.region');if(r){const k=r.dataset.k,m=st[st.side];if(m[k]===st.sev)delete m[k];else m[k]=st.sev;draw();return;}
+    const s=e.target.closest('[data-s]');if(s){st.side=s.dataset.s;draw();return;}
+    const v=e.target.closest('[data-sev]');if(v){st.sev=+v.dataset.sev;for(const side of ['F','B'])for(const k in st[side])st[side][k]=st.sev;draw();}});
+  draw();
+  const tiles=sec.querySelectorAll('.scr')[2].querySelector('[data-tiles]');
+  tiles.addEventListener('click',e=>{const b=e.target.closest('.cls');if(!b||b.classList.contains('new'))return;b.classList.toggle('added');b.querySelector('i').textContent=b.classList.contains('added')?'✓':'+';});
+});
+</script>
+</body>
+</html>
