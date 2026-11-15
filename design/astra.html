@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astra: logos and palettes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Astra, in the Twinge look. Logos (pulse and star options) and six clearly different palettes.
+   Tap a palette to recolour everything on the page, logos included. */
+:root{--page:#f4f3ef;--pInk:#1a1a1a;--pSoft:#6a6862;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--pInk);font-family:'Space Grotesk',system-ui,sans-serif;font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+.wrap{max-width:1320px;margin:0 auto;padding:34px 24px 0}
+h1{font-weight:700;font-size:44px;letter-spacing:-.05em;margin:0 0 6px;line-height:1}
+h2{font-weight:700;font-size:28px;letter-spacing:-.04em;margin:48px 0 4px}
+.lede{color:var(--pSoft);max-width:82ch;margin:0}
+.logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:18px}
+.lg{background:#fff;border-radius:22px;padding:20px;box-shadow:0 0 0 1px #1a1a1a0d;display:flex;flex-direction:column;gap:14px;position:relative}
+.lg .n{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--pSoft)}
+.lg .row{display:flex;align-items:center;gap:12px}
+.icon{width:76px;height:76px;border-radius:19px;display:flex;align-items:center;justify-content:center;flex:0 0 76px;box-shadow:0 6px 16px #1a1a1a1a,0 0 0 1px #1a1a1a10}
+.wm{display:flex;align-items:center;gap:8px;font-weight:700;font-size:34px;letter-spacing:-.05em;line-height:1}
+.lg p{margin:0;font-size:13.5px;color:var(--pSoft);line-height:1.45}
+.lg p b{color:var(--pInk);font-weight:600}
+.tag{position:absolute;top:16px;right:16px;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#fff;padding:2px 9px;border-radius:99px;background:#1a1a1a}
+.palbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:sticky;top:0;padding:10px 0;background:var(--page);z-index:20}
+.pb{display:flex;align-items:center;gap:8px;padding:7px 12px 7px 8px;border-radius:99px;background:#fff;box-shadow:0 0 0 1px #1a1a1a14;font-weight:600;font-size:14px}
+.pb.on{box-shadow:0 0 0 2px #1a1a1a}
+.pb .sw{display:flex}
+.pb .sw i{width:16px;height:16px;border-radius:50%;margin-left:-5px;box-shadow:0 0 0 2px #fff}
+.pb .sw i:first-child{margin-left:0}
+
+/* phones, themed by palette variables */
+.flow{display:flex;flex-wrap:wrap;gap:24px 22px;margin-top:18px;align-items:flex-start}
+.ph{width:300px;flex:0 0 300px}
+.ph .cap{font-weight:700;font-size:15px;margin:0 0 8px 8px}
+.ph .cap span{font-weight:500;color:var(--pSoft);font-size:13px}
+.scr{width:300px;height:640px;border-radius:40px;overflow:hidden;position:relative;border:8px solid #fff;box-shadow:0 22px 46px #1a1a1a1c,0 0 0 1px #1a1a1a14;background:var(--bg);color:var(--ink);font-size:13px;transition:background .25s}
+.in{position:absolute;inset:0;padding:44px 17px 16px;display:flex;flex-direction:column}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:86px;height:23px;background:#111;border-radius:20px;z-index:9}
+.hd{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--soft)}
+.hd .w{display:flex;align-items:center;gap:6px;font-weight:700;font-size:18px;letter-spacing:-.04em;color:var(--ink)}
+.ttl{font-weight:700;font-size:27px;letter-spacing:-.04em;margin:12px 0 4px;line-height:1}
+.lbl{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:14px 0 6px}
+.pals{display:flex;flex-direction:column;gap:6px}
+.pl{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;box-shadow:inset 0 0 0 1.4px var(--hair);font-weight:600;font-size:13px;color:var(--ink)}
+.pl.on{box-shadow:inset 0 0 0 2px var(--ink)}
+.pl .chip{width:38px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;gap:2px;box-shadow:0 0 0 1px #0000001a}
+.pl .chip i{width:6px;height:6px;border-radius:2px}
+.pl small{display:block;font-weight:500;font-size:10.5px;color:var(--soft)}
+.pl .ck{margin-left:auto;width:18px;height:18px;border-radius:50%;box-shadow:inset 0 0 0 1.5px var(--hair);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--bg)}
+.pl.on .ck{background:var(--ink);box-shadow:none}
+.ring{width:150px;height:150px;margin:6px auto 0;position:relative}
+.ring .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring small{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.ring b{font-family:'Space Mono';font-size:46px;line-height:1;color:var(--acc)}
+.ring span{font-size:11px;color:var(--soft)}
+.logbtn{margin-top:10px;padding:14px;border-radius:99px;background:var(--btn);color:var(--btnFg);text-align:center;font-weight:700;font-size:15px}
+.classes{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.cls{border-radius:12px;padding:6px 7px;font-size:11px;font-weight:600;box-shadow:inset 0 0 0 1.4px var(--hair);display:flex;align-items:center;gap:6px;min-height:33px;color:var(--ink)}
+.cls i{width:15px;height:15px;border-radius:5px;background:var(--c);flex:0 0 15px;display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:9px}
+.cls.added{background:color-mix(in srgb,var(--c) 16%,var(--bg));box-shadow:inset 0 0 0 1.6px var(--c)}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+.cal .h{font-size:9.5px;text-align:center;color:var(--soft);font-weight:600}
+.cal .d{aspect-ratio:.8;border-radius:7px;background:var(--card);font:9.5px 'Space Mono';padding:3px;display:flex;flex-direction:column;justify-content:space-between;color:var(--ink)}
+.cal .d.blank{background:none}
+.cal .d.b{background:var(--bleed)}
+.cal .d.today{box-shadow:inset 0 0 0 1.8px var(--ink)}
+.cal .d .dots{display:flex;gap:2px;flex-wrap:wrap}
+.cal .d .dots i{width:4.5px;height:4.5px;border-radius:1.5px;background:var(--c)}
+.cal .d .bars{display:flex;gap:1.5px;align-items:flex-end;height:9px}
+.cal .d .bars u{width:3.5px;border-radius:1px;background:var(--s);text-decoration:none}
+.sevs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sv{padding:9px 4px 8px;border-radius:12px;box-shadow:inset 0 0 0 1.4px var(--hair);text-align:center;font-weight:600;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sv i{width:16px;height:16px;border-radius:50%;background:var(--s)}
+.sv.on{box-shadow:inset 0 0 0 2px var(--s)}
+.legend{display:flex;flex-wrap:wrap;gap:3px 9px;font-size:9.5px;color:var(--soft);margin-top:8px}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend i{width:7px;height:7px;border-radius:2px;background:var(--c)}
+.mh{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px}
+.mh b{font-weight:700;font-size:27px;letter-spacing:-.04em}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;padding:8px 6px 14px;border-top:1px solid var(--hair);background:var(--bg);font-size:9.5px;font-weight:600;color:var(--soft)}
+.tabs span{display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs span.on{color:var(--acc)}
+.foot{height:90px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Astra</h1>
+  <p class="lede">Astra is Latin for “the stars”, as in <i>per aspera ad astra</i>: through hardships to the stars. Below are logo options in the Twinge look: the Steady pulse in one colour, and five star-themed ideas. Each shows a white app icon, a coloured app icon and the wordmark. Then six palettes. Tap a palette in the bar to recolour everything on the page, logos included.</p>
+
+  <div class="palbar" id="palbar"></div>
+
+  <h2>Logos</h2>
+  <div class="logos" id="logos"></div>
+
+  <h2>Palettes</h2>
+  <p class="lede">These are now clearly different from each other: background, accent, symptom colours and pain colours all change. Night is a dark mode. Your choice syncs to all your devices.</p>
+  <div class="flow">
+    <div class="ph"><div class="cap">Settings <span>Colours</span></div><div class="scr" id="s1"><div class="notch"></div><div class="in"></div></div></div>
+    <div class="ph"><div class="cap">Today</div><div class="scr" id="s2"><div class="notch"></div><div class="in"></div></div></div>
+    <div class="ph"><div class="cap">Calendar</div><div class="scr" id="s3"><div class="notch"></div><div class="in"></div></div></div>
+  </div>
+</div>
+<div class="foot"></div>
+
+<script>
+const KEYS=['bleed','bowel','urine','head','nausea','heart','sleep','energy','stress','food','act','treat','impact','note'];
+const LABEL={bleed:'Bleeding',bowel:'Bowel',urine:'Urinary',head:'Headache',nausea:'Nausea',heart:'Heart',sleep:'Sleep',energy:'Energy',stress:'Stress',food:'Food',act:'Activity',treat:'Treatment',impact:'Day impact',note:'Notes'};
+/* Six palettes that differ in background, accent and overall character, not just hue. */
+const PAL=[
+ {n:'Riso',d:'Bright inks on white',bg:'#ffffff',card:'#f6f6f3',ink:'#1a1a1a',soft:'#6a6862',hair:'#e8e7e3',acc:'#f15060',btn:'#1a1a1a',btnFg:'#fff',bleed:'#fde3e6',sev:['#f9b8ae','#f2705f','#c9182f'],
+  c:['#c83f78','#e48a3a','#2f9fd6','#765ba7','#5f9474','#e8608c','#3255a4','#159fae','#a35d8f','#00a95c','#0078bf','#1a1a1a','#f15060','#9a978f']},
+ {n:'Pastel',d:'Soft candy on lilac-white',bg:'#fbf9ff',card:'#f1edfa',ink:'#3b3450',soft:'#7c7590',hair:'#e6e1f2',acc:'#9b7fe6',btn:'#9b7fe6',btnFg:'#fff',bleed:'#fde4ee',sev:['#ffd9e4','#f9a8c3','#e46a9a'],
+  c:['#f48fb1','#ffb385','#8ec5ff','#b9a2ff','#8fd6b4','#ff9ec7','#9aa8ff','#7fd8e0','#d7a6e8','#b8df8a','#7fb6f0','#6d6487','#e46a9a','#c5bfd4']},
+ {n:'Jewel',d:'Deep, rich tones on ivory',bg:'#fffdf8',card:'#f4f0e6',ink:'#14231c',soft:'#5f665f',hair:'#e7e2d4',acc:'#0f6b4f',btn:'#0f6b4f',btnFg:'#fff',bleed:'#f6dfe2',sev:['#e9b7bf','#b4405a','#6e0f27'],
+  c:['#8c1c3a','#b8661c','#1d4f91','#5b2a86','#0f6b4f','#b0306a','#22305e','#0e7c86','#7a3b69','#5c7a1f','#2a5ea8','#14231c','#6e0f27','#8f8a7c']},
+ {n:'Night',d:'Dark mode, gold star accent',bg:'#121626',card:'#1c2236',ink:'#eef0f8',soft:'#9aa1bb',hair:'#2a3150',acc:'#f5c451',btn:'#f5c451',btnFg:'#121626',bleed:'#3a2034',sev:['#5b4a7a','#c66a9a','#ff8a8a'],
+  c:['#ff7aa2','#ffb066','#6cc6ff','#b49bff','#6fe0b0','#ff9ad5','#8ea2ff','#5fe3e3','#e0a3ff','#b6e36a','#7ab8ff','#d6d9e8','#ff8a8a','#7a819b']},
+ {n:'Earth',d:'Clay, ochre and olive on cream',bg:'#faf5ec',card:'#f1e9da',ink:'#2e241c',soft:'#7a6b5c',hair:'#e6dccb',acc:'#c0583a',btn:'#2e241c',btnFg:'#faf5ec',bleed:'#f2d9cf',sev:['#ecc9a8','#d58a5b','#9c3b22'],
+  c:['#a8432f','#d08a3a','#6f8fa6','#8a6a9a','#6f7f45','#c76b6b','#4c5a73','#5f8f86','#9a6e5e','#9aa04b','#5b7f9c','#2e241c','#9c3b22','#a89a86']},
+ {n:'Mono',d:'Black and white, one red',bg:'#ffffff',card:'#f3f3f3',ink:'#111',soft:'#6b6b6b',hair:'#e3e3e3',acc:'#e0262b',btn:'#111',btnFg:'#fff',bleed:'#ededed',sev:['#cfcfcf','#7a7a7a','#e0262b'],
+  c:['#e0262b','#3d3d3d','#8a8a8a','#5a5a5a','#a8a8a8','#c43b3b','#222','#707070','#b5b5b5','#4a4a4a','#959595','#111','#e0262b','#c8c8c8']},
+];
+let cur=0;const P=()=>PAL[cur];const col=k=>P().c[KEYS.indexOf(k)];
+
+/* ---------- logos: (s = size, p = palette, mono = draw all in one colour) ---------- */
+const star4=(cx,cy,r,f)=>`<path d="M${cx} ${cy-r} Q${cx+r*.16} ${cy-r*.16} ${cx+r} ${cy} Q${cx+r*.16} ${cy+r*.16} ${cx} ${cy+r} Q${cx-r*.16} ${cy+r*.16} ${cx-r} ${cy} Q${cx-r*.16} ${cy-r*.16} ${cx} ${cy-r}Z" fill="${f}"/>`;
+const LOGOS=[
+ {id:'pulse',name:'Steady pulse',top:1,why:'<b>The Steady logo, in one colour.</b> A heartbeat that settles into a calm line: you noticed it, logged it and you’re handling it.',
+  draw:(s,col)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M4 22 L10 22 L13 12 L17 30 L20 18 L23 22 L36 22" fill="none" stroke="${col}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`},
+ {id:'pulsestar',name:'Pulse to star',top:1,why:'<b>Through hardship to the stars.</b> The pulse line climbs and ends in a star. It keeps the Steady line and adds Astra’s meaning.',
+  draw:(s,col)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M3 26 L9 26 L12 18 L16 32 L19 22 L22 26 L26 26" fill="none" stroke="${col}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>${star4(31.5,13,8.5,col)}</svg>`},
+ {id:'sparkle',name:'Sparkle',top:0,why:'<b>A single four-point star.</b> The simplest mark: bright, calm and easy to spot on a home screen.',
+  draw:(s,col)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40">${star4(20,20,16,col)}</svg>`},
+ {id:'constellation',name:'Constellation',top:1,why:'<b>Your logs are the stars.</b> Each dot is a day you logged. Joined up, they make a pattern you can read, shaped like an A. In colour, the dots are the symptom colours.',
+  draw:(s,col,p)=>{const pts=[[8,33],[14,21],[20,8],[26,21],[32,33]];const cs=p?[p.c[0],p.c[1],p.acc,p.c[2],p.c[3]]:Array(5).fill(col);
+   return `<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M8 33 L14 21 L20 8 L26 21 L32 33 M14 21 L26 21" fill="none" stroke="${col}" stroke-width="1.8" stroke-linecap="round" opacity=".55"/>${pts.map(([x,y],i)=>i===2?star4(x,y,6,cs[i]):`<circle cx="${x}" cy="${y}" r="3.3" fill="${cs[i]}"/>`).join('')}</svg>`;}},
+ {id:'ringstar',name:'Star in the cycle',top:0,why:'<b>Today, marked with a star.</b> The ring of days from the Today screen, with a star at the top where you are.',
+  draw:(s,col,p)=>{let o='';for(let i=0;i<16;i++){if(i===0)continue;const a=i/16*2*Math.PI-Math.PI/2,x=20+14*Math.cos(a),y=20+14*Math.sin(a);o+=`<rect x="${(x-2.1).toFixed(1)}" y="${(y-2.1).toFixed(1)}" width="4.2" height="4.2" rx="1.3" fill="${col}" opacity="${i<4?1:.35}" transform="rotate(${(i/16*360).toFixed(0)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}
+   return `<svg width="${s}" height="${s}" viewBox="0 0 40 40">${o}${star4(20,6,6.5,p?p.acc:col)}</svg>`;}},
+ {id:'astar',name:'A with a star',top:0,why:'<b>A letter mark.</b> A bold A, with a small star where the crossbar would be. It works well very small.',
+  draw:(s,col)=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40"><path d="M7 35 L20 5 L33 35" fill="none" stroke="${col}" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round"/>${star4(20,25,5.5,col)}</svg>`},
+];
+function onAcc(p){return p.n==='Night'?p.btnFg:'#fff';}
+function drawLogos(){const p=P();
+ document.getElementById('logos').innerHTML=LOGOS.map(L=>`<div class="lg">${L.top?'<span class="tag">Favourite</span>':''}<span class="n">${L.name}</span>
+  <div class="row"><span class="icon" style="background:${p.bg}">${L.draw(54,p.acc===p.bg?p.ink:p.acc,L.id==='constellation'||L.id==='ringstar'?p:null)}</span>
+   <span class="icon" style="background:${p.acc}">${L.draw(54,onAcc(p))}</span>
+   <span class="icon" style="background:${p.n==='Night'?p.card:'#1a1a1a'}">${L.draw(54,p.n==='Night'?p.acc:'#fff')}</span></div>
+  <div class="wm">${L.draw(30,p.acc,L.id==='constellation'?p:null)}<span>Astra</span></div>
+  <p>${L.why}</p></div>`).join('');}
+
+/* ---------- phones ---------- */
+const DAYS={3:{s:0,c:['head']},5:{c:['head','sleep']},10:{s:2,b:1,c:['bleed','bowel','nausea','treat']},11:{s:2,b:1,c:['bleed','nausea','treat']},12:{s:1,b:1,c:['bleed','heart']},13:{s:0,b:1,c:['bleed']},14:{s:1,b:1,c:['bleed','urine']},15:{s:2,b:1,c:['bleed','bowel']},20:{s:0,c:['sleep']},24:{s:0,c:['urine']}};
+const ICO={today:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/>',cal:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/>',sum:'<path d="M5 19V11M10 19V5M15 19v-6M20 19V9"/>',doc:'<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 13h5M10 17h5"/>'};
+const tabs=on=>`<div class="tabs">${[['today','Today'],['cal','Calendar'],['sum','Summary'],['doc','Doctor']].map(([k,l])=>`<span class="${k===on?'on':''}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">${ICO[k]}</svg>${l}</span>`).join('')}</div>`;
+function ringSVG(p){let o='';const c=75,r=62;for(let i=1;i<=29;i++){const a=(i-1)/29*2*Math.PI-Math.PI/2,x=c+r*Math.cos(a),y=c+r*Math.sin(a),now=i===6,per=i<=5,s=per?8:5.5;
+  if(now){o+=star4(+x.toFixed(1),+y.toFixed(1),10,p.ink);continue;}
+  o+=`<rect x="${(x-s/2).toFixed(1)}" y="${(y-s/2).toFixed(1)}" width="${s}" height="${s}" rx="2" fill="${per?p.acc:p.hair}" transform="rotate(${((a*180/Math.PI)+90).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)})"/>`;}
+  return `<svg width="150" height="150" style="position:absolute;inset:0">${o}</svg>`;}
+function drawPhones(){const p=P();
+ for(const id of ['s1','s2','s3']){const el=document.getElementById(id);for(const k of ['bg','card','ink','soft','hair','acc','btn','btnFg','bleed'])el.style.setProperty('--'+k,p[k]);}
+ const wm=`<span class="w">${LOGOS[1].draw(20,p.acc)}Astra</span>`;
+ document.querySelector('#s1 .in').innerHTML=`<div class="hd">${wm}<span>Done</span></div><div class="ttl">Colours</div>
+  <div class="pals">${PAL.map((x,i)=>`<button class="pl ${i===cur?'on':''}" data-i="${i}"><span class="chip" style="background:${x.bg}">${[x.acc,x.c[0],x.c[2],x.c[4]].map(c=>`<i style="background:${c}"></i>`).join('')}</span><span>${x.n}<small>${x.d}</small></span><span class="ck">✓</span></button>`).join('')}</div>
+  <div class="lbl">Pain colours</div><div class="sevs">${['Mild','Moderate','Severe'].map((n,i)=>`<span class="sv ${i===1?'on':''}" style="--s:${p.sev[i]}"><i></i>${n}</span>`).join('')}</div>`;
+ document.querySelector('#s2 .in').innerHTML=`<div class="hd">${wm}<span>Sun 15 Nov</span></div>
+  <div class="ring">${ringSVG(p)}<div class="mid"><small>Cycle day</small><b>6</b><span>period, ending</span></div></div>
+  <div class="logbtn">+ Log how you feel</div>
+  <div class="lbl">What else happened</div>
+  <div class="classes">${['bleed','bowel','urine','head','nausea','heart','sleep','energy','treat'].map((k,i)=>`<span class="cls ${i<2?'added':''}" style="--c:${col(k)}"><i>${i<2?'✓':'+'}</i>${LABEL[k]}</span>`).join('')}</div>
+  ${tabs('today')}`;
+ let cal=['M','T','W','T','F','S','S'].map(m=>`<div class="h">${m}</div>`).join('');for(let i=0;i<6;i++)cal+='<div class="d blank"></div>';
+ for(let d=1;d<=30;d++){const x=DAYS[d];cal+=`<div class="d ${x&&x.b?'b':''} ${d===15?'today':''}"><span>${d}</span>${x?`<span class="bars">${x.s!=null?[0,1,2].filter(j=>j<=x.s).map(j=>`<u style="height:${4+j*2.5}px;--s:${p.sev[x.s]}"></u>`).join(''):''}</span><span class="dots">${x.c.map(k=>`<i style="--c:${col(k)}"></i>`).join('')}</span>`:''}</div>`;}
+ document.querySelector('#s3 .in').innerHTML=`<div class="hd">${wm}<span>List</span></div>
+  <div class="mh"><b>November</b><span style="font:11px 'Space Mono';color:${p.soft}">‹ 2026 ›</span></div>
+  <div class="cal" style="margin-top:8px">${cal}</div>
+  <div class="legend"><span><i style="--c:${p.bleed};box-shadow:0 0 0 1px #0000001a"></i>Period</span>${['bleed','bowel','urine','head','nausea','heart','sleep','treat'].map(k=>`<span><i style="--c:${col(k)}"></i>${LABEL[k]}</span>`).join('')}</div>
+  ${tabs('cal')}`;
+ document.querySelectorAll('.pl').forEach(b=>b.onclick=()=>setPal(+b.dataset.i));}
+function drawBar(){document.getElementById('palbar').innerHTML=PAL.map((x,i)=>`<button class="pb ${i===cur?'on':''}" data-i="${i}"><span class="sw">${[x.bg,x.acc,x.c[0],x.c[2],x.c[4]].map(c=>`<i style="background:${c}"></i>`).join('')}</span>${x.n}</button>`).join('');
+ document.querySelectorAll('.pb').forEach(b=>b.onclick=()=>setPal(+b.dataset.i));}
+function setPal(i){cur=i;drawBar();drawLogos();drawPhones();}
+setPal(+(location.hash.slice(1))||0);
+</script>
+</body>
+</html>
