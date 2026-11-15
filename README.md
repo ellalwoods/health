@@ -13,6 +13,7 @@ The app is at **https://ellalwoods.github.io/health/** once publishing is switch
 - **Summary:** for you. Days with pain, severe days, your worst cycle days, a body map of where it hurts most, what tends to come with the pain, your sleep score on pain days and recent cycle lengths.
 - **For your doctor:** pick a range, tick what to include, then **PDF / print** (a printable record with body maps and how the pain moved) or **Excel (.xlsx)**: a Summary sheet, a Days sheet (one row per day, only the columns you used) and a Pain logs sheet. There's also a CSV.
 - **Cycle:** a new cycle starts on the first day of bleeding (light or heavier) after a gap. You can also mark or unmark a day as the start of your period (on the day, or in Settings).
+- **On a laptop:** wider than 900px, the tabs become a left sidebar and each screen spreads into two columns (for example the ring and Log button beside today's logs, or the body map beside the pain options). Pop-ups open as centred dialogs.
 - **Settings:** colours (Bright, Muted, Spring, Summer, Pastel, Night), sign-in, period starts, symptom classes, the Notion import, your name on reports, and backups.
 
 ## One-time setup

@@ -246,9 +246,9 @@
   };
   const icon = (k, s = 20) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">${ICO[k]}</svg>`;
   const TABS = [['today', 'Today', '#today'], ['cal', 'Calendar', '#cal'], ['sum', 'Summary', '#summary'], ['doc', 'Doctor', '#doctor']];
-  const tabs = on => `<nav class="tabs">${TABS.map(([k, l, h]) => `<a href="${h}" class="${k === on ? 'on' : ''}">${icon(k, 21)}<span>${l}</span></a>`).join('')}</nav>`;
+  const tabs = (on, deskOnly) => `<nav class="tabs ${deskOnly ? 'desk-only' : ''}"><a class="side-wm" href="#today">${logo(22)}<span>Astra</span></a>${TABS.map(([k, l, h]) => `<a href="${h}" class="${k === on ? 'on' : ''}">${icon(k, 21)}<span>${l}</span></a>`).join('')}<a href="#settings" class="side-set ${on === 'set' ? 'on' : ''}">${icon('gear', 21)}<span>Settings</span></a></nav>`;
   const header = (right = `<a class="iconbtn" href="#settings" aria-label="Settings">${icon('gear', 20)}</a>`) =>
-    `<header class="hd"><a class="wm" href="#today">${logo(19)}<span>Astra</span></a><span class="r">${right}</span></header>`;
+    `<header class="hd main"><a class="wm" href="#today">${logo(19)}<span>Astra</span></a><span class="r">${right}</span></header>`;
   const sevTag = s => `<span class="sev" style="--s:var(--sev${s})"><i></i>${SEV[s]}</span>`;
   const spotsOf = (logs, side) => {
     const o = {};
@@ -438,14 +438,16 @@
       below = info.known ? (left > 1 ? `Next period expected around ${fmtDM(info.next)}` : left >= -2 ? 'Period expected about now' : `Period expected ${-left} days ago`) : 'Log a couple of periods to see predictions';
     }
     return `<div class="screen has-tabs">${header()}
+      <div class="dk"><div class="dk-a">
       <div class="ring">${ring(info)}<div class="mid">${info ? `<small>Cycle day</small><b>${info.day}</b><span>${esc(info.phase.toLowerCase())}</span>` : `<small>Cycle day</small><b>–</b><span>log a period to start</span>`}</div></div>
       <p class="ringsub">${fmtLong(k)}${below ? ` · ${below}` : ''}</p>
       <a class="logbtn" href="#pain/${k}/new"><i>+</i>Log how you feel</a>
+      </div><div class="dk-b">
       ${logs.length ? `<div class="lbl">Today’s pain <em>${logs.length} log${logs.length > 1 ? 's' : ''}</em></div>
         <div class="tl">${logs.map(l => painRow(k, l)).join('')}</div>${movedLine(logs)}` : ''}
       ${sym.length ? `<div class="lbl">Also today</div><div class="minicards">${visibleOrder(sym).map(id => miniCard(id, d.sym[id])).join('')}</div>` : ''}
       ${d && hasData(d) ? `<a class="btn ghost" href="#day/${k}" style="margin-top:14px">See or change today</a>` : `<p class="empty">Nothing logged today yet. Tap the button whenever something happens, as many times a day as you like.</p>`}
-      ${tabs('today')}</div>`;
+      </div></div></div>`;
   }
   const visibleOrder = ids => { const order = classes().map(c => c.id); return ids.slice().sort((a, b) => order.indexOf(a) - order.indexOf(b)); };
   const miniCard = (id, e) => { const c = cls(id); if (!c) return ''; const t = symText(id, e); return `<span class="mc" style="--c:${ccol(id)}"><i></i><b>${esc(c.label)}</b>${t ? ' · ' + esc(t) : ''}</span>`; };
@@ -466,9 +468,11 @@
       <header class="hd"><a class="link" href="${isNew ? (k === todayK() ? '#today' : '#day/' + k) : '#day/' + k}" data-cancel>Cancel</a><span class="r"><button class="link strong" data-save>${isNew ? 'Next' : 'Save'}</button></span></header>
       <h1 class="ttl">Pain <label class="timechip"><input type="time" data-time value="${PE.time}" aria-label="Time"></label></h1>
       <p class="sub">${k === todayK() ? 'Today' : fmtLong(k)} · tap everywhere it hurts</p>
+      <div class="dk"><div class="dk-a">
       <div class="seg" style="margin-top:10px" role="tablist">${[['F', 'Front'], ['B', 'Back']].map(([s, l]) => `<button class="${PE.side === s ? 'on' : ''}" data-side="${s}" role="tab">${l}</button>`).join('')}</div>
       <div class="bodywrap"><span class="side l">${PE.side === 'F' ? 'R' : 'L'}</span><span class="side r">${PE.side === 'F' ? 'L' : 'R'}</span><div data-body>${painBody()}</div></div>
       <div class="where" data-where>${painWhere()}</div>
+      </div><div class="dk-b">
       <div class="lbl">How bad</div>
       <div class="sevs">${SEV.map((n, i) => `<button class="sv ${PE.sev === i ? 'on' : ''}" data-sev="${i}" style="--s:var(--sev${i})"><i>${[0, 1, 2].map(j => `<u class="${j <= i ? 'f' : ''}" style="height:${6 + j * 3}px"></u>`).join('')}</i>${n}</button>`).join('')}</div>
       <div class="lbl">What kind <button class="link small" data-edit-types>✎ Edit</button></div>
@@ -476,7 +480,7 @@
       <input class="inp" data-note placeholder="Note (optional)" value="${esc(PE.note)}" style="margin-top:12px" aria-label="Note">
       <button class="btn" data-save style="margin-top:16px">${isNew ? 'Next: what else happened' : 'Save'}</button>
       ${isNew ? `<button class="link center" data-skip>No pain, just other symptoms</button>` : `<button class="link center danger-t" data-delete>Delete this pain log</button>`}
-    </div>`;
+    </div></div></div>`;
   }
   const painSpots = () => { const o = {}; PE.regions.forEach(r => o[r] = PE.sev); return o; };
   const painBody = () => BODY.svg(PE.side, painSpots(), 150, pal(), { live: 1 });
@@ -517,15 +521,17 @@
       <header class="hd"><a class="link" href="${back}">‹ ${k === todayK() ? 'Today' : 'Calendar'}</a><span class="r"><a class="link strong" href="${back}">Done</a></span></header>
       <h1 class="ttl">${k === todayK() ? 'Today' : fmtShort(k)}</h1>
       <p class="sub">${fmtLong(k)}${info ? ` · cycle day ${info.day}` : ''}</p>
+      <div class="dk"><div class="dk-a">
       <div class="lbl">Pain <em>${logs.length ? logs.length + ' log' + (logs.length > 1 ? 's' : '') : 'none'}</em></div>
       ${logs.length ? `<div class="tl">${logs.map(l => painRow(k, l)).join('')}</div>${movedLine(logs)}` : ''}
       <a class="btn ghost small-btn" href="#pain/${k}/new">+ Add a pain log</a>
       <div class="lbl" style="margin-top:20px">What else happened <em>tap to add · tap again to remove</em></div>
       <div class="classes">${visibleClasses().map(c => `<button class="cls ${added.includes(c.id) ? 'added' : ''}" data-cls="${c.id}" style="--c:${ccol(c.id)}"><i>${added.includes(c.id) ? '✓' : '+'}</i><span>${esc(c.label)}</span></button>`).join('')}<button class="cls new" data-newcls><i>+</i><span>New…</span></button></div>
+      </div><div class="dk-b">
       <div class="cards">${visibleOrder(added).map(id => symCard(k, id, d.sym[id])).join('')}</div>
       <button class="btn ghost period ${isStart ? 'on' : ''}" data-period>${isStart ? '✓ Period started this day' : 'Mark as the day my period started'}</button>
       <a class="btn" href="${back}" style="margin-top:10px">Done</a>
-    </div>`;
+    </div></div></div>`;
   }
   function symCard(k, id, e) {
     const c = cls(id); if (!c) return '';
@@ -599,10 +605,10 @@
     used.delete('bleed');
     return `<div class="screen has-tabs">${header()}
       <div class="mh"><h1 class="ttl">${MO[m - 1]}</h1><span class="mnav"><a href="#cal/${prev}" aria-label="Previous month">‹</a><span class="num">${y}</span><a href="#cal/${next}" aria-label="Next month">›</a></span></div>
-      <div class="cal">${cells}</div>
+      <div class="dk cal-dk"><div class="dk-a"><div class="cal">${cells}</div></div><div class="dk-b">
       <div class="legend"><span><i style="background:var(--bleed);box-shadow:0 0 0 1px #0000001a"></i>Bleeding</span>${predicted.size ? '<span><i style="box-shadow:inset 0 0 0 1.4px var(--acc);background:none"></i>Expected period</span>' : ''}<span><i style="background:var(--sev2);width:4px;height:9px"></i>Pain</span>${[...used].map(id => cls(id) ? `<span><i style="background:${ccol(id)}"></i>${esc(cls(id).label)}</span>` : '').join('')}</div>
       ${info ? `<p class="hint" style="margin-top:12px">Cycle day ${info.day} today. ${info.known ? `Average cycle ${info.avg} days.` : ''}</p>` : ''}
-      ${tabs('cal')}</div>`;
+      </div></div></div>`;
   }
 
   /* ---------- ranges, stats ---------- */
@@ -650,15 +656,18 @@
       <div class="seg" style="margin-top:10px">${[['cycle', 'This cycle'], ['3cycles', '3 cycles'], ['6m', '6 months'], ['year', 'Year']].map(([k, l]) => `<button class="${SUMR === k ? 'on' : ''}" data-r="${k}">${l}</button>`).join('')}</div>
       <div class="sumcard"><h2 class="h6">${esc(R.label)}</h2><div class="m">${fmtDMY(R.from)} to ${fmtDMY(R.to)} · ${st.keys.length} day${st.keys.length === 1 ? '' : 's'} logged</div>
         <div class="stats"><div><b>${st.painDays.length}</b>days with pain</div><div><b>${st.severe.length}</b>severe days</div><div><b>${st.worst || '–'}</b>worst cycle day${st.worst.includes(',') || st.worst.includes('–') ? 's' : ''}</div></div>
+        <div class="dk"><div class="dk-a">
         ${st.painDays.length ? `<div class="lbl">Where it hurts most</div>
         <div class="heatrow"><figure>${BODY.svg('F', st.heat, 74, p)}<figcaption>Front</figcaption></figure><figure>${BODY.svg('B', st.heat, 74, p)}<figcaption>Back</figcaption></figure></div>${sevKey().replace('Mild', 'Sometimes').replace('Moderate', 'Often').replace('Severe', 'Most')}` : ''}
+        </div><div class="dk-b">
         ${comes.length ? `<div class="lbl">On pain days, it often comes with</div>
         <div class="bars2">${comes.map(([id, c]) => cls(id) ? `<div><span>${esc(cls(id).label)}</span><u style="width:${Math.round(c / n * 100)}%;background:${ccol(id)}"></u><em>${c}/${st.painDays.length}</em></div>` : '').join('')}</div>` : ''}
         ${st.sleepPain != null || st.sleepOther != null ? `<div class="lbl">Sleep score</div><p class="sub">${st.sleepPain != null ? `<b>${st.sleepPain}</b> on pain days` : ''}${st.sleepPain != null && st.sleepOther != null ? ' · ' : ''}${st.sleepOther != null ? `<b>${st.sleepOther}</b> on other days` : ''}</p>` : ''}
         ${st.cycles.length ? `<div class="lbl">Recent cycle lengths</div><p class="sub">${st.cycles.map(x => `<b>${x}</b>`).join(' · ')} days</p>` : ''}
+        </div></div>
         ${!st.keys.length ? `<p class="empty">Nothing logged in this range yet.</p>` : ''}
       </div>
-      ${tabs('sum')}</div>`;
+      </div>`;
   }
   function summaryBind() { app.onclick = e => { const t = e.target.closest('[data-r]'); if (t) { SUMR = t.dataset.r; render(); } }; }
 
@@ -676,10 +685,12 @@
     const mv = st.moved[0];
     return `<div class="screen has-tabs">${header()}
       <h1 class="ttl">For your doctor</h1>
+      <div class="dk"><div class="dk-a">
       <div class="seg" style="margin-top:10px">${[['cycle', 'This cycle'], ['3m', '3 months'], ['6m', '6 months'], ['custom', 'Custom']].map(([k, l]) => `<button class="${DOC.r === k ? 'on' : ''}" data-r="${k}">${l}</button>`).join('')}</div>
       ${DOC.r === 'custom' ? `<div class="two" style="margin-top:8px"><label class="fl">From<input class="inp" type="date" data-from value="${R.from}"></label><label class="fl">To<input class="inp" type="date" data-to value="${R.to}"></label></div>` : ''}
       <div class="lbl">Include</div>
       <div class="ticks"><button class="tk ${incl('pain') ? '' : 'off'}" data-inc="pain" style="--c:var(--acc)"><span>Pain & body map</span><i>${incl('pain') ? '✓' : ''}</i></button>${used.map(c => `<button class="tk ${incl(c.id) ? '' : 'off'}" data-inc="${c.id}" style="--c:${ccol(c.id)}"><span>${esc(c.label)}</span><i>${incl(c.id) ? '✓' : ''}</i></button>`).join('')}</div>
+      </div><div class="dk-b">
       ${!st.keys.length ? `<p class="empty">Nothing logged in this range.</p>` : `
       <div class="prev"><h2 class="h6">Symptom record</h2><div class="m">${fmtDMY(R.from)} to ${fmtDMY(R.to)} · ${st.keys.length} day${st.keys.length === 1 ? '' : 's'} logged</div>
         ${incl('pain') && st.painDays.length ? `<div class="cols"><span class="pair">${BODY.svg('F', st.heat, 34, p, { thin: 1 })}${BODY.svg('B', st.heat, 34, p, { thin: 1 })}</span>
@@ -690,7 +701,7 @@
       </div>
       <div class="dl"><button class="btn ghost" data-pdf>PDF / print</button><button class="btn" data-xlsx>Excel (.xlsx)</button></div>
       <button class="link center" data-csv>Or download a CSV</button>`}
-      ${tabs('doc')}</div>`;
+      </div></div></div>`;
   }
   function doctorBind() {
     app.onclick = e => {
@@ -771,6 +782,7 @@
     return `<div class="screen">
       <header class="hd"><a class="link" href="#today">‹ Back</a><span class="r"></span></header>
       <h1 class="ttl">Settings</h1>
+      <div class="dk"><div class="dk-a">
       <div class="lbl">Colours</div>
       <div class="pals">${PALS.map(x => `<button class="pl ${x.id === pal().id ? 'on' : ''}" data-pal="${x.id}"><span class="pchip" style="background:${x.bg}">${[x.acc, x.c[0], x.c[3], x.c[5]].map(c => `<i style="background:${c}"></i>`).join('')}</span><span>${x.name}<small>${x.desc}</small></span><span class="ck">✓</span></button>`).join('')}</div>
 
@@ -786,6 +798,7 @@
       <div class="starts">${starts.slice(0, 8).map(k => `<div class="set"><span>${fmtDMY(k)}</span><button class="link danger-t" data-unstart="${k}">Remove</button></div>`).join('') || '<p class="hint">No period starts yet.</p>'}</div>
       <div class="addopt"><input class="inp" type="date" data-startdate max="${todayK()}" aria-label="Period start date"><button class="btn small" data-addstart>Add a start</button></div>
 
+      </div><div class="dk-b">
       <div class="lbl">Symptom classes</div>
       <div class="clist">${visibleClasses().map(c => `<button class="set as-btn" data-editcls="${c.id}"><span><i class="sq" style="background:${ccol(c.id)}"></i>${esc(c.label)}</span><span class="soft">Edit ›</span></button>`).join('')}
         <button class="set as-btn" data-editcls="pain"><span><i class="sq" style="background:var(--acc)"></i>Pain types</span><span class="soft">Edit ›</span></button></div>
@@ -803,6 +816,7 @@
       <div class="two"><button class="btn ghost" data-backup>Save a backup</button><label class="btn ghost file">Restore a backup<input type="file" accept=".json,application/json" data-restore hidden></label></div>
       <button class="link center danger-t" data-reset style="margin-top:20px">Clear everything on this device</button>
       <p class="hint center">Astra · your data stays on your devices and in your own sync space.</p>
+      </div></div>
     </div>`;
   }
   function settingsBind() {
@@ -942,7 +956,8 @@
     const changed = v !== current; current = v;
     app.onclick = app.oninput = app.onchange = null;
     app.className = 'v-' + v;
-    app.innerHTML = VIEWS[v][0](...args);
+    const TABKEY = { today: 'today', pain: 'today', day: 'today', cal: 'cal', summary: 'sum', doctor: 'doc', settings: 'set' };
+    app.innerHTML = VIEWS[v][0](...args) + (TABKEY[v] ? tabs(TABKEY[v], ['pain', 'day', 'settings'].includes(v)) : '');
     if (VIEWS[v][1]) VIEWS[v][1](...args);
     if (changed) window.scrollTo(0, 0);
   }
