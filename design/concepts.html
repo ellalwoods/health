@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Symptom tracker: names and directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+/* A board of mockups: names first, then three directions, each as four phone screens
+   (Today, Log, Calendar, Export). All sample data is made up. */
+:root{--ink:#1a1a1a;--soft:#5c5a55;--hair:#ebebeb;--page:#f4f3ef;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;--sans:'Hanken Grotesk',system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+.top{max-width:1360px;margin:0 auto;padding:34px 24px 6px}
+.top h1{font-family:var(--display);font-weight:800;font-size:38px;letter-spacing:-.02em;margin:0 0 8px;line-height:1.02}
+.top p{margin:0 0 8px;color:var(--soft);max-width:78ch}
+h2.sec{font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.015em;margin:40px 0 4px}
+.wrap{max-width:1360px;margin:0 auto;padding:0 24px}
+.lede{color:var(--soft);max-width:80ch;margin:0 0 18px}
+
+/* names */
+.names{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.nm{background:#fff;border-radius:18px;padding:18px 18px 16px;box-shadow:0 0 0 1px #1a1a1a0d}
+.nm .w{font-size:34px;line-height:1;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.nm p{margin:0;font-size:13.5px;color:var(--soft);line-height:1.45}
+.nm .tag{display:inline-block;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--ink);padding:2px 8px;border-radius:99px;margin-top:10px}
+
+/* the shared idea */
+.idea{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:6px}
+.idea div{background:#fff;border-radius:18px;padding:16px 18px;box-shadow:0 0 0 1px #1a1a1a0d;font-size:14px}
+.idea b{font-family:var(--display);font-weight:800;font-size:17px;display:block;margin-bottom:4px}
+.idea ul{margin:6px 0 0;padding-left:18px;color:var(--soft)}
+
+/* direction heads */
+.dir{margin-top:54px}
+.dir header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.dir header .n{font-family:var(--display);font-weight:800;font-size:15px;color:var(--soft)}
+.dir header h3{margin:0;font-size:40px;line-height:1}
+.dir .blurb{color:var(--soft);max-width:86ch;margin:8px 0 0}
+.swatch{display:flex;gap:6px;margin-top:10px;align-items:center;font-size:12px;color:var(--soft)}
+.swatch i{width:18px;height:18px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1px #0001}
+.flow{display:flex;flex-wrap:wrap;gap:26px 22px;margin-top:20px}
+.ph{width:300px;flex:0 0 300px}
+.ph .cap{font-family:var(--display);font-weight:800;font-size:15px;margin:0 0 8px 8px}
+.ph .cap span{font-family:var(--sans);font-weight:500;color:var(--soft);font-size:13px}
+.scr{width:300px;height:640px;border-radius:40px;overflow:hidden;position:relative;border:8px solid #fff;box-shadow:0 22px 46px #1a1a1a1c,0 0 0 1px #1a1a1a14;background:#fff}
+.in{position:absolute;inset:0;padding:44px 18px 18px;display:flex;flex-direction:column;overflow:hidden}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:86px;height:23px;background:#111;border-radius:20px;z-index:9}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;padding:9px 10px 16px;border-top:1px solid var(--hair);background:#fff;font-size:10.5px;font-weight:600;color:#9a978f}
+.tabs span{display:flex;flex-direction:column;align-items:center;gap:3px}
+.tabs span.on{color:var(--k,var(--ink))}
+.tabs svg{display:block}
+
+/* ============ A. TWINGE: index cards, one riso ink per symptom class ============ */
+.A{font-family:'Space Grotesk',sans-serif;--k:#f15060}
+.A .mono{font-family:'Space Mono',monospace}
+.A .bar{display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--soft)}
+.A .wm{font-weight:700;font-size:17px;letter-spacing:-.02em;text-transform:none;color:var(--ink);display:flex;align-items:center;gap:6px}
+.A .day{font-size:78px;font-weight:700;letter-spacing:-.06em;line-height:.85;margin-top:22px}
+.A .dsub{font-size:14px;color:var(--soft);margin-top:8px}
+.A .dsub b{color:var(--k)}
+.A .bigadd{margin-top:22px;border-radius:22px;border:2px dashed #1a1a1a33;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-weight:700;font-size:18px}
+.A .bigadd .plus{width:62px;height:62px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:400;line-height:1}
+.A .bigadd small{font-weight:500;font-size:12px;color:var(--soft)}
+.A .lbl{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:16px 0 7px}
+.A .card{border-radius:12px;padding:9px 11px 9px 14px;margin-bottom:6px;position:relative;background:#fafaf8;font-size:12.5px;box-shadow:inset 0 0 0 1px var(--hair)}
+.A .card::before{content:"";position:absolute;left:0;top:8px;bottom:8px;width:4px;border-radius:0 3px 3px 0;background:var(--c)}
+.A .card b{font-weight:700;color:var(--c)}
+.A .card .r{float:right;color:var(--soft)}
+.A .scale{display:grid;grid-template-columns:repeat(11,1fr);gap:3px}
+.A .scale i{font-style:normal;aspect-ratio:1;border-radius:6px;font-size:11px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1.5px var(--hair);font-family:'Space Mono',monospace}
+.A .scale i.on{background:var(--k);color:#fff;box-shadow:none}
+.A .chips{display:flex;flex-wrap:wrap;gap:5px}
+.A .chip{padding:5px 10px;border-radius:99px;font-size:12px;font-weight:500;box-shadow:inset 0 0 0 1.5px var(--hair)}
+.A .chip.on{background:var(--c,var(--ink));color:#fff;box-shadow:none}
+.A .classes{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.A .cls{border-radius:12px;padding:8px 8px 7px;font-size:11.5px;font-weight:600;box-shadow:inset 0 0 0 1.5px var(--hair);display:flex;flex-direction:column;gap:3px;cursor:pointer;transition:background .15s}
+.A .cls i{width:16px;height:16px;border-radius:5px;background:var(--c);display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:13px;line-height:1}
+.A .cls.added{background:color-mix(in srgb,var(--c) 12%,#fff);box-shadow:inset 0 0 0 1.5px var(--c)}
+.A .cls.added i{font-size:10px}
+.A .open{border-radius:14px;box-shadow:inset 0 0 0 1.5px var(--c);padding:9px 11px;margin-top:8px}
+.A .open h5{margin:0 0 6px;font-size:12px;color:var(--c);display:flex;justify-content:space-between}
+.A .open h5 span{color:var(--soft);font-weight:500}
+.A .save{margin-top:auto;padding:13px;border-radius:99px;background:var(--ink);color:#fff;text-align:center;font-weight:700;font-size:14.5px}
+.A .mh{display:flex;justify-content:space-between;align-items:baseline;margin-top:14px}
+.A .mh b{font-size:28px;letter-spacing:-.04em}
+.A .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;margin-top:10px}
+.A .cal .h{font-size:10px;text-align:center;color:var(--soft);font-weight:600}
+.A .cal .d{aspect-ratio:.82;min-width:0;overflow:hidden;border-radius:7px;font-size:10px;padding:3px 3px;display:flex;flex-direction:column;justify-content:space-between;background:#fafaf8;font-family:'Space Mono',monospace}
+.A .cal .d.blank{background:none}
+.A .cal .d.today{box-shadow:inset 0 0 0 1.8px var(--ink)}
+.A .cal .d .p{font-weight:700;font-size:12px;color:var(--k)}
+.A .cal .d .dots{display:flex;gap:2px;flex-wrap:wrap}
+.A .cal .d .dots i{width:5px;height:5px;border-radius:2px;background:var(--c)}
+.A .cal .d.bleed{background:#fde3e6}
+.A .legend{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:10.5px;color:var(--soft);margin-top:10px}
+.A .legend span{display:flex;align-items:center;gap:4px}
+.A .legend i{width:8px;height:8px;border-radius:2px;background:var(--c)}
+.A .xl{border-radius:12px;box-shadow:inset 0 0 0 1px var(--hair);overflow:hidden;font-size:9.5px;margin-top:8px}
+.A .xl table{border-collapse:collapse;width:100%}
+.A .xl td,.A .xl th{border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);padding:4px 5px;text-align:left;white-space:nowrap}
+.A .xl th{background:#f6f6f4;font-weight:700}
+.A .seg{display:grid;grid-template-columns:repeat(3,1fr);background:#f3f3f0;border-radius:11px;padding:3px;font-size:12px;font-weight:600;text-align:center}
+.A .seg span{padding:6px 0;border-radius:8px;color:var(--soft)}
+.A .seg span.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px #0001}
+.A .ck{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--hair);font-size:12.5px}
+.A .ck i{width:18px;height:18px;border-radius:5px;background:var(--c);display:flex;align-items:center;justify-content:center;color:#fff;font-style:normal;font-size:11px}
+
+/* ============ B. EBB: quiet serif, one claret ink, the cycle as a ring ============ */
+.B{font-family:'Inter Tight',sans-serif;--k:#9b1d3f}
+.B .serif{font-family:'Fraunces',serif}
+.B .bar{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--soft)}
+.B .wm{font-family:'Fraunces',serif;font-style:italic;font-size:22px;color:var(--k);letter-spacing:-.01em}
+.B .ring{position:relative;width:224px;height:224px;margin:18px auto 0}
+.B .ring .mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.B .ring .mid small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.B .ring .mid b{font-family:'Fraunces',serif;font-weight:300;font-size:70px;line-height:.95;color:var(--k);letter-spacing:-.03em}
+.B .ring .mid span{font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--soft)}
+.B .log{margin-top:20px;padding:17px;border-radius:99px;background:var(--k);color:#fff;text-align:center;font-weight:600;font-size:16px;box-shadow:0 10px 24px #9b1d3f33}
+.B .so{margin-top:16px;font-size:12.5px;color:var(--soft);text-align:center}
+.B .so b{color:var(--ink);font-weight:600}
+.B h4{font-family:'Fraunces',serif;font-weight:400;font-size:30px;margin:14px 0 2px;letter-spacing:-.02em;line-height:1}
+.B .sub{font-size:12.5px;color:var(--soft)}
+.B .sect{border-top:1px solid var(--hair);padding:11px 0}
+.B .sect .t{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600}
+.B .sect .t em{font-family:'Fraunces',serif;font-weight:400;font-size:13px;color:var(--soft)}
+.B .sect .t .x{font-size:16px;color:#bbb;font-weight:400}
+.B .dots{display:flex;gap:6px;margin-top:9px}
+.B .dots i{flex:1;height:26px;border-radius:99px;background:#f4eef0;font-style:normal;font-size:11px;display:flex;align-items:center;justify-content:center;color:var(--soft)}
+.B .dots i.on{background:var(--k);color:#fff}
+.B .pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.B .pill{padding:5px 11px;border-radius:99px;font-size:12px;box-shadow:inset 0 0 0 1px #ddd}
+.B .pill.on{background:#f6e7eb;box-shadow:inset 0 0 0 1px var(--k);color:var(--k);font-weight:600}
+.B .addrow{margin-top:6px;padding-top:12px;border-top:1px solid var(--hair)}
+.B .addrow p{margin:0 0 8px;font-family:'Fraunces',serif;font-style:italic;font-size:14px;color:var(--soft)}
+.B .addrow .pill{box-shadow:inset 0 0 0 1px #ddd;color:var(--ink)}
+.B .addrow .pill::before{content:"+ ";color:var(--k);font-weight:700}
+.B .done{margin-top:auto;padding:13px;border-radius:99px;background:var(--k);color:#fff;text-align:center;font-weight:600}
+.B .cal{display:grid;grid-template-columns:repeat(7,1fr);row-gap:8px;margin-top:14px;text-align:center}
+.B .cal .h{font-size:10.5px;color:var(--soft)}
+.B .cal .d{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11.5px}
+.B .cal .d i{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:12px}
+.B .cal .d.today i{box-shadow:0 0 0 1.5px var(--ink)}
+.B .cal .d u{display:block;height:3px;width:14px;border-radius:2px;text-decoration:none}
+.B .day{border-top:1px solid var(--hair);margin-top:12px;padding-top:12px}
+.B .day .dt{font-family:'Fraunces',serif;font-size:18px}
+.B .day p{margin:4px 0 0;font-size:12.5px;color:var(--soft);line-height:1.5}
+.B .day p b{color:var(--ink);font-weight:600}
+.B .doc{margin-top:12px;border-radius:6px;box-shadow:0 8px 24px #0000001a,0 0 0 1px #0000000d;padding:14px 13px;font-size:8.5px;line-height:1.35;background:#fff}
+.B .doc h6{font-family:'Fraunces',serif;font-weight:500;font-size:14px;margin:0;color:var(--k)}
+.B .doc .m{color:var(--soft);margin:2px 0 8px}
+.B .doc .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px}
+.B .doc .stats div{background:#faf5f6;border-radius:4px;padding:5px}
+.B .doc .stats b{display:block;font-family:'Fraunces',serif;font-size:15px;color:var(--k);font-weight:500}
+.B .doc table{border-collapse:collapse;width:100%}
+.B .doc td,.B .doc th{border-bottom:1px solid #eee;padding:3px 2px;text-align:left;vertical-align:top}
+.B .doc th{color:var(--soft);font-weight:600}
+.B .opt{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.B .opt span{color:var(--soft)}
+.B .tog{width:34px;height:20px;border-radius:99px;background:var(--k);position:relative}
+.B .tog::after{content:"";position:absolute;right:2px;top:2px;width:16px;height:16px;border-radius:50%;background:#fff}
+
+/* ============ C. FLARE: tap where it hurts, a heat scale ============ */
+.C{font-family:'DM Sans',sans-serif;--k:#ff5a1f;--heat:linear-gradient(90deg,#ffd166,#ff9f1c,#ff5a1f,#d7263d)}
+.C .syne{font-family:'Outfit',sans-serif}
+.C .bar{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--soft)}
+.C .wm{font-family:'Outfit',sans-serif;font-weight:800;font-size:20px;letter-spacing:-.02em;color:var(--ink)}
+.C .wm b{background:var(--heat);-webkit-background-clip:text;background-clip:text;color:transparent}
+.C .q{font-family:'Outfit',sans-serif;font-weight:800;font-size:28px;line-height:1;letter-spacing:-.02em;margin:16px 0 0}
+.C .q span{color:var(--k)}
+.C .bodyw{position:relative;margin:6px auto 0;width:200px}
+.C .hint{font-size:12px;color:var(--soft);text-align:center;margin-top:2px}
+.C .flip{display:flex;justify-content:center;gap:4px;margin-top:8px}
+.C .flip span{font-size:11.5px;padding:4px 12px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--hair);color:var(--soft)}
+.C .flip span.on{background:var(--ink);color:#fff;box-shadow:none}
+.C .heat{height:10px;border-radius:99px;background:var(--heat);position:relative;margin:24px 2px 0}
+.C .heat .k{position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--ink),0 3px 8px #0003;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-weight:800;font-size:12px}
+.C .hl{display:flex;justify-content:space-between;font-size:10.5px;color:var(--soft);margin-top:10px}
+.C .lbl{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:14px 0 6px}
+.C .chips{display:flex;flex-wrap:wrap;gap:5px}
+.C .chip{padding:6px 11px;border-radius:10px;font-size:12px;font-weight:500;background:#f5f4f1}
+.C .chip.on{background:var(--ink);color:#fff}
+.C .stack{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+.C .row{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:14px;background:#f8f7f4;font-size:12.5px}
+.C .row .ic{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px;background:#fff;box-shadow:0 0 0 1px #0000000d}
+.C .row b{font-weight:600}
+.C .row .v{margin-left:auto;color:var(--soft);font-size:11.5px}
+.C .row.add{background:none;box-shadow:inset 0 0 0 1.5px var(--hair);border:0;color:var(--soft);justify-content:center;font-weight:600}
+.C .sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:26px 26px 0 0;box-shadow:0 -10px 40px #0000002a;padding:10px 16px 22px}
+.C .sheet .grab{width:36px;height:4px;border-radius:9px;background:#ddd;margin:0 auto 10px}
+.C .sheet h5{font-family:'Outfit';font-weight:800;font-size:17px;margin:0 0 10px}
+.C .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.C .g{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10.5px;font-weight:500;text-align:center;line-height:1.15}
+.C .g i{width:46px;height:46px;border-radius:15px;background:#f5f4f1;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:20px}
+.C .g.on i{background:#fff1ea;box-shadow:inset 0 0 0 2px var(--k)}
+.C .dim{position:absolute;inset:0;background:#1a1a1a33}
+.C .strip{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:10px}
+.C .strip .h{font-size:10px;text-align:center;color:var(--soft)}
+.C .strip .d{aspect-ratio:1;border-radius:10px;display:flex;align-items:flex-end;justify-content:flex-start;padding:3px 5px;font-size:10px;font-weight:600}
+.C .strip .d.today{box-shadow:0 0 0 2px var(--ink)}
+.C .strip .d.blank{background:none!important}
+.C .kpi{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:12px}
+.C .kpi div{background:#f8f7f4;border-radius:14px;padding:9px 11px;font-size:11.5px;color:var(--soft)}
+.C .kpi b{display:block;font-family:'Outfit';font-weight:800;font-size:22px;color:var(--ink);line-height:1.1}
+.C .range{display:flex;gap:5px;margin-top:12px}
+.C .range span{flex:1;text-align:center;padding:8px 0;border-radius:11px;font-size:12px;font-weight:600;background:#f5f4f1;color:var(--soft)}
+.C .range span.on{background:var(--ink);color:#fff}
+.C .file{display:flex;align-items:center;gap:11px;padding:12px;border-radius:16px;box-shadow:inset 0 0 0 1.5px var(--hair);margin-top:8px;font-size:12.5px}
+.C .file .fi{width:34px;height:40px;border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:10px}
+.C .file b{display:block;font-size:13px}
+.C .file span{color:var(--soft);font-size:11.5px}
+.C .go{margin-top:auto;padding:14px;border-radius:16px;background:var(--ink);color:#fff;text-align:center;font-weight:700;font-size:15px}
+
+.foot{max-width:1360px;margin:50px auto 0;padding:0 24px 70px}
+.foot table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;font-size:14px}
+.foot th,.foot td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
+.foot th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.foot td:first-child{font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>A symptom tracker: names and directions</h1>
+  <p>White, minimal, in the DuoDisco family but with its own character. It opens to today with one big thing to log. You only add the symptom classes that happened that day, so a quiet day is one line and a bad day is as detailed as it needs to be. There's a calendar, and an export for the doctor. All the data on this page is made up.</p>
+</div>
+
+<div class="wrap">
+  <h2 class="sec">Names</h2>
+  <p class="lede">No “Duo”. Some say pain, some say cycle, some say notes. The top three each have a direction below, but any name can go with any look.</p>
+  <div class="names" id="names"></div>
+
+  <h2 class="sec">The idea that all three share</h2>
+  <div class="idea">
+    <div><b>1 · Open to today</b>The date, the cycle day (worked out from when your period started) and one big button: <em>Log</em>. Below it, anything already logged today.</div>
+    <div><b>2 · Pain first, then add only what happened</b>Every log starts with pain: how bad (0–10), what kind, where, and when it started. Then you tap to add a symptom class. Classes you don't add don't appear anywhere, not even as blanks.
+      <ul><li>Bleeding &amp; clots</li><li>Bowel</li><li>Urinary (UTI-type)</li><li>Headache</li><li>Nausea, dizziness, chills</li><li>Heart (rate, palpitations)</li><li>Sleep · Energy · Stress</li><li>Food · Activity</li><li>Treatment, and whether it helped</li><li>Notes</li></ul>
+    </div>
+    <div><b>3 · Calendar and export</b>A month view: pain level and bleeding at a glance, with a small mark for each class you logged. Tap a day to see or edit it. Export a spreadsheet for a date range (Excel or CSV) with a summary sheet and only the columns you've used. Everything syncs to Supabase.</div>
+  </div>
+</div>
+
+<!-- A -->
+<section class="wrap dir">
+  <header><span class="n">Direction A</span><h3 style="font-family:'Space Grotesk';font-weight:700;letter-spacing:-.04em">Twinge</h3></header>
+  <p class="blurb"><b>Index cards.</b> Every symptom class has its own riso ink and becomes a little coloured card on the day it's added. The calendar is a grid of tiny day cards with the pain number and a dot for each class, so patterns show up as colour (for example, “the orange dots always come with the 7s”). Space Grotesk and Space Mono: a little clinical, a little zine. Closest to DuoDisco.</p>
+  <div class="swatch" id="swA"></div>
+  <div class="flow" id="A"></div>
+</section>
+
+<!-- B -->
+<section class="wrap dir">
+  <header><span class="n">Direction B</span><h3 style="font-family:'Fraunces';font-style:italic;font-weight:400;color:#9b1d3f">Ebb</h3></header>
+  <p class="blurb"><b>Quiet and calm.</b> One deep claret ink on white, a serif for numbers and dates, and lots of space. Today shows your cycle as a ring with this day marked, and one big button. Logging is a single scrolling page: pain at the top, then “Anything else today?” with the classes as + pills. Each one you tap unfolds into its own section. The export is a tidy printable summary that reads like a letter for a GP or gynaecologist.</p>
+  <div class="swatch"><i style="background:#9b1d3f"></i><i style="background:#c9637c"></i><i style="background:#f6e7eb"></i><i style="background:#1a1a1a"></i> Claret, rose, blush, ink</div>
+  <div class="flow" id="B"></div>
+</section>
+
+<!-- C -->
+<section class="wrap dir">
+  <header><span class="n">Direction C</span><h3 style="font-family:'Outfit';font-weight:800;letter-spacing:-.03em">Fl<span style="background:linear-gradient(90deg,#ffd166,#ff5a1f,#d7263d);-webkit-background-clip:text;background-clip:text;color:transparent">are</span></h3></header>
+  <p class="blurb"><b>Tap where it hurts.</b> The big thing on Today is a simple body outline (front and back). Tap the spot, drag the heat slider, done: that's a log. Extra classes come up from a sheet of large icons, so adding “Bowel” or “Headache” is one tap. Colour only means heat (yellow to red), so the calendar becomes a heat map you can read across a whole cycle. The most playful of the three, and the quickest on a bad day.</p>
+  <div class="swatch"><i style="background:#ffd166"></i><i style="background:#ff9f1c"></i><i style="background:#ff5a1f"></i><i style="background:#d7263d"></i><i style="background:#1a1a1a"></i> Heat scale and ink</div>
+  <div class="flow" id="C"></div>
+</section>
+
+<section class="foot">
+  <h2 class="sec" style="margin-top:0">Side by side</h2>
+  <table>
+    <tr><th>Direction</th><th>Feel</th><th>Fastest log</th><th>Calendar shows</th><th>Export</th></tr>
+    <tr><td>A · Twinge</td><td>Bright, organised, riso inks like DuoDisco</td><td>Pain number, then tap a class tile</td><td>Pain number and a coloured dot per class</td><td>Spreadsheet, only the columns you used</td></tr>
+    <tr><td>B · Ebb</td><td>Calm, grown-up, one colour</td><td>One page that scrolls, + pills unfold</td><td>Circles shaded by pain, bleeding marked underneath</td><td>Printable summary plus spreadsheet</td></tr>
+    <tr><td>C · Flare</td><td>Playful, visual, warm</td><td>Tap the body, slide the heat</td><td>A heat map of the month</td><td>Spreadsheet or PDF, with a few headline numbers</td></tr>
+  </table>
+</section>
+
+<script>
+const $=id=>document.getElementById(id);
+const phone=(cap,sub,body,cls)=>`<div class="ph"><div class="cap">${cap} <span>${sub}</span></div><div class="scr ${cls}"><div class="notch"></div><div class="in">${body}</div></div></div>`;
+const ico={
+  today:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/></svg>',
+  cal:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>',
+  exp:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  set:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg>'};
+const tabs=on=>`<div class="tabs">${[['today','Today'],['cal','Calendar'],['exp','Export'],['set','Settings']].map(([k,l])=>`<span class="${k===on?'on':''}">${ico[k]}${l}</span>`).join('')}</div>`;
+
+/* ---------- names ---------- */
+const NAMES=[
+ ['Twinge',"<span style=\"font-family:'Space Grotesk';font-weight:700;letter-spacing:-.04em\">Twinge</span>",'Small, honest, a bit funny. Says pain without being grim.','Direction A'],
+ ['Ebb',"<span style=\"font-family:'Fraunces';font-style:italic;color:#9b1d3f\">Ebb</span>",'The cycle as a tide. Calm and short, and looks lovely as a word.','Direction B'],
+ ['Flare',"<span style=\"font-family:'Outfit';font-weight:800;letter-spacing:-.03em\">Flare</span>",'A flare-up, and a flare of colour. Works for cramps and everything else.','Direction C'],
+ ['Inkling',"<span style=\"font-family:'Bricolage Grotesque';font-weight:800;letter-spacing:-.02em;color:#765ba7\">Inkling</span>",'A hunch that something’s coming, and ink for writing it down. Good for spotting patterns.',''],
+ ['Almanac',"<span style=\"font-family:'Fraunces';font-weight:700;letter-spacing:-.02em\">Almanac</span>",'A yearly book of days, moons and weather. Very “take it to the doctor”.',''],
+ ['Moonlog',"<span style=\"font-family:'DM Sans';font-weight:700;letter-spacing:-.03em\">moon<span style=\"color:#9b1d3f\">log</span></span>",'Says exactly what it is. Plain, friendly, a little sweet.',''],
+ ['Cramp Notes',"<span style=\"font-family:'Space Mono';font-weight:700;font-size:26px\">cramp/notes</span>",'Straightforward, like a notebook you keep in your bag.',''],
+ ['Hush',"<span style=\"font-family:'Fraunces';font-weight:300;letter-spacing:.02em\">hush</span>",'Private and soothing: somewhere to put it so you can stop thinking about it.',''],
+];
+$('names').innerHTML=NAMES.map(([n,w,p,t])=>`<div class="nm"><div class="w">${w}</div><p>${p}</p>${t?`<span class="tag">${t}</span>`:''}</div>`).join('');
+
+/* ---------- shared sample data (made up) ---------- */
+// November 2026: the 1st is a Sunday. Monday-first grid, so 6 blanks.
+const DAYS={3:{p:2,c:['head']},5:{p:0,c:['head','sleep']},10:{p:7,b:'Heavy',c:['bleed','bowel','nausea','treat']},11:{p:6,b:'Medium',c:['bleed','nausea','treat']},12:{p:4,b:'Medium',c:['bleed','heart']},13:{p:3,b:'Light',c:['bleed']},14:{p:5,b:'Spotting',c:['bleed','urine']},15:{p:6,b:'Spotting',c:['bleed','bowel']},
+  20:{p:1,c:['sleep']},24:{p:3,c:['urine']}};
+const CL={pain:['Pain','#f15060'],bleed:['Bleeding','#c83f78'],bowel:['Bowel','#e48a3a'],urine:['Urinary','#2f9fd6'],head:['Headache','#765ba7'],nausea:['Nausea & dizzy','#5f9474'],heart:['Heart','#e8608c'],sleep:['Sleep','#3255a4'],energy:['Energy','#159fae'],stress:['Stress','#a35d8f'],food:['Food','#00a95c'],act:['Activity','#0078bf'],treat:['Treatment','#1a1a1a'],note:['Notes','#9a978f']};
+const MON=['M','T','W','T','F','S','S'];
+
+/* ---------- A. Twinge ---------- */
+$('swA').innerHTML=Object.values(CL).slice(0,10).map(([n,c])=>`<i style="background:${c}" title="${n}"></i>`).join('')+' One ink per class';
+const tw=`<svg width="18" height="18" viewBox="0 0 20 20"><path d="M2 12 L6 12 L8 6 L11 16 L13 9 L14.5 12 L18 12" fill="none" stroke="#f15060" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const Abar=r=>`<div class="bar"><span class="wm">${tw}Twinge</span><span>${r}</span></div>`;
+const card=(k,txt,r)=>`<div class="card" style="--c:${CL[k][1]}"><b>${CL[k][0]}</b> · ${txt}${r?`<span class="r">${r}</span>`:''}</div>`;
+const A1=`${Abar('Sun 15 Nov')}
+ <div class="day">Day 6</div>
+ <div class="dsub">of your cycle · <b>period</b> · last logged 2:40pm</div>
+ <button class="bigadd"><span class="plus">+</span>Log how you feel<small>Pain first, then add anything else</small></button>
+ <div class="lbl">Today so far</div>
+ ${card('pain','6 · cramping, sharp · lower abdomen','2:40pm')}
+ ${card('bleed','Spotting · no clots')}
+ ${card('bowel','Loose, urgent ×2')}
+ ${tabs('today')}`;
+const A2=`${Abar('<span style="color:#1a1a1a">Cancel</span>')}
+ <div class="lbl" style="margin-top:12px">Pain · 0 to 10</div>
+ <div class="scale">${[...Array(11)].map((_,i)=>`<i class="${i===6?'on':''}">${i}</i>`).join('')}</div>
+ <div class="lbl">Type</div>
+ <div class="chips" style="--c:#f15060">${['Cramping','Sharp','Stabbing','Dull ache','Throbbing','Burning'].map((x,i)=>`<span class="chip ${i<2?'on':''}">${x}</span>`).join('')}</div>
+ <div class="lbl">Add what else happened</div>
+ <div class="classes" id="Acls"></div>
+ <div class="open" style="--c:${CL.bowel[1]}"><h5>Bowel <span>remove</span></h5><div class="chips" style="--c:${CL.bowel[1]}">${['Loose','Urgent','Constipated','Painful','Bloating'].map((x,i)=>`<span class="chip ${i<2?'on':''}">${x}</span>`).join('')}</div></div>
+ <div class="save" style="margin-top:10px">Save log</div>`;
+const Acal=()=>{let o=MON.map(m=>`<div class="h">${m}</div>`).join('');for(let i=0;i<6;i++)o+='<div class="d blank"></div>';for(let d=1;d<=30;d++){const x=DAYS[d];o+=`<div class="d ${x&&x.b?'bleed':''} ${d===15?'today':''}"><span>${d}</span>${x?`<span class="p">${x.p||''}</span><span class="dots">${x.c.map(k=>`<i style="--c:${CL[k][1]}"></i>`).join('')}</span>`:''}</div>`;}return o;};
+const A3=`${Abar('List')}
+ <div class="mh"><b>November</b><span class="mono" style="font-size:11px;color:var(--soft)">‹ 2026 ›</span></div>
+ <div class="cal">${Acal()}</div>
+ <div class="legend"><span><i style="--c:#fde3e6;box-shadow:0 0 0 1px #f3c4cb"></i>Period</span>${['bleed','bowel','urine','head','nausea','heart','sleep','treat'].map(k=>`<span><i style="--c:${CL[k][1]}"></i>${CL[k][0]}</span>`).join('')}</div>
+ ${tabs('cal')}`;
+const A4=`${Abar('Export')}
+ <div style="font-weight:700;font-size:26px;letter-spacing:-.04em;margin-top:14px;line-height:1">For the doctor</div>
+ <div class="lbl">Range</div>
+ <div class="seg"><span>This cycle</span><span class="on">3 months</span><span>Custom</span></div>
+ <div class="lbl">Include</div>
+ ${['pain','bleed','bowel','urine','heart','treat'].map(k=>`<div class="ck" style="--c:${CL[k][1]}"><span>${CL[k][0]}</span><i>✓</i></div>`).join('')}
+ <div class="xl"><table><tr><th>Date</th><th>Day</th><th>Pain</th><th>Type</th><th>Bleeding</th></tr><tr><td>10 Nov</td><td>1</td><td>7</td><td>Cramping</td><td>Heavy</td></tr><tr><td>11 Nov</td><td>2</td><td>6</td><td>Sharp</td><td>Medium</td></tr></table></div>
+ <div class="save" style="margin-top:12px">Download .xlsx</div>`;
+$('A').innerHTML=phone('Today','open the app','<div style="display:flex;flex-direction:column;height:100%">'+A1+'</div>','A')+phone('Log','pain, then add classes',A2,'A')+phone('Calendar','pain and a dot per class',A3,'A')+phone('Export','choose range and classes',A4,'A');
+const ACLS=['bleed','bowel','urine','head','nausea','heart','sleep','energy','stress','food','act','treat'];
+const added=new Set(['bleed','bowel']);
+const drawA=()=>{document.getElementById('Acls').innerHTML=ACLS.map(k=>`<button class="cls ${added.has(k)?'added':''}" data-k="${k}" style="--c:${CL[k][1]}"><i>${added.has(k)?'✓':'+'}</i>${CL[k][0]}</button>`).join('');};
+drawA();
+document.getElementById('Acls').addEventListener('click',e=>{const b=e.target.closest('.cls');if(!b)return;const k=b.dataset.k;added.has(k)?added.delete(k):added.add(k);drawA();});
+
+/* ---------- B. Ebb ---------- */
+const ring=(day,len)=>{let o='';const cx=112,cy=112,r=100;for(let i=1;i<=len;i++){const a=(i-1)/len*2*Math.PI-Math.PI/2,x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);const per=i<=5,now=i===day;o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${now?9:per?5:3}" fill="${now?'#9b1d3f':per?'#c9637c':'#e3dadc'}"${now?' stroke="#fff" stroke-width="3"':''}/>`;}
+  return `<svg width="224" height="224" viewBox="0 0 224 224">${o}</svg>`;};
+const Bbar=r=>`<div class="bar"><span class="wm">Ebb</span><span>${r}</span></div>`;
+const B1=`${Bbar('Sunday 15 November')}
+ <div class="ring">${ring(6,29)}<div class="mid"><small>Cycle day</small><b>6</b><span>period, ending</span></div></div>
+ <div class="log">Log today</div>
+ <div class="so">Logged at 2:40pm: <b>pain 6</b>, <b>bleeding</b>, <b>bowel</b></div>
+ <div class="so" style="margin-top:6px">Next period in about 23 days</div>
+ ${tabs('today')}`;
+const dots=(n,sel)=>`<div class="dots">${[...Array(n)].map((_,i)=>`<i class="${i===sel?'on':''}">${i}</i>`).join('')}</div>`;
+const B2=`${Bbar('Done')}
+ <h4>Today</h4><div class="sub">Sun 15 Nov · cycle day 6</div>
+ <div class="sect" style="margin-top:12px"><div class="t">Pain <em>moderate</em></div>${dots(11,6).replace(/<i/g,'<i style="font-size:10px"')}
+  <div class="pills">${['Cramping','Sharp','Dull','Stabbing'].map((x,i)=>`<span class="pill ${i<2?'on':''}">${x}</span>`).join('')}</div>
+  <div class="pills">${['Lower abdomen','Pelvis','Lower back','Left','Right'].map((x,i)=>`<span class="pill ${i===0||i===2?'on':''}">${x}</span>`).join('')}</div></div>
+ <div class="sect"><div class="t">Bleeding <span class="x">×</span></div><div class="pills">${['Spotting','Light','Medium','Heavy'].map((x,i)=>`<span class="pill ${i===0?'on':''}">${x}</span>`).join('')}<span class="pill">Clots</span></div></div>
+ <div class="addrow"><p>Anything else today?</p><div class="pills">${['Bowel','Urinary','Headache','Nausea','Heart','Sleep','Energy','Stress','Food','Activity','Treatment','Note'].map(x=>`<span class="pill">${x}</span>`).join('')}</div></div>
+ <div class="done">Save</div>`;
+const shade=p=>p==null?'transparent':['#fbf6f7','#f6e7eb','#efd3da','#e6bcc7','#dba3b2','#cf879b','#c26b83','#b1506b','#9b1d3f','#7f1633','#651129'][p];
+const Bcal=()=>{let o=MON.map(m=>`<div class="h">${m}</div>`).join('');for(let i=0;i<6;i++)o+='<div></div>';for(let d=1;d<=30;d++){const x=DAYS[d];const p=x?x.p:null;o+=`<div class="d ${d===15?'today':''}"><i style="background:${shade(p)};color:${p>=6?'#fff':'#1a1a1a'}">${d}</i><u style="background:${x&&x.b?'#9b1d3f':'transparent'}"></u></div>`;}return o;};
+const B3=`${Bbar('‹ ›')}
+ <h4 class="serif">November</h4><div class="sub">Darker means more pain · a line means bleeding</div>
+ <div class="cal">${Bcal()}</div>
+ <div class="day"><div class="dt">Tuesday 10 November</div><p><b>Pain 7</b>, cramping, lower abdomen. <b>Bleeding</b> heavy. <b>Bowel</b> loose. <b>Treatment</b>: heat pack (no help).</p></div>
+ ${tabs('cal')}`;
+const B4=`${Bbar('Share')}
+ <h4>For your doctor</h4><div class="sub">1 Aug to 15 Nov 2026 · 3 cycles</div>
+ <div class="doc"><h6>Symptom summary</h6><div class="m">Ella · prepared 15 Nov 2026</div>
+  <div class="stats"><div><b>23</b>days with pain</div><div><b>5.4</b>average pain</div><div><b>day 1–2</b>worst days</div></div>
+  <table><tr><th>Date</th><th>Pain</th><th>Where</th><th>Also</th></tr>
+  <tr><td>10 Nov</td><td>7</td><td>Lower abd., back</td><td>Heavy bleeding, bowel, nausea</td></tr>
+  <tr><td>11 Nov</td><td>6</td><td>Lower abdomen</td><td>Nausea</td></tr>
+  <tr><td>12 Nov</td><td>4</td><td>Pelvis</td><td>Heart rate 104</td></tr>
+  <tr><td>14 Nov</td><td>5</td><td>Lower abdomen</td><td>Urinary: burning</td></tr></table></div>
+ <div class="opt" style="margin-top:12px">Summary page (PDF)<div class="tog"></div></div>
+ <div class="opt">Full spreadsheet (.xlsx)<div class="tog"></div></div>
+ <div class="done" style="margin-top:12px">Export</div>`;
+$('B').innerHTML=phone('Today','your cycle as a ring',B1,'B')+phone('Log','one page, + pills unfold',B2,'B')+phone('Calendar','shaded by pain',B3,'B')+phone('Export','a summary to print',B4,'B');
+
+/* ---------- C. Flare ---------- */
+const body=(spots)=>`<svg viewBox="0 0 200 250" width="200" height="250">
+ <defs><radialGradient id="hot"><stop offset="0" stop-color="#d7263d" stop-opacity=".9"/><stop offset=".5" stop-color="#ff5a1f" stop-opacity=".55"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient>
+ <radialGradient id="warm"><stop offset="0" stop-color="#ff9f1c" stop-opacity=".8"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient></defs>
+ <g fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="100" cy="26" r="17"/>
+  <path d="M90 43 L90 52 Q64 56 56 66 Q50 74 48 100 L42 150 M110 43 L110 52 Q136 56 144 66 Q150 74 152 100 L158 150"/>
+  <path d="M62 78 Q66 120 64 140 Q60 160 66 178 L74 248 M138 78 Q134 120 136 140 Q140 160 134 178 L126 248"/>
+  <path d="M66 178 Q100 196 134 178 M100 190 L100 248" />
+ </g>
+ <g stroke="#1a1a1a" stroke-opacity=".12" stroke-dasharray="3 4" fill="none"><path d="M64 140 L136 140"/><path d="M70 110 L130 110"/></g>
+ ${spots.map(([x,y,r,g])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="url(#${g})"/>`).join('')}
+ ${spots.filter(s=>s[4]).map(([x,y,,,l])=>`<circle cx="${x}" cy="${y}" r="4" fill="#1a1a1a"/><text x="${x+9}" y="${y+4}" font-family="DM Sans" font-size="10" font-weight="600" fill="#1a1a1a">${l}</text>`).join('')}
+</svg>`;
+const Cbar=r=>`<div class="bar"><span class="wm">Fl<b>are</b></span><span>${r}</span></div>`;
+const C1=`${Cbar('Sun 15 · day 6')}
+ <div class="q">Where does it <span>hurt?</span></div>
+ <div class="bodyw">${body([[100,155,34,'hot','Lower abdomen'],[124,128,20,'warm']])}</div>
+ <div class="flip"><span class="on">Front</span><span>Back</span></div>
+ <div class="heat"><div class="k" style="left:60%">6</div></div>
+ <div class="hl"><span>Barely there</span><span>Can't function</span></div>
+ ${tabs('today')}`;
+const C2=`${Cbar('Sun 15')}
+ <div class="q" style="font-size:22px">Lower abdomen · <span>6</span></div>
+ <div class="lbl">Feels like</div>
+ <div class="chips">${['Cramping','Sharp','Stabbing','Dull','Throbbing'].map((x,i)=>`<span class="chip ${i<2?'on':''}">${x}</span>`).join('')}</div>
+ <div class="lbl">Also today</div>
+ <div class="stack">
+  <div class="row"><span class="ic">💧</span><b>Bleeding</b><span class="v">Spotting</span></div>
+  <div class="row add">+ Add a symptom</div>
+ </div>
+ <div class="dim"></div>
+ <div class="sheet"><div class="grab"></div><h5>Add a symptom</h5>
+  <div class="grid">${[['💧','Bleeding',1],['🚽','Bowel',1],['🫧','Urinary'],['🤕','Headache'],['🌀','Nausea, dizzy'],['❤️','Heart'],['😴','Sleep'],['🔋','Energy'],['🌪️','Stress'],['🍫','Food'],['🚶','Activity'],['💊','Treatment']].map(([e,l,on])=>`<div class="g ${on?'on':''}"><i>${e}</i>${l}</div>`).join('')}</div></div>`;
+const heat=p=>p==null?'#f5f4f1':['#fff6dc','#ffeab0','#ffd166','#ffbf47','#ff9f1c','#ff7b1c','#ff5a1f','#e83b2c','#d7263d','#b31b33','#8f1329'][p];
+const Ccal=()=>{let o=MON.map(m=>`<div class="h">${m}</div>`).join('');for(let i=0;i<6;i++)o+='<div class="d blank"></div>';for(let d=1;d<=30;d++){const x=DAYS[d];const p=x?x.p:null;o+=`<div class="d ${d===15?'today':''}" style="background:${heat(p)};color:${p>=6?'#fff':'#1a1a1a'}">${d}</div>`;}return o;};
+const C3=`${Cbar('Month')}
+ <div class="q" style="font-size:26px">November</div>
+ <div class="strip">${Ccal()}</div>
+ <div class="kpi"><div><b>8</b>days with pain</div><div><b>Day 1</b>worst, on average</div><div><b>3×</b>bowel with pain ≥5</div><div><b>2</b>urinary days</div></div>
+ ${tabs('cal')}`;
+const C4=`${Cbar('Export')}
+ <div class="q">Take it to <span>the doctor</span></div>
+ <div class="range"><span>1 cycle</span><span class="on">3 cycles</span><span>6 mo</span><span>All</span></div>
+ <div class="file"><span class="fi" style="background:#1d7a46">XLS</span><div><b>Spreadsheet</b><span>One row per log, only columns you used, plus a summary sheet</span></div></div>
+ <div class="file"><span class="fi" style="background:#d7263d">PDF</span><div><b>One-page summary</b><span>Heat map, averages and the worst days</span></div></div>
+ <div class="file"><span class="fi" style="background:#1a1a1a">CSV</span><div><b>Plain CSV</b><span>For Notion, Numbers or anything else</span></div></div>
+ <div class="go">Export 3 cycles</div>`;
+$('C').innerHTML=phone('Today','tap where it hurts',C1,'C')+phone('Log','add symptoms from a sheet',C2,'C')+phone('Calendar','a heat map',C3,'C')+phone('Export','spreadsheet or PDF',C4,'C');
+</script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Symptom tracker: login ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,400&family=Inter+Tight:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+<style>
+/* Five first-launch logins. Same system as DuoVino, DuoLogo and DuoDisco: your name plus some picks.
+   Only a SHA-256 hash of them is sent to Supabase. No unlocks or rewards. Every screen is tappable. */
+:root{--ink:#1a1a1a;--soft:#5c5a55;--hair:#ebebeb;--faint:#dedede;--page:#f4f3ef;
+  --display:'Bricolage Grotesque',system-ui,sans-serif;--sans:'Hanken Grotesk',system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--k,#1a1a1a);outline-offset:3px}
+.top{max-width:1240px;margin:0 auto;padding:32px 24px 6px}
+.top h1{font-family:var(--display);font-weight:800;font-size:36px;letter-spacing:-.02em;margin:0 0 8px;line-height:1.04}
+.top p{margin:0;color:var(--soft);max-width:76ch}
+.flow{max-width:1240px;margin:0 auto;padding:22px 24px 50px;display:flex;flex-wrap:wrap;gap:34px 26px;justify-content:center}
+.ph{width:320px;flex:0 0 320px}
+.ph h2{font-family:var(--display);font-weight:800;font-size:19px;margin:0 0 2px 6px;letter-spacing:-.01em}
+.ph .why{font-size:13px;color:var(--soft);margin:0 6px 10px;min-height:58px;line-height:1.4}
+.scr{width:320px;height:680px;border-radius:40px;overflow:hidden;position:relative;border:8px solid #fff;box-shadow:0 22px 46px #1a1a1a1f,0 0 0 1px #1a1a1a14;background:#fff}
+.in{position:absolute;inset:0;padding:48px 20px 20px;display:flex;flex-direction:column;overflow:hidden}
+.notch{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:92px;height:24px;background:#111;border-radius:20px;z-index:9}
+.logo{display:flex;align-items:center;gap:7px;font-weight:700;font-size:17px}
+.hello{font-size:31px;line-height:1;letter-spacing:-.02em;margin:18px 0 4px}
+.sub{font-size:13px;color:var(--soft);margin:0 0 12px;line-height:1.4}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--soft);margin:14px 0 7px}
+.name{font:inherit;font-size:16px;padding:11px 14px;border-radius:12px;border:1.5px solid var(--hair);background:#fafaf8;width:100%}
+.go{margin-top:auto;display:block;width:100%;text-align:center;padding:14px;border-radius:999px;font-weight:700;font-size:15px;color:#fff;background:var(--k)}
+.small{text-align:center;font-size:12px;color:var(--soft);margin-top:8px}
+.order{display:flex;gap:6px;justify-content:center;margin-top:9px;font-size:12px;color:var(--soft);align-items:center;min-height:22px}
+.order i{width:20px;height:20px;border-radius:50%;background:var(--hair);display:inline-flex;align-items:center;justify-content:center}
+
+/* 1. moon phases (Ebb) */
+.s1{font-family:'Inter Tight',sans-serif;--k:#9b1d3f}
+.s1 .logo{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:24px;color:var(--k)}
+.s1 .hello{font-family:'Fraunces',serif;font-weight:300;font-size:36px}
+.sky{background:#fbf6f7;border-radius:20px;padding:16px 10px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 4px}
+.moon{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:var(--soft);position:relative}
+.moon svg{transition:transform .15s}
+.moon.on svg{transform:scale(1.12)}
+.moon b{position:absolute;top:-6px;right:8px;width:17px;height:17px;border-radius:50%;background:var(--k);color:#fff;font-size:10px;display:none;align-items:center;justify-content:center}
+.moon.on b{display:flex}
+
+/* 2. body map (Flare) */
+.s2{font-family:'DM Sans',sans-serif;--k:#ff5a1f}
+.s2 .logo,.s2 .hello{font-family:'Outfit',sans-serif;font-weight:800}
+.s2 .go{background:var(--ink)}
+.map{position:relative;width:200px;height:300px;margin:0 auto}
+.spot{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;box-shadow:inset 0 0 0 2px #1a1a1a22;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-weight:800;font-size:13px;color:#fff;transition:all .15s}
+.spot.on{background:radial-gradient(circle,#d7263d,#ff5a1f 60%,#ffd166);box-shadow:0 0 18px #ff5a1f99}
+
+/* 3. comfort kit (Twinge) */
+.s3{font-family:'Space Grotesk',sans-serif;--k:#1a1a1a}
+.s3 .hello{font-weight:700;letter-spacing:-.04em}
+.bottles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.btl{border-radius:14px;padding:6px 0 4px;display:flex;justify-content:center;box-shadow:inset 0 0 0 1.5px var(--hair)}
+.btl.on,.tea.on{box-shadow:inset 0 0 0 2.5px var(--ink);background:#f6f6f4}
+.teas{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tea{border-radius:14px;padding:7px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;font-weight:600;color:var(--soft);box-shadow:inset 0 0 0 1.5px var(--hair);text-align:center;line-height:1.1}
+
+/* 4. pressed flowers (Hush / Almanac) */
+.s4{font-family:'Fraunces',serif;--k:#5f9474}
+.s4 .logo{font-weight:300;font-size:24px;letter-spacing:.02em}
+.s4 .hello{font-weight:300;font-size:36px}
+.s4 .sub,.s4 .name,.s4 .lbl,.s4 .small,.s4 .go{font-family:'Inter Tight',sans-serif}
+.flowers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fl{aspect-ratio:.8;border-radius:12px;background:#fbfaf6;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-style:italic;color:var(--soft);box-shadow:inset 0 0 0 1px #eee9dd}
+.fl.on{box-shadow:inset 0 0 0 2px var(--ink);background:#fff;color:var(--ink)}
+.months{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
+.mo{padding:8px 0;border-radius:9px;text-align:center;font-family:'Inter Tight';font-size:12px;font-weight:600;box-shadow:inset 0 0 0 1.5px var(--hair)}
+.mo.on{background:var(--ink);color:#fff;box-shadow:none}
+
+/* 5. index cards (Twinge alt) */
+.s5{font-family:'Space Grotesk',sans-serif;--k:#f15060}
+.s5 .hello{font-weight:700;letter-spacing:-.04em}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ic{aspect-ratio:1.3;border-radius:10px;background:#fafaf8;box-shadow:inset 0 0 0 1.5px var(--hair);position:relative;overflow:hidden;font-size:11px;font-weight:600;padding:7px 8px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;transition:all .15s}
+.ic::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--c)}
+.ic .n{align-self:flex-end;font-size:20px;font-weight:700;opacity:0;color:#fff;line-height:1}
+.ic.on{background:var(--c);color:#fff;box-shadow:0 6px 14px color-mix(in srgb,var(--c) 40%,transparent);transform:translateY(-2px)}
+.ic.on .n{opacity:1}
+
+.compare{max-width:1000px;margin:0 auto;padding:0 24px 60px}
+.compare h3{font-family:var(--display);font-weight:800;font-size:22px;margin:0 0 8px}
+.compare table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden}
+.compare th,.compare td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--hair);vertical-align:top}
+.compare th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);font-weight:700}
+.compare td:first-child{font-weight:700;white-space:nowrap}
+.compare p{color:var(--soft);font-size:14px;max-width:80ch}
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Login ideas</h1>
+  <p>The same coded login as DuoVino, DuoLogo and DuoDisco: on first launch, on each device, you type your name and make a few picks. The same name and picks open the same log everywhere. Only a scrambled code (a SHA-256 hash) made from them is sent to Supabase, so your name and picks never leave the phone. No unlocks or rewards this time. Each idea is themed to one of the directions, but any of them can be restyled to fit whichever look you choose. Tap to try them.</p>
+</div>
+<div class="flow" id="flow"></div>
+<section class="compare">
+  <h3>Side by side</h3>
+  <table>
+    <tr><th>Idea</th><th>Goes with</th><th>What you pick</th><th>Combinations per name</th><th>Feel</th></tr>
+    <tr><td>1. Moon phases</td><td>Ebb, Moonlog</td><td>3 of 8 moons, in order</td><td>336</td><td>Calm, pretty, fits a cycle tracker</td></tr>
+    <tr><td>2. Body map</td><td>Flare</td><td>3 of 9 spots, in order</td><td>504</td><td>The most on-theme, quick to remember</td></tr>
+    <tr><td>3. Comfort kit</td><td>Twinge</td><td>A hot-water bottle and a tea</td><td>64</td><td>Cosy and a bit funny</td></tr>
+    <tr><td>4. Pressed flower</td><td>Hush, Almanac</td><td>A flower and a month</td><td>96</td><td>Soft and private</td></tr>
+    <tr><td>5. Index cards</td><td>Twinge, Inkling</td><td>3 of 9 coloured cards, in order</td><td>504</td><td>Like DuoDisco's dance floor, in this app's inks</td></tr>
+  </table>
+  <p>Like the other apps, this isn't a password. It keeps your data separate rather than locked away, which is the right level for a personal log. If you'd like it to be harder to guess (it's health data), we could add a 4-digit PIN to any of these, still hashed on the phone.</p>
+</section>
+
+<script>
+const flow=document.getElementById('flow');
+const screen=(cls,title,why,inner)=>{const d=document.createElement('div');d.className='ph';d.innerHTML=`<h2>${title}</h2><p class="why">${why}</p><div class="scr ${cls}"><div class="notch"></div><div class="in">${inner}</div></div>`;flow.appendChild(d);return d;};
+const nameBox='<input class="name" placeholder="Your name" value="Ella" aria-label="Your name">';
+// Pick n in order: tap to add, tap a lit one to undo the last.
+function ordered(root,sel,max,onDraw){let picks=[];const items=[...root.querySelectorAll(sel)];
+  const draw=()=>{items.forEach((el,i)=>{const k=picks.indexOf(i);el.classList.toggle('on',k>=0);const b=el.querySelector('b,.n');if(b)b.textContent=k>=0?k+1:'';});onDraw&&onDraw(picks);};
+  items.forEach((el,i)=>el.addEventListener('click',()=>{const k=picks.indexOf(i);if(k>=0)picks=picks.slice(0,k);else if(picks.length<max)picks.push(i);draw();}));
+  return (p)=>{picks=p;draw();};}
+function single(root,sel){const items=[...root.querySelectorAll(sel)];items.forEach(el=>el.addEventListener('click',()=>{items.forEach(x=>x.classList.remove('on'));el.classList.add('on');}));}
+
+/* 1. Moon phases */
+const moonSVG=(p,s=40)=>{ // p: 0 new … 4 full … 7 waning crescent
+  const r=s/2-2,c=s/2;const lit='#9b1d3f',dark='#f0e3e7';
+  if(p===0)return `<svg width="${s}" height="${s}"><circle cx="${c}" cy="${c}" r="${r}" fill="${dark}"/></svg>`;
+  if(p===4)return `<svg width="${s}" height="${s}"><circle cx="${c}" cy="${c}" r="${r}" fill="${lit}"/></svg>`;
+  const k=Math.abs(Math.cos(Math.PI*p/4))*r;const cres=p===1||p===7;
+  const path=p<4?`M${c} ${c-r} A${r} ${r} 0 0 1 ${c} ${c+r} A${k} ${r} 0 0 ${cres?0:1} ${c} ${c-r}Z`
+                :`M${c} ${c-r} A${r} ${r} 0 0 0 ${c} ${c+r} A${k} ${r} 0 0 ${cres?1:0} ${c} ${c-r}Z`;
+  return `<svg width="${s}" height="${s}"><circle cx="${c}" cy="${c}" r="${r}" fill="${dark}"/><path d="${path}" fill="${lit}"/></svg>`;};
+const MOONS=['New','Crescent','First quarter','Gibbous','Full','Waning gibbous','Last quarter','Waning crescent'];
+const m=screen('s1','1. Moon phases','Three moons, in order. Soft and on-theme for a cycle tracker. Goes with Ebb.',
+ `<div class="logo">Ebb</div><div class="hello">Hello</div><p class="sub">Your name, then three moons in order. Use the same ones on every device.</p>${nameBox}
+  <div class="lbl">Your three moons</div><div class="sky">${MOONS.map((n,i)=>`<button class="moon">${moonSVG(i)}<b></b>${n.replace('Waning ','W. ')}</button>`).join('')}</div>
+  <div class="order" id="o1"></div><button class="go">Open Ebb</button><div class="small">New here? This starts your log.</div>`);
+ordered(m,'.moon',3,p=>{m.querySelector('#o1').innerHTML='Order '+[0,1,2].map(i=>`<i>${p[i]!=null?moonSVG(p[i],18):''}</i>`).join('');})([4,0,2]);
+
+/* 2. Body map */
+const SPOTS=[[100,30,'Head'],[100,78,'Chest'],[62,120,'Left side'],[138,120,'Right side'],[100,128,'Stomach'],[100,168,'Lower abdomen'],[52,170,'Left hand'],[148,170,'Right hand'],[100,252,'Feet']];
+const fig=`<svg width="200" height="300" viewBox="0 0 200 300" style="position:absolute;inset:0" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="100" cy="30" r="18"/><path d="M90 48 V56 Q64 60 56 70 Q50 78 48 104 L44 158 M110 48 V56 Q136 60 144 70 Q150 78 152 104 L156 158 M62 82 Q66 124 64 144 Q60 164 66 182 L74 262 M138 82 Q134 124 136 144 Q140 164 134 182 L126 262 M66 182 Q100 200 134 182 M100 194 V262"/></svg>`;
+const b=screen('s2','2. Body map','Tap three spots on the figure, in order. The most on-theme, and quick to remember. Goes with Flare.',
+ `<div class="logo">Flare</div><div class="hello">Hello</div><p class="sub">Your name, then tap three spots in order. Same ones on every device.</p>${nameBox}
+  <div class="lbl">Three spots</div><div class="map">${fig}${SPOTS.map(([x,y,l])=>`<button class="spot" style="left:${x}px;top:${y}px" aria-label="${l}"><b></b></button>`).join('')}</div>
+  <button class="go">Open Flare</button>`);
+ordered(b,'.spot',3)([5,0,3]);
+
+/* 3. Comfort kit */
+const BOTTLE=['#f15060','#ff6c2f','#e48a3a','#00a95c','#159fae','#0078bf','#765ba7','#e8608c'];
+const btl=c=>`<svg width="44" height="54" viewBox="0 0 44 54"><rect x="17" y="2" width="10" height="8" rx="2" fill="#1a1a1a"/><rect x="6" y="10" width="32" height="40" rx="11" fill="${c}"/><path d="M12 22 h20 M12 30 h20 M12 38 h20" stroke="#fff" stroke-opacity=".45" stroke-width="2" stroke-linecap="round"/></svg>`;
+const TEAS=[['Peppermint','#5f9474'],['Ginger','#e48a3a'],['Chamomile','#e7c14a'],['Raspberry leaf','#c83f78'],['Earl Grey','#3255a4'],['Rooibos','#b5523b'],['Green','#00a95c'],['Hot choc','#6b4226']];
+const cup=c=>`<svg width="34" height="30" viewBox="0 0 34 30"><path d="M4 9 h20 v10 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8z" fill="${c}"/><path d="M24 12 h3 a4 4 0 0 1 0 8 h-3" fill="none" stroke="${c}" stroke-width="2.4"/><path d="M11 2 q2 2 0 4 M16 2 q2 2 0 4" stroke="#bbb" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;
+const tw=`<svg width="18" height="18" viewBox="0 0 20 20"><path d="M2 12 L6 12 L8 6 L11 16 L13 9 L14.5 12 L18 12" fill="none" stroke="#f15060" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const k3=screen('s3','3. Comfort kit','A hot-water bottle and a cup of tea. Cosy and a bit funny, but fewer combinations. Goes with Twinge.',
+ `<div class="logo">${tw}Twinge</div><div class="hello">Hello</div><p class="sub">Your name, a hot-water bottle and a tea. Pick the same ones on every device.</p>${nameBox}
+  <div class="lbl">A hot-water bottle</div><div class="bottles">${BOTTLE.map((c,i)=>`<button class="btl ${i===6?'on':''}">${btl(c)}</button>`).join('')}</div>
+  <div class="lbl">A tea</div><div class="teas">${TEAS.map(([n,c],i)=>`<button class="tea ${i===1?'on':''}">${cup(c)}${n}</button>`).join('')}</div>
+  <button class="go">Open Twinge</button>`);
+single(k3,'.btl');single(k3,'.tea');
+
+/* 4. Pressed flower */
+const FLOWERS=[['Poppy','#e2453c'],['Lavender','#8f6fd1'],['Daisy','#f2c94c'],['Cornflower','#2f6fd6'],['Rose','#e8608c'],['Violet','#765ba7'],['Wattle','#e9b12c'],['Fern','#5f9474']];
+const flower=(c,i)=>{if(i===7)return `<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 42 V4" stroke="${c}" stroke-width="1.6"/>${[8,14,20,26,32].map((y,j)=>`<ellipse cx="${11}" cy="${y}" rx="${6-j*.6}" ry="2.4" fill="${c}" transform="rotate(-25 11 ${y})"/><ellipse cx="23" cy="${y}" rx="${6-j*.6}" ry="2.4" fill="${c}" transform="rotate(25 23 ${y})"/>`).join('')}</svg>`;
+  if(i===1||i===6)return `<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 42 V10" stroke="#5f9474" stroke-width="1.6"/>${[6,11,16,21,26].map(y=>`<circle cx="15" cy="${y}" r="2.8" fill="${c}"/><circle cx="19.5" cy="${y+2.5}" r="2.8" fill="${c}"/>`).join('')}</svg>`;
+  const n=i===2?10:i===3?8:5;let p='';for(let j=0;j<n;j++){p+=`<ellipse cx="17" cy="${i===2?9:10}" rx="${i===2?2.2:4.2}" ry="${i===2?6.5:6.5}" fill="${c}" transform="rotate(${360/n*j} 17 16)"/>`;}
+  return `<svg width="34" height="44" viewBox="0 0 34 44"><path d="M17 42 V22" stroke="#5f9474" stroke-width="1.6"/><ellipse cx="11" cy="34" rx="5" ry="2" fill="#5f9474" transform="rotate(30 11 34)"/>${p}<circle cx="17" cy="16" r="3" fill="${i===2?'#e48a3a':'#1a1a1a'}"/></svg>`;};
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const f4=screen('s4','4. Pressed flower','A flower and a month, like pages pressed in a book. Soft and private. Goes with Hush or Almanac.',
+ `<div class="logo">hush</div><div class="hello">Hello</div><p class="sub">Your name, a flower and a month. The same ones on every device.</p>${nameBox}
+  <div class="lbl">A flower</div><div class="flowers">${FLOWERS.map(([n,c],i)=>`<button class="fl ${i===3?'on':''}">${flower(c,i)}${n}</button>`).join('')}</div>
+  <div class="lbl">A month</div><div class="months">${MONTHS.map((n,i)=>`<button class="mo ${i===9?'on':''}">${n}</button>`).join('')}</div>
+  <button class="go">Open hush</button>`);
+single(f4,'.fl');single(f4,'.mo');
+
+/* 5. Index cards */
+const CARDS=[['Pain','#f15060'],['Bleeding','#c83f78'],['Bowel','#e48a3a'],['Urinary','#2f9fd6'],['Headache','#765ba7'],['Nausea','#5f9474'],['Heart','#e8608c'],['Sleep','#3255a4'],['Notes','#1a1a1a']];
+const c5=screen('s5','5. Index cards','Three of the app’s coloured cards, in order. The same idea as DuoDisco’s dance floor, so it feels familiar. Goes with Twinge or Inkling.',
+ `<div class="logo">${tw}Twinge</div><div class="hello">Hello</div><p class="sub">Your name, then three cards in order. Use the same ones on every device.</p>${nameBox}
+  <div class="lbl">Your three cards</div><div class="cards">${CARDS.map(([n,c])=>`<button class="ic" style="--c:${c}">${n}<span class="n"></span></button>`).join('')}</div>
+  <div class="order" id="o5"></div><button class="go">Open Twinge</button><div class="small">New here? This starts your log.</div>`);
+ordered(c5,'.ic',3,p=>{c5.querySelector('#o5').innerHTML='Order '+[0,1,2].map(i=>`<i style="border-radius:4px;background:${p[i]!=null?CARDS[p[i]][1]:'var(--hair)'}"></i>`).join('')+' · tap a lit card to undo';})([2,6,0]);
+</script>
+</body>
+</html>
