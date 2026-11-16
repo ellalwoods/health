@@ -5,8 +5,8 @@
  * 'F.lowAbd.L' / 'F.lowAbd.R'. Base ids (REG keys) are saved in pain logs: don't rename them.
  * On the front the person's right is on the viewer's left; on the back it's the other way round. */
 (() => {
-  /* The figure is built from smooth simple shapes (head, neck, torso, tapered arms and legs, hands, feet).
-   It's drawn twice: once thick in ink (the outline), then filled on top, so all the parts share one clean outline. */
+  /* The figure: a soft, female body with arms slightly away from the sides and legs together,
+     drawn as one smooth outline (half of it below, mirrored for the other half). */
   function closed(pts) {
     const n = pts.length; let d = `M${pts[0][0]} ${pts[0][1]}`;
     for (let i = 0; i < n; i++) {
@@ -16,27 +16,24 @@
     }
     return d + 'Z';
   }
-  const mir = pts => pts.map(([x, y]) => [120 - x, y]).reverse();
-  const TORSO_HALF = [[60,33],[50,33.6],[42,35.5],[37.5,38.3],[34,43.5],[33.5,54],[35.5,64],[38.5,76],[40,87],[39,98],[35.5,108],[33.5,119],[35,129],[42,135],[52,137.5]];
-  const ARM = [[37,39.5],[31,43],[28,51],[26.5,62],[25,75],[23,89],[21,103],[19.2,116],[19,121],[23.2,121.5],[24.8,116],[26.8,103],[29,90],[31.3,77],[33.5,65],[35,55]]
-    .map(([x, y]) => [+(x - Math.max(0, y - 44) * 0.075).toFixed(1), y]);
-  const LEG = [[34.5,122],[35,140],[37,158],[38.2,172],[38.5,186],[40.3,202],[41.5,207],[49.5,207],[50.8,201],[52.5,186],[53.2,172],[54.5,158],[56.8,145],[58.8,135],[52,128]];
-  const PATHS = [closed(ARM), closed(mir(ARM)), closed(LEG), closed(mir(LEG)), closed([...TORSO_HALF, [60, 139], ...mir(TORSO_HALF).slice(0, -1)])];
-  function shapes(fill, stroke, extra, cls) {
-    const a = `fill="${fill}" stroke="${stroke}" stroke-width="${extra}" stroke-linejoin="round"${cls ? ` class="${cls}"` : ''}`;
-    return `<ellipse cx="60" cy="16.5" rx="10" ry="12.3" ${a}/><path d="M55 24 L55 36 L65 36 L65 24Z" ${a}/>` +
-      `<ellipse cx="15.3" cy="126" rx="3.9" ry="6.2" ${a}/><ellipse cx="104.7" cy="126" rx="3.9" ry="6.2" ${a}/>` +
-      `<ellipse cx="45.2" cy="209.5" rx="5.6" ry="3" ${a}/><ellipse cx="74.8" cy="209.5" rx="5.6" ry="3" ${a}/>` +
-      PATHS.map(d => `<path d="${d}" ${a}/>`).join('');
-  }
+  // From the top of the head down the viewer's left side: head, neck, shoulder, arm, hand, inside of the arm, waist, hip, leg, foot.
+  const HALF = [[60.0,4.0],[55.2,4.9],[52.3,6.2],[50.1,9.1],[48.8,12.6],[48.2,17.1],[48.3,21.9],[48.8,25.1],[49.6,28.3],[51.2,31.5],[53.4,34.4],[54.6,37.0],[54.7,39.2],[53.0,41.5],[48.5,43.4],[44.3,44.9],[40.1,47.2],[37.6,50.4],[36.4,54.6],[36.0,59.1],[35.4,64.8],[34.8,70.0],[34.3,77.0],[33.2,82.5],[31.9,87.3],[30.6,92.4],[29.8,97.5],[28.8,102.0],[26.4,104.6],[23.4,107.1],[21.4,111.0],[20.7,114.8],[21.1,118.6],[21.6,122.2],[23.0,124.8],[25.2,125.4],[27.3,123.9],[29.7,122.1],[31.9,121.1],[33.3,118.0],[34.6,114.8],[35.3,111.0],[36.0,106.2],[37.2,102.0],[38.5,98.8],[39.4,95.6],[40.5,92.4],[41.7,89.2],[42.5,86.0],[43.2,82.8],[43.7,78.3],[44.2,73.2],[44.7,69.7],[45.8,68.3],[46.9,69.6],[47.8,73.2],[48.2,77.7],[48.0,82.8],[47.5,86.3],[46.3,89.5],[44.9,92.7],[43.3,95.9],[42.2,99.1],[41.1,102.6],[40.5,107.1],[40.0,111.9],[39.8,116.7],[40.2,121.2],[41.0,124.7],[41.7,128.3],[42.6,132.7],[43.7,137.5],[44.6,142.3],[45.5,147.5],[46.2,153.2],[46.6,158.4],[46.4,164.1],[46.4,171.8],[46.9,178.2],[47.8,183.7],[49.0,189.4],[50.3,195.2],[51.7,200.3],[51.4,204.2],[48.9,207.4],[47.1,210.8],[47.5,214.0],[49.8,215.9],[54.9,216.3],[58.4,215.7]];
+  const OUTLINE = closed([...HALF, ...HALF.slice(1).map(([x, y]) => [+(120 - x).toFixed(1), y]).reverse()]);
+  // Light detail lines: front (bust, navel, fingers, knees, between the legs) and back (spine, shoulder blades, buttocks).
+  const FINGERS = 'M24.8 120.6 L24.3 124.2 M27 121.2 L27 125 M29.1 120.8 L29.6 124.4 M95.2 120.6 L95.7 124.2 M93 121.2 L93 125 M90.9 120.8 L90.4 124.4';
+  const KNEES = 'M49.5 158 Q52 159.6 54.5 158 M70.5 158 Q68 159.6 65.5 158';
+  const DETAIL = {
+    F: `M47.8 70 Q50.5 77.8 57.3 75.4 M72.2 70 Q69.5 77.8 62.7 75.4 M60 125 V213 ${FINGERS} ${KNEES}`,
+    B: `M60 56 V100 M53 55 Q55.5 60 55 66 M67 55 Q64.5 60 65 66 M60 108 V125 M43.5 122.5 Q51 131 59.6 125.3 M76.5 122.5 Q69 131 60.4 125.3 M60 125.5 V213 ${FINGERS} ${KNEES}`,
+  };
   // Areas used to name a point: [cx, cy, rx, ry, label]. Middle areas (cx 60) get a left/right/centre side.
   const REG = {
-    F: { head: [60,16,11,13,'Head'], chest: [60,56,19,12,'Chest'], upAbd: [60,80,17,9,'Upper abdomen'], rSide: [42.5,93,5,12,'Right side'], lSide: [77.5,93,5,12,'Left side'],
-         lowAbd: [60,103,17,9,'Lower abdomen'], pelvis: [60,123,19,9,'Pelvis'], rThigh: [46,168,9,34,'Right leg'], lThigh: [74,168,9,34,'Left leg'],
-         rArm: [21.5,86,7,44,'Right arm'], lArm: [98.5,86,7,44,'Left arm'] },
-    B: { headB: [60,16,11,13,'Back of head'], upBack: [60,56,20,12,'Upper back'], midBack: [60,80,17,9,'Mid back'], lowL: [46,104,8,9,'Lower back, left'],
-         lowC: [60,104,6,9,'Lower back'], lowR: [74,104,8,9,'Lower back, right'], sacrum: [60,124,19,10,'Tailbone and buttocks'], lThighB: [46,168,9,34,'Back of left leg'], rThighB: [74,168,9,34,'Back of right leg'],
-         lArmB: [21.5,86,7,44,'Left arm'], rArmB: [98.5,86,7,44,'Right arm'] },
+    F: { head: [60,18,12,15,'Head'], chest: [60,63,13,9,'Chest'], upAbd: [60,82,10,6,'Upper abdomen'], rSide: [46.5,88,3.5,10,'Right side'], lSide: [73.5,88,3.5,10,'Left side'],
+         lowAbd: [60,101,11,7,'Lower abdomen'], pelvis: [60,116,20,8,'Pelvis'], rThigh: [52.5,172,7.5,40,'Right leg'], lThigh: [67.5,172,7.5,40,'Left leg'],
+         rArm: [36,88,5.5,24,'Right arm'], lArm: [84,88,5.5,24,'Left arm'], rHand: [26.5,117,5,7,'Right hand'], lHand: [93.5,117,5,7,'Left hand'] },
+    B: { headB: [60,18,12,15,'Back of head'], upBack: [60,62,14,10,'Upper back'], midBack: [60,82,11,6,'Mid back'], lowL: [49,99,6,7,'Lower back, left'],
+         lowC: [60,99,4,7,'Lower back'], lowR: [71,99,6,7,'Lower back, right'], sacrum: [60,118,20,9,'Tailbone and buttocks'], lThighB: [52.5,172,7.5,40,'Back of left leg'], rThighB: [67.5,172,7.5,40,'Back of right leg'],
+         lArmB: [36,88,5.5,24,'Left arm'], rArmB: [84,88,5.5,24,'Right arm'], lHandB: [26.5,117,5,7,'Left hand'], rHandB: [93.5,117,5,7,'Right hand'] },
   };
   const MID = new Set(['head', 'chest', 'upAbd', 'lowAbd', 'pelvis', 'headB', 'upBack', 'midBack', 'sacrum']);
   const ORDER = [...Object.keys(REG.F).map(k => 'F.' + k), ...Object.keys(REG.B).map(k => 'B.' + k)];
@@ -75,16 +72,14 @@
   function svg(side, spots, w, pal, opts = {}) {
     const h = Math.round(w * 222 / 120), id = 'bm' + (gid++);
     const defs = pal.sev.map((c, i) => `<radialGradient id="${id}s${i}"><stop offset="0" stop-color="${c}" stop-opacity=".95"/><stop offset=".55" stop-color="${c}" stop-opacity=".6"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('');
-    const sw = opts.thin ? 2.6 : 1.5;
+    const sw = opts.thin ? 2.4 : 1.1;
     const pts = toPoints(spots).filter(p => p.s === side);
-    let g = pts.map(p => `<ellipse cx="${p.x}" cy="${p.y}" rx="${p.wide ? 15 : 12}" ry="${p.wide ? 13 : 11}" fill="url(#${id}s${p.sev ?? 0})"/>`).join('');
+    let g = pts.map(p => `<ellipse cx="${p.x}" cy="${p.y}" rx="${p.wide ? 12 : 9.5}" ry="${p.wide ? 11 : 9}" fill="url(#${id}s${p.sev ?? 0})"/>`).join('');
     if (opts.live) g += pts.map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="2.6" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="1.2" pointer-events="none"/>`).join('');
-    const marks = side === 'F'
-      ? `<circle cx="60" cy="96" r="1.1" fill="${pal.ink}" opacity=".45"/>`
-      : `<path d="M60 36 V118" stroke="${pal.ink}" stroke-opacity=".18" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M46 50 q6 9 1 17 M74 50 q-6 9 -1 17" stroke="${pal.ink}" stroke-opacity=".14" fill="none"/>`;
+    const marks = opts.thin ? '' : `<path d="${DETAIL[side]}" fill="none" stroke="${pal.ink}" stroke-opacity=".32" stroke-width=".7" stroke-linecap="round"/>` + (side === 'F' ? `<circle cx="60" cy="94" r=".9" fill="${pal.ink}" opacity=".4"/>` : '');
     const live = opts.live ? ` class="body live" data-side="${side}"` : ' class="body"';
     return `<svg${live} width="${w}" height="${h}" viewBox="0 0 120 222" role="img" aria-label="${side === 'F' ? 'Front' : 'Back'} of body"><defs>${defs}</defs>` +
-      `<g>${shapes(pal.ink, pal.ink, sw * 2)}</g><g>${shapes(pal.bg, 'none', 0, 'bfill')}</g>${marks}${g}</svg>`;
+      `<path class="bfill" d="${OUTLINE}" fill="${pal.card}" stroke="${pal.ink}" stroke-opacity=".5" stroke-width="${sw}" stroke-linejoin="round"/>${marks}${g}</svg>`;
   }
   /* For a tap on a live body: the point in body coordinates, or null if it missed the body. */
   function pointFromEvent(svgEl, e) {

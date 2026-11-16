@@ -284,7 +284,7 @@ svg.body.live { cursor: crosshair; touch-action: manipulation; }
   .bside:not(.on) { display: block; }
   .bside figcaption { display: block; }
   .bodywrap { margin-top: 14px; gap: 30px; }
-  .bodywrap .body { width: 170px; height: auto; }
+  .bodywrap .body { width: 210px; height: auto; }
   .v-pain .dk { grid-template-columns: minmax(380px, 1.1fr) minmax(300px, 1fr); }
   .v-pain .dk-b > .lbl:first-child { margin-top: 26px; }
   /* day: pain | tiles | cards */

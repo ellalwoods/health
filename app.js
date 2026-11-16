@@ -527,7 +527,7 @@
     </div></div></div>`;
   }
   const painSpots = () => PE.spots.map(p => ({ ...p, sev: PE.sev }));
-  const painBody = () => ['F', 'B'].map(sd => `<figure class="bside ${PE.side === sd ? 'on' : ''}"><span class="side l">${sd === 'F' ? 'R' : 'L'}</span><span class="side r">${sd === 'F' ? 'L' : 'R'}</span>${BODY.svg(sd, painSpots(), 150, pal(), { live: 1 })}<figcaption>${sd === 'F' ? 'Front' : 'Back'}</figcaption></figure>`).join('');
+  const painBody = () => ['F', 'B'].map(sd => `<figure class="bside ${PE.side === sd ? 'on' : ''}"><span class="side l">${sd === 'F' ? 'R' : 'L'}</span><span class="side r">${sd === 'F' ? 'L' : 'R'}</span>${BODY.svg(sd, painSpots(), 190, pal(), { live: 1 })}<figcaption>${sd === 'F' ? 'Front' : 'Back'}</figcaption></figure>`).join('');
   const painWhere = () => PE.spots.length ? `<b>${esc(whereText({ regions: zonesOf(PE.spots) }))}</b><br><span class="hint">Tap a spot again to remove it</span>` : 'Tap anywhere on the body. Add as many spots as you like.';
   function painBind(k, id) {
     const redrawBody = () => { app.querySelector('[data-body]').innerHTML = painBody(); app.querySelector('[data-where]').innerHTML = painWhere(); };
