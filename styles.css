@@ -108,7 +108,7 @@ textarea.inp { resize: vertical; min-height: 70px; }
 .timechip input { font: inherit; border: 0; background: none; color: var(--ink); padding: 4px 4px; width: 112px; }
 .bodywrap { display: flex; justify-content: center; margin-top: 8px; position: relative; }
 .bodywrap .side { position: absolute; top: 4px; font-size: 11px; font-weight: 700; color: var(--soft); }
-.region { cursor: pointer; }
+svg.body.live { cursor: crosshair; touch-action: manipulation; }
 .where { text-align: center; font-size: 13px; color: var(--soft); min-height: 20px; margin-top: 2px; }
 .where b { color: var(--ink); font-weight: 600; }
 .sevs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }

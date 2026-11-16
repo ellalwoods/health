@@ -250,13 +250,16 @@
   const header = (right = `<a class="iconbtn" href="#settings" aria-label="Settings">${icon('gear', 20)}</a>`) =>
     `<header class="hd main"><a class="wm" href="#today">${logo(19)}<span>Astra</span></a><span class="r">${right}</span></header>`;
   const sevTag = s => `<span class="sev" style="--s:var(--sev${s})"><i></i>${SEV[s]}</span>`;
+  /* Points to draw for pain logs: the exact taps if saved, otherwise the centre of each named place (older logs). */
+  const logPoints = l => l.spots && l.spots.length ? l.spots.map(p => ({ ...p })) : (l.regions || []).map(BODY.centre).filter(Boolean);
   const spotsOf = (logs, side) => {
-    const o = {};
-    for (const l of logs) for (const r of l.regions || []) if (!side || r[0] === side) o[r] = Math.max(o[r] ?? -1, l.sev ?? 0);
+    const o = [];
+    for (const l of logs) for (const p of logPoints(l)) if (!side || p.s === side) o.push({ ...p, sev: l.sev ?? 0 });
     return o;
   };
   const mini = (log, w = 20, p = pal()) => `<span class="bd">${BODY.svg('F', spotsOf([log]), w, p, { thin: 1 })}${BODY.svg('B', spotsOf([log]), w, p, { thin: 1 })}</span>`;
-  const whereText = l => (l.regions || []).slice().sort((a, b) => BODY.ORDER.indexOf(a) - BODY.ORDER.indexOf(b)).map(BODY.label).join(', ');
+  const zonesOf = spots => [...new Set(spots.map(p => BODY.zoneAt(p.s, p.x, p.y)))];
+  const whereText = l => [...new Set(l.regions || [])].sort((a, b) => BODY.order(a) - BODY.order(b)).map(BODY.label).join(', ');
 
   function movedLine(logs) {
     const ls = logs.filter(l => (l.regions || []).length).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
@@ -497,8 +500,9 @@
   function painInit(k, id) {
     if (PE && PE.k === k && PE.id === id) return;
     const d = day(k), l = id !== 'new' && d && (d.pain || []).find(x => x.id === id);
-    PE = l ? { k, id, time: l.time || nowTime(), sev: l.sev ?? 1, types: [...(l.types || [])], regions: [...(l.regions || [])], note: l.note || '', side: (l.regions || [])[0] && l.regions[0][0] === 'B' && !l.regions.some(r => r[0] === 'F') ? 'B' : 'F' }
-      : { k, id, time: k === todayK() ? nowTime() : '12:00', sev: 1, types: [], regions: [], note: '', side: 'F' };
+    const pts = l ? logPoints(l) : [];
+    PE = l ? { k, id, time: l.time || nowTime(), sev: l.sev ?? 1, types: [...(l.types || [])], spots: pts, note: l.note || '', side: pts.length && pts.every(p => p.s === 'B') ? 'B' : 'F' }
+      : { k, id, time: k === todayK() ? nowTime() : '12:00', sev: 1, types: [], spots: [], note: '', side: 'F' };
   }
   function pain(k, id) {
     if (!isKey(k)) { location.hash = '#today'; return ''; }
@@ -507,7 +511,7 @@
     return `<div class="screen">
       <header class="hd"><a class="link" href="${isNew ? (k === todayK() ? '#today' : '#day/' + k) : '#day/' + k}" data-cancel>Cancel</a><span class="r"><button class="link strong" data-save>${isNew ? 'Next' : 'Save'}</button></span></header>
       <h1 class="ttl">Pain <label class="timechip"><input type="time" data-time value="${PE.time}" aria-label="Time"></label></h1>
-      <p class="sub">${k === todayK() ? 'Today' : fmtLong(k)} · tap everywhere it hurts${id === 'new' ? ` · <button class="link inline" data-skip>No pain? Skip to bleeding and other symptoms ›</button>` : ''}</p>
+      <p class="sub">${k === todayK() ? 'Today' : fmtLong(k)} · tap exactly where it hurts${id === 'new' ? ` · <button class="link inline" data-skip>No pain? Skip to bleeding and other symptoms ›</button>` : ''}</p>
       <div class="dk"><div class="dk-a">
       <div class="seg sidetoggle" style="margin-top:10px" role="tablist">${[['F', 'Front'], ['B', 'Back']].map(([s, l]) => `<button class="${PE.side === s ? 'on' : ''}" data-side="${s}" role="tab">${l}</button>`).join('')}</div>
       <div class="bodywrap" data-body>${painBody()}</div>
@@ -522,21 +526,26 @@
       ${isNew ? `<button class="link center" data-skip>No pain, just other symptoms</button>` : `<button class="link center danger-t" data-delete>Delete this pain log</button>`}
     </div></div></div>`;
   }
-  const painSpots = () => { const o = {}; PE.regions.forEach(r => o[r] = PE.sev); return o; };
+  const painSpots = () => PE.spots.map(p => ({ ...p, sev: PE.sev }));
   const painBody = () => ['F', 'B'].map(sd => `<figure class="bside ${PE.side === sd ? 'on' : ''}"><span class="side l">${sd === 'F' ? 'R' : 'L'}</span><span class="side r">${sd === 'F' ? 'L' : 'R'}</span>${BODY.svg(sd, painSpots(), 150, pal(), { live: 1 })}<figcaption>${sd === 'F' ? 'Front' : 'Back'}</figcaption></figure>`).join('');
-  const painWhere = () => PE.regions.length ? `<b>${esc(whereText(PE))}</b>` : 'Nothing chosen yet';
+  const painWhere = () => PE.spots.length ? `<b>${esc(whereText({ regions: zonesOf(PE.spots) }))}</b><br><span class="hint">Tap a spot again to remove it</span>` : 'Tap anywhere on the body. Add as many spots as you like.';
   function painBind(k, id) {
     const redrawBody = () => { app.querySelector('[data-body]').innerHTML = painBody(); app.querySelector('[data-where]').innerHTML = painWhere(); };
     app.onclick = e => {
-      const r = e.target.closest('[data-region]');
-      if (r) { const v = r.dataset.region, i = PE.regions.indexOf(v); i >= 0 ? PE.regions.splice(i, 1) : PE.regions.push(v); redrawBody(); return; }
+      const sv = e.target.closest('svg.live');
+      if (sv) {
+        const side = sv.dataset.side, pt = BODY.pointFromEvent(sv, e); if (!pt) return;
+        const near = PE.spots.findIndex(p => p.s === side && Math.hypot(p.x - pt.x, p.y - pt.y) < 8);
+        if (near >= 0) PE.spots.splice(near, 1); else PE.spots.push({ s: side, x: pt.x, y: pt.y });
+        redrawBody(); return;
+      }
       const t = e.target.closest('button'); if (!t) return;
       if (t.dataset.side) { PE.side = t.dataset.side; render(); }
       else if (t.dataset.sev != null) { PE.sev = +t.dataset.sev; app.querySelectorAll('[data-sev]').forEach(b => b.classList.toggle('on', +b.dataset.sev === PE.sev)); redrawBody(); }
       else if (t.dataset.type != null) { const v = t.dataset.type, i = PE.types.indexOf(v); i >= 0 ? PE.types.splice(i, 1) : PE.types.push(v); t.classList.toggle('on', i < 0); }
       else if (t.matches('[data-edit-types]')) editOptions('pain', () => render());
       else if (t.matches('[data-save]')) {
-        const d = dayW(k), log = { id: id === 'new' ? uid() : id, time: PE.time, sev: PE.sev, types: PE.types.filter(x => x), regions: PE.regions, note: PE.note.trim() };
+        const d = dayW(k), log = { id: id === 'new' ? uid() : id, time: PE.time, sev: PE.sev, types: PE.types.filter(x => x), spots: PE.spots, regions: zonesOf(PE.spots), note: PE.note.trim() };
         const i = d.pain.findIndex(x => x.id === log.id);
         if (i >= 0) d.pain[i] = log; else d.pain.push(log);
         touchDay(k); PE = null; location.hash = '#day/' + k;
