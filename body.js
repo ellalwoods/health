@@ -5,7 +5,10 @@
  * 'F.lowAbd.L' / 'F.lowAbd.R'. Base ids (REG keys) are saved in pain logs: don't rename them.
  * On the front the person's right is on the viewer's left; on the back it's the other way round. */
 (() => {
-  const HALF = [[54,31],[53,38],[44,41],[34,45],[29,52],[27,64],[25,80],[23,96],[21,112],[19,124],[18,132],[22,134],[25,126],[28,110],[31,94],[33,80],[35,70],[36,84],[36,100],[33,116],[32,130],[34,150],[36,170],[38,190],[39,207],[46,212],[47,204],[48,186],[50,166],[54,148],[60,142]];
+  // Half of the body (viewer's left, from the neck down the outside, back up the inside of the leg), mirrored for the other half.
+  const HALF = [[54.5,26],[54,33],[48.5,37],[41,39.5],[35.5,43.5],[33.5,51],[34.5,62],[37,74],[39.5,86],[38,98],[34.5,110],[32.5,121],[33.5,134],[36,152],[38,168],[38,182],[40,198],[40.5,206],[38,211.5],[46,213.5],[51.5,211.5],[51.5,204],[53,186],[54,168],[56,150],[58,139],[60,136]];
+  // One arm (viewer's left), drawn behind the body and mirrored for the other.
+  const ARM_PTS = [[38,40.5],[31.5,44],[28,53],[26,67],[24,83],[21.5,99],[19,113],[17,123],[17.5,130.5],[21,132.5],[23.5,127],[25,117],[27.5,103],[30.5,88],[32.5,74],[34,62],[35.5,53]];
   function smooth(pts) {
     let d = `M${pts[0][0]} ${pts[0][1]}`;
     for (let i = 0; i < pts.length - 1; i++) {
@@ -16,14 +19,15 @@
     return d;
   }
   const OUTLINE = smooth([...HALF, ...HALF.slice(0, -1).reverse().map(([x, y]) => [120 - x, y])]) + 'Z';
+  const ARMS = [smooth(ARM_PTS) + 'Z', smooth(ARM_PTS.map(([x, y]) => [120 - x, y])) + 'Z'];
   // Areas used to name a point: [cx, cy, rx, ry, label]. Middle areas (cx 60) get a left/right/centre side.
   const REG = {
-    F: { head: [60,19,11,13,'Head'], chest: [60,60,19,13,'Chest'], upAbd: [60,83,18,9,'Upper abdomen'], rSide: [37,96,6,14,'Right side'], lSide: [83,96,6,14,'Left side'],
-         lowAbd: [60,104,17,9,'Lower abdomen'], pelvis: [60,124,18,9,'Pelvis'], rThigh: [46,160,10,24,'Right leg'], lThigh: [74,160,10,24,'Left leg'],
-         rArm: [26,95,6,38,'Right arm'], lArm: [94,95,6,38,'Left arm'] },
-    B: { headB: [60,19,11,13,'Back of head'], upBack: [60,60,20,13,'Upper back'], midBack: [60,83,18,9,'Mid back'], lowL: [45,106,8,9,'Lower back, left'],
-         lowC: [60,106,7,9,'Lower back'], lowR: [75,106,8,9,'Lower back, right'], sacrum: [60,125,18,9,'Tailbone and buttocks'], lThighB: [46,160,10,24,'Back of left leg'], rThighB: [74,160,10,24,'Back of right leg'],
-         lArmB: [26,95,6,38,'Left arm'], rArmB: [94,95,6,38,'Right arm'] },
+    F: { head: [60,16,11,13,'Head'], chest: [60,58,19,12,'Chest'], upAbd: [60,80,17,9,'Upper abdomen'], rSide: [42,93,5,12,'Right side'], lSide: [78,93,5,12,'Left side'],
+         lowAbd: [60,103,17,9,'Lower abdomen'], pelvis: [60,123,19,9,'Pelvis'], rThigh: [45.5,166,9,28,'Right leg'], lThigh: [74.5,166,9,28,'Left leg'],
+         rArm: [25,88,6,42,'Right arm'], lArm: [95,88,6,42,'Left arm'] },
+    B: { headB: [60,16,11,13,'Back of head'], upBack: [60,58,20,12,'Upper back'], midBack: [60,80,17,9,'Mid back'], lowL: [46,104,8,9,'Lower back, left'],
+         lowC: [60,104,6,9,'Lower back'], lowR: [74,104,8,9,'Lower back, right'], sacrum: [60,124,19,10,'Tailbone and buttocks'], lThighB: [45.5,166,9,28,'Back of left leg'], rThighB: [74.5,166,9,28,'Back of right leg'],
+         lArmB: [25,88,6,42,'Left arm'], rArmB: [95,88,6,42,'Right arm'] },
   };
   const MID = new Set(['head', 'chest', 'upAbd', 'lowAbd', 'pelvis', 'headB', 'upBack', 'midBack', 'sacrum']);
   const ORDER = [...Object.keys(REG.F).map(k => 'F.' + k), ...Object.keys(REG.B).map(k => 'B.' + k)];
@@ -67,12 +71,13 @@
     let g = pts.map(p => `<ellipse cx="${p.x}" cy="${p.y}" rx="${p.wide ? 15 : 12}" ry="${p.wide ? 13 : 11}" fill="url(#${id}s${p.sev ?? 0})"/>`).join('');
     if (opts.live) g += pts.map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="2.6" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="1.2" pointer-events="none"/>`).join('');
     const marks = side === 'F'
-      ? `<circle cx="60" cy="98" r="1.1" fill="${pal.ink}" opacity=".45"/>`
-      : `<path d="M60 44 V120" stroke="${pal.ink}" stroke-opacity=".18" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M47 56 q5 10 0 18 M73 56 q-5 10 0 18" stroke="${pal.ink}" stroke-opacity=".14" fill="none"/>`;
+      ? `<circle cx="60" cy="96" r="1.1" fill="${pal.ink}" opacity=".45"/>`
+      : `<path d="M60 36 V118" stroke="${pal.ink}" stroke-opacity=".18" stroke-width="1.2" stroke-dasharray="3 3"/><path d="M46 50 q6 9 1 17 M74 50 q-6 9 -1 17" stroke="${pal.ink}" stroke-opacity=".14" fill="none"/>`;
     const live = opts.live ? ` class="body live" data-side="${side}"` : ' class="body"';
     return `<svg${live} width="${w}" height="${h}" viewBox="0 0 120 222" role="img" aria-label="${side === 'F' ? 'Front' : 'Back'} of body"><defs>${defs}</defs>` +
-      `<circle class="bfill" cx="60" cy="18" r="13" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="${sw}"/>` +
-      `<path class="bfill" d="${OUTLINE}" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="${sw}" stroke-linejoin="round"/>${marks}${g}</svg>`;
+      ARMS.map(d => `<path class="bfill" d="${d}" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="${sw}" stroke-linejoin="round"/>`).join('') +
+      `<path class="bfill" d="${OUTLINE}" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="${sw}" stroke-linejoin="round"/>` +
+      `<ellipse class="bfill" cx="60" cy="15.5" rx="10" ry="12" fill="${pal.bg}" stroke="${pal.ink}" stroke-width="${sw}"/>${marks}${g}</svg>`;
   }
   /* For a tap on a live body: the point in body coordinates, or null if it missed the body. */
   function pointFromEvent(svgEl, e) {
