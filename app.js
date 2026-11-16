@@ -442,6 +442,7 @@
       <div class="ring">${ring(info)}<div class="mid">${info ? `<small>Cycle day</small><b>${info.day}</b><span>${esc(info.phase.toLowerCase())}</span>` : `<small>Cycle day</small><b>–</b><span>log a period to start</span>`}</div></div>
       <p class="ringsub">${fmtLong(k)}${below ? ` · ${below}` : ''}</p>
       <a class="logbtn" href="#pain/${k}/new"><i>+</i>Log how you feel</a>
+      <div class="quick"><button class="qbtn" data-bleed style="--c:${ccol('bleed')}">${DROP}${d && d.sym && d.sym.bleed ? `Bleeding: ${esc(d.sym.bleed.v || 'logged')} <span class="soft">· edit</span>` : 'Log bleeding'}</button><a class="qbtn" href="#day/${k}">Other symptoms, no pain</a></div>
       </div><div class="dk-b">
       ${logs.length ? `<div class="lbl">Today’s pain <em>${logs.length} log${logs.length > 1 ? 's' : ''}</em></div>
         <div class="tl">${logs.map(l => painRow(k, l)).join('')}</div>${movedLine(logs)}` : ''}
@@ -453,6 +454,31 @@
       ${info ? `<div class="lbl">Your cycle</div><div class="stats cyc"><div><b>${info.day}</b>cycle day</div><div><b>${info.known ? info.avg : '–'}</b>average length</div><div><b>${info.known ? Math.max(0, dn(info.next) - dn(k)) : '–'}</b>days to next period</div></div>` : ''}
       </div></div></div>`;
   }
+  const DROP = `<svg width="13" height="16" viewBox="0 0 16 20" aria-hidden="true"><path d="M8 1 C8 1 2 9 2 13 a6 6 0 0 0 12 0 C14 9 8 1 8 1Z" fill="var(--c)"/></svg>`;
+  /* Quick bleeding log: flow, clots and a note, without logging pain. */
+  function bleedSheet(k, after) {
+    const d = day(k), cb = cls('bleed'), cc = cls('clots');
+    let flow = d && d.sym && d.sym.bleed ? d.sym.bleed.v : null, clots = d && d.sym && d.sym.clots ? d.sym.clots.v : null;
+    const note = d && d.sym && d.sym.bleed ? d.sym.bleed.note || '' : '';
+    const draw = () => `<h3 class="sh">Bleeding</h3><p class="sub">${k === todayK() ? 'Today' : fmtLong(k)}. No pain needed.</p>
+      <div class="lbl">Flow</div><div class="chips" style="--c:${ccol('bleed')}">${(cb.options || []).map(o => `<button class="chip ${flow === o ? 'on' : ''}" data-flow="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+      <div class="lbl">Clots</div><div class="chips" style="--c:${ccol('clots')}">${['None', ...(cc.options || [])].map(o => `<button class="chip ${(clots || 'None') === o ? 'on' : ''}" data-clots="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+      <input class="inp note" data-bnote placeholder="Note (optional)" value="${esc(note)}" aria-label="Bleeding note" style="margin-top:14px">
+      <div class="two" style="margin-top:16px">${d && d.sym && d.sym.bleed ? '<button class="btn ghost danger-t" data-bclear>Remove</button>' : '<button class="btn ghost" data-close>Cancel</button>'}<button class="btn" data-bsave ${flow ? '' : 'disabled'}>Save</button></div>`;
+    const w = sheet(draw(), e => {
+      const t = e.target.closest('button'); if (!t) return;
+      const keep = w.querySelector('[data-bnote]').value;
+      const redraw = () => { w.querySelector('.sheet').innerHTML = '<div class="grab"></div>' + draw(); w.querySelector('[data-bnote]').value = keep; };
+      if (t.dataset.flow) { flow = flow === t.dataset.flow ? null : t.dataset.flow; redraw(); }
+      else if (t.dataset.clots) { clots = t.dataset.clots === 'None' ? null : t.dataset.clots; redraw(); }
+      else if (t.matches('[data-bsave]')) {
+        const dd = dayW(k); dd.sym.bleed = { v: flow }; if (keep.trim()) dd.sym.bleed.note = keep.trim();
+        if (clots) dd.sym.clots = { v: clots }; else delete dd.sym.clots;
+        touchDay(k); closeSheet(); toast('Bleeding logged'); after && after();
+      } else if (t.matches('[data-bclear]')) { const dd = dayW(k); delete dd.sym.bleed; delete dd.sym.clots; touchDay(k); closeSheet(); toast('Bleeding removed'); after && after(); }
+    });
+  }
+  function todayBind() { app.onclick = e => { if (e.target.closest('[data-bleed]')) bleedSheet(todayK(), () => render()); }; }
   function weekStrip(k) {
     let o = '';
     for (let i = 6; i >= 0; i--) {
@@ -481,7 +507,7 @@
     return `<div class="screen">
       <header class="hd"><a class="link" href="${isNew ? (k === todayK() ? '#today' : '#day/' + k) : '#day/' + k}" data-cancel>Cancel</a><span class="r"><button class="link strong" data-save>${isNew ? 'Next' : 'Save'}</button></span></header>
       <h1 class="ttl">Pain <label class="timechip"><input type="time" data-time value="${PE.time}" aria-label="Time"></label></h1>
-      <p class="sub">${k === todayK() ? 'Today' : fmtLong(k)} · tap everywhere it hurts</p>
+      <p class="sub">${k === todayK() ? 'Today' : fmtLong(k)} · tap everywhere it hurts${id === 'new' ? ` · <button class="link inline" data-skip>No pain? Skip to bleeding and other symptoms ›</button>` : ''}</p>
       <div class="dk"><div class="dk-a">
       <div class="seg sidetoggle" style="margin-top:10px" role="tablist">${[['F', 'Front'], ['B', 'Back']].map(([s, l]) => `<button class="${PE.side === s ? 'on' : ''}" data-side="${s}" role="tab">${l}</button>`).join('')}</div>
       <div class="bodywrap" data-body>${painBody()}</div>
@@ -963,7 +989,7 @@
 
   /* ================= router ================= */
   const VIEWS = {
-    hello: [hello, helloBind], today: [today], pain: [pain, painBind], day: [dayScreen, dayBind], cal: [calendar],
+    hello: [hello, helloBind], today: [today, todayBind], pain: [pain, painBind], day: [dayScreen, dayBind], cal: [calendar],
     summary: [summary, summaryBind], doctor: [doctor, doctorBind], report: [report, reportBind], settings: [settings, settingsBind],
   };
   function render() {

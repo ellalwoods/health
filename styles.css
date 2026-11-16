@@ -83,6 +83,10 @@ textarea.inp { resize: vertical; min-height: 70px; }
 .ringsub { text-align: center; font-size: 12.5px; color: var(--soft); margin: 6px 0 0; }
 .logbtn { margin-top: 16px; padding: 18px; border-radius: 999px; background: var(--btn); color: var(--btnFg); text-align: center; font-weight: 700; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 9px; box-shadow: 0 10px 24px color-mix(in srgb, var(--btn) 25%, transparent); }
 .logbtn i { font-style: normal; font-size: 24px; line-height: 1; font-weight: 400; }
+.quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.qbtn { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 12px 10px; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--hair); font-weight: 600; font-size: 13.5px; text-align: center; line-height: 1.2; background: var(--bg); }
+.qbtn[data-bleed] { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, var(--hair)); }
+.link.inline { padding: 0; font-size: inherit; color: var(--acc); font-weight: 600; }
 .tl { display: flex; flex-direction: column; }
 .te { display: grid; grid-template-columns: 52px 46px 1fr; gap: 8px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--hair); font-size: 13px; }
 .te:first-child { border-top: 1px solid var(--hair); }
